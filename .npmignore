@@ -1,0 +1,34 @@
+# Source files
+src/
+tsconfig.json
+
+# Development
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+.nyc_output/
+*.test.ts
+*.spec.ts
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Documentation source
+docs/
+
+# Examples
+examples/
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
