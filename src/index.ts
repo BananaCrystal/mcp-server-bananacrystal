@@ -13,7 +13,7 @@ async function main() {
     );
     console.error('');
     console.error(
-      'Get your API key at: https://bananacrystal.com/settings/api-keys',
+      'Get your API key at: https://agents.bananacrystal.com → Account → API Keys',
     );
     console.error('');
     console.error('Then set it in your Claude Desktop config:');
@@ -23,16 +23,25 @@ async function main() {
     process.exit(1);
   }
 
-  const apiUrl =
-    process.env.BANANACRYSTAL_API_URL || 'https://api.bananacrystal.com';
+  // Detect sandbox vs live from key prefix
+  const isSandbox = apiKey.startsWith('bc_test_');
+  const defaultUrl = isSandbox
+    ? 'https://agentic.bananacrystal.com/mcp/sandbox'
+    : 'https://agentic.bananacrystal.com/mcp';
+
+  const apiUrl = process.env.BANANACRYSTAL_API_URL || defaultUrl;
   const debug = process.env.DEBUG === 'true';
 
   if (debug) {
     console.error('[BananaCrystal MCP] Starting server...');
+    console.error(
+      '[BananaCrystal MCP] Mode:',
+      isSandbox ? 'SANDBOX (no real money)' : 'LIVE',
+    );
     console.error('[BananaCrystal MCP] API URL:', apiUrl);
     console.error(
       '[BananaCrystal MCP] API Key:',
-      apiKey.substring(0, 10) + '...',
+      apiKey.substring(0, 12) + '...',
     );
   }
 
