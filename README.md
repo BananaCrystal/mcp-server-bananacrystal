@@ -17,7 +17,7 @@ _One endpoint. Every payment capability. The financial primitive of the agent ec
 
 <br/>
 
-[![Get API Key](https://img.shields.io/badge/Get%20Free%20API%20Key-agents.bananacrystal.com-F5821F?style=for-the-badge)](https://agents.bananacrystal.com)
+[![Get API Key](https://img.shields.io/badge/Get%20Free%20API%20Key-agents.bananacrystal.com-F5821F?style=for-the-badge)](https://agents.bananacrystal.com/account)
 [![npm](https://img.shields.io/npm/v/@bananacrystal/mcp-server?style=for-the-badge&color=5B63A4)](https://www.npmjs.com/package/@bananacrystal/mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Hedera](https://img.shields.io/badge/Settled%20on-Hedera%20%3C5s-6b48ff?style=for-the-badge)](https://hedera.com)
@@ -36,7 +36,7 @@ _One endpoint. Every payment capability. The financial primitive of the agent ec
 
 ---
 
-**If this project helps you build payment-capable agents, please [star the repo](https://github.com/BananaCrystal/mcp-server-package/stargazers) — it helps other developers find it.**
+**If this project helps you build payment-capable agents, please star the repo on [GitHub](https://github.com/BananaCrystal/mcp-server-bananacrystal) — it helps other developers find it.**
 
 ---
 
@@ -95,7 +95,7 @@ npm install -g @bananacrystal/mcp-server
 
 **Step 2 — Get a free API key**
 
-Sign up at **[agents.bananacrystal.com](https://agents.bananacrystal.com)** → Account → API Keys → Create MCP key.
+Sign up at **[agents.bananacrystal.com](https://agents.bananacrystal.com)** → **[Account → API Keys](https://agents.bananacrystal.com/account)** → Create MCP key.
 
 First 1,000 transactions free. Then $0.001/tx. No monthly fees. No seat pricing. No lock-in.
 
@@ -106,7 +106,7 @@ First 1,000 transactions free. Then $0.001/tx. No monthly fees. No seat pricing.
 <details>
 <summary><b>Sandbox mode — test without real money</b></summary>
 
-Create a **Sandbox key** at [agents.bananacrystal.com](https://agents.bananacrystal.com) → Account → API Keys → Create Sandbox Key.
+Create a **Sandbox key** at **[agents.bananacrystal.com/account](https://agents.bananacrystal.com/account)** → API Keys → Create Sandbox Key.
 
 Sandbox keys start with `bc_test_`. The package automatically routes them to the sandbox endpoint — no URL change needed.
 
@@ -549,48 +549,106 @@ OpenAI adopted MCP in March 2025. Microsoft added it to Copilot Studio in May 20
 
 1. Deposit USDC (external stablecoin) into your BananaCrystal account
 2. Convert to USDb (BananaCrystal's native 1:1 USD stablecoin)
-3. Swap USDb to any of 150+ local currency stablecoins: EURb (Euro), NGNb (Nigerian Naira), GBPb (British Pound), CADb (Canadian Dollar), and 140+ more
+3. Swap USDb to any of 150+ local currency stablecoins
 4. Withdraw back to USDC or your local bank anytime
 
 Every swap settles on Hedera in under 5 seconds. No banks. No SWIFT. No weekends.
 
-**Fees:** Token transfers cost **0.3%** of the transfer amount. Currency swaps cost **0.5%** of the swap amount. All other operations (balance checks, rate lookups, history) are free.
+**Fees:** Token transfers cost **0.3%** of the transfer amount. Currency swaps cost **0.5%** of the swap amount. All other operations are free.
 
-<details>
-<summary>View all supported currencies</summary>
+**All supported currencies:**
 
-| Currency          | Token |     | Currency           | Token |
-| ----------------- | ----- | --- | ------------------ | ----- |
-| US Dollar         | USDb  |     | Nigerian Naira     | NGNb  |
-| Euro              | EURb  |     | Ghanaian Cedi      | GHSb  |
-| British Pound     | GBPb  |     | Kenyan Shilling    | KESb  |
-| Canadian Dollar   | CADb  |     | South African Rand | ZARb  |
-| Australian Dollar | AUDb  |     | Egyptian Pound     | EGPb  |
-| Swiss Franc       | CHFb  |     | Ethiopian Birr     | ETBb  |
-| Japanese Yen      | JPYb  |     | Moroccan Dirham    | MADb  |
-| Chinese Yuan      | CNYb  |     | Ugandan Shilling   | UGXb  |
-| Indian Rupee      | INRb  |     | Rwandan Franc      | RWFb  |
-| South Korean Won  | KRWb  |     | Zambian Kwacha     | ZMWb  |
-| Singapore Dollar  | SGDb  |     | Tunisian Dinar     | TNDb  |
-| Hong Kong Dollar  | HKDb  |     | Botswana Pula      | BWPb  |
-| Malaysian Ringgit | MYRb  |     | Mauritian Rupee    | MURb  |
-| Thai Baht         | THBb  |     | West African CFA   | XOFb  |
-| Indonesian Rupiah | IDRb  |     | UAE Dirham         | AEDb  |
-| Philippine Peso   | PHPb  |     | Saudi Riyal        | SARb  |
-| Vietnamese Đồng   | VNDb  |     | Qatari Riyal       | QARb  |
-| New Taiwan Dollar | TWDb  |     | Kuwaiti Dinar      | KWDb  |
-| Pakistani Rupee   | PKRb  |     | Turkish Lira       | TRYb  |
-| Bangladeshi Taka  | BDTb  |     | Brazilian Real     | BRLb  |
-| Sri Lankan Rupee  | LKRb  |     | Mexican Peso       | MXNb  |
-| Swedish Krona     | SEKb  |     | Argentine Peso     | ARSb  |
-| Norwegian Krone   | NOKb  |     | Colombian Peso     | COPb  |
-| Danish Krone      | DKKb  |     | Chilean Peso       | CLPb  |
-| Polish Złoty      | PLNb  |     | Peruvian Sol       | PENb  |
-| Czech Koruna      | CZKb  |     | + 100 more...      |       |
+**Africa**
 
-Use `list_available_tokens` to get the complete live list with Hedera token IDs.
+| Currency            | Token |     | Currency            | Token |
+| ------------------- | ----- | --- | ------------------- | ----- |
+| Nigerian Naira      | NGNb  |     | Ghanaian Cedi       | GHSb  |
+| Kenyan Shilling     | KESb  |     | South African Rand  | ZARb  |
+| Egyptian Pound      | EGPb  |     | Ethiopian Birr      | ETBb  |
+| Moroccan Dirham     | MADb  |     | Ugandan Shilling    | UGXb  |
+| Rwandan Franc       | RWFb  |     | Zambian Kwacha      | ZMWb  |
+| Tunisian Dinar      | TNDb  |     | Botswana Pula       | BWPb  |
+| Mauritian Rupee     | MURb  |     | West African CFA    | XOFb  |
+| Central African CFA | XAFb  |     | Angolan Kwanza      | AOAb  |
+| Burundian Franc     | BIFb  |     | Cape Verdean Escudo | CVEb  |
+| Djiboutian Franc    | DJFb  |     | Eritrean Nakfa      | ERNb  |
+| Gambian Dalasi      | GMDb  |     | Guinean Franc       | GNFb  |
+| Lesotho Loti        | LSLb  |     | Liberian Dollar     | LRDb  |
+| Libyan Dinar        | LYDb  |     | Malagasy Ariary     | MGAb  |
+| Malawian Kwacha     | MWKb  |     | Mauritanian Ouguiya | MRUb  |
+| Mozambican Metical  | MZNb  |     | Namibian Dollar     | NADb  |
+| São Tomé Dobra      | STNb  |     | Seychellois Rupee   | SCRb  |
+| Somali Shilling     | SOSb  |     | Swazi Lilangeni     | SZLb  |
 
-</details>
+**Americas**
+
+| Currency              | Token |     | Currency                 | Token |
+| --------------------- | ----- | --- | ------------------------ | ----- |
+| US Dollar             | USDb  |     | Canadian Dollar          | CADb  |
+| Mexican Peso          | MXNb  |     | Brazilian Real           | BRLb  |
+| Argentine Peso        | ARSb  |     | Chilean Peso             | CLPb  |
+| Colombian Peso        | COPb  |     | Peruvian Sol             | PENb  |
+| Bolivian Boliviano    | BOBb  |     | Costa Rican Colón        | CRCb  |
+| Dominican Peso        | DOPb  |     | Guatemalan Quetzal       | GTQb  |
+| Haitian Gourde        | HTGb  |     | Honduran Lempira         | HNLb  |
+| Jamaican Dollar       | JMDb  |     | Nicaraguan Córdoba       | NIOb  |
+| Paraguayan Guaraní    | PYGb  |     | Trinidad & Tobago Dollar | TTDb  |
+| Guyanese Dollar       | GYDb  |     | Surinamese Dollar        | SRDb  |
+| Barbadian Dollar      | BBDb  |     | Belize Dollar            | BZDb  |
+| East Caribbean Dollar | XCDb  |     | Bahamian Dollar          | BSDb  |
+| Cayman Islands Dollar | KYDb  |     | Cuban Peso               | CUPb  |
+
+**Europe**
+
+| Currency         | Token |     | Currency      | Token |
+| ---------------- | ----- | --- | ------------- | ----- |
+| Euro             | EURb  |     | British Pound | GBPb  |
+| Swiss Franc      | CHFb  |     | Swedish Krona | SEKb  |
+| Norwegian Krone  | NOKb  |     | Danish Krone  | DKKb  |
+| Polish Złoty     | PLNb  |     | Czech Koruna  | CZKb  |
+| Hungarian Forint | HUFb  |     | Romanian Leu  | RONb  |
+| Bulgarian Lev    | BGNb  |     | Serbian Dinar | RSDb  |
+| Icelandic Króna  | ISKb  |     | Moldovan Leu  | MDLb  |
+| Macedonian Denar | MKDb  |     | Albanian Lek  | ALLb  |
+| Bosnian Mark     | BAMb  |     |               |       |
+
+**Asia & Pacific**
+
+| Currency           | Token |     | Currency               | Token |
+| ------------------ | ----- | --- | ---------------------- | ----- |
+| Indian Rupee       | INRb  |     | Japanese Yen           | JPYb  |
+| Chinese Yuan       | CNYb  |     | South Korean Won       | KRWb  |
+| Singapore Dollar   | SGDb  |     | Hong Kong Dollar       | HKDb  |
+| Malaysian Ringgit  | MYRb  |     | Thai Baht              | THBb  |
+| Indonesian Rupiah  | IDRb  |     | Philippine Peso        | PHPb  |
+| Vietnamese Đồng    | VNDb  |     | New Taiwan Dollar      | TWDb  |
+| Pakistani Rupee    | PKRb  |     | Bangladeshi Taka       | BDTb  |
+| Sri Lankan Rupee   | LKRb  |     | Nepalese Rupee         | NPRb  |
+| Kazakhstani Tenge  | KZTb  |     | Uzbekistani Som        | UZSb  |
+| Kyrgyzstani Som    | KGSb  |     | Tajikistani Somoni     | TJSb  |
+| Turkmenistan Manat | TMTb  |     | Armenian Dram          | AMDb  |
+| Azerbaijani Manat  | AZNb  |     | Georgian Lari          | GELb  |
+| Mongolian Tögrög   | MNTb  |     | Cambodian Riel         | KHRb  |
+| Lao Kip            | LAKb  |     | Maldivian Rufiyaa      | MVRb  |
+| Bhutanese Ngultrum | BTNb  |     | Brunei Dollar          | BNDb  |
+| Afghan Afghani     | AFNb  |     | Australian Dollar      | AUDb  |
+| New Zealand Dollar | NZDb  |     | Papua New Guinean Kina | PGKb  |
+| Fijian Dollar      | FJDb  |     | Samoan Tala            | WSTb  |
+| Tongan Paʻanga     | TOPb  |     | Vanuatu Vatu           | VUVb  |
+| CFP Franc          | XPFb  |     |                        |       |
+
+**Middle East**
+
+| Currency        | Token |     | Currency       | Token |
+| --------------- | ----- | --- | -------------- | ----- |
+| UAE Dirham      | AEDb  |     | Saudi Riyal    | SARb  |
+| Qatari Riyal    | QARb  |     | Kuwaiti Dinar  | KWDb  |
+| Bahraini Dinar  | BHDb  |     | Omani Rial     | OMRb  |
+| Jordanian Dinar | JODb  |     | Lebanese Pound | LBPb  |
+| Israeli Shekel  | ILSb  |     | Turkish Lira   | TRYb  |
+| Yemeni Rial     | YERb  |     | Syrian Pound   | SYPb  |
+
+Use `list_available_tokens` to get the live list with Hedera token IDs and current exchange rates.
 
 </details>
 
@@ -613,8 +671,8 @@ Yes — MIT licensed. The server is a thin authenticated client that makes HTTP 
 To run locally without an API key:
 
 ```bash
-git clone https://github.com/BananaCrystal/mcp-server-package.git
-cd mcp-server-package
+git clone https://github.com/BananaCrystal/mcp-server-bananacrystal.git
+cd mcp-server-bananacrystal
 npm install && npm run mock
 ```
 
@@ -654,8 +712,8 @@ We will acknowledge within 24 hours and aim to resolve critical issues within 72
 
 ```bash
 # Clone
-git clone https://github.com/BananaCrystal/mcp-server-package.git
-cd mcp-server-package
+git clone https://github.com/BananaCrystal/mcp-server-bananacrystal.git
+cd mcp-server-bananacrystal
 
 # Install
 npm install
@@ -754,8 +812,8 @@ If you are building a production agent, set limits conservatively first and incr
 **We are building the financial infrastructure of the agent economy. This is early. Your contributions shape the category.**
 
 ```bash
-git clone https://github.com/BananaCrystal/mcp-server-package.git
-cd mcp-server-package
+git clone https://github.com/BananaCrystal/mcp-server-bananacrystal.git
+cd mcp-server-bananacrystal
 npm install
 npm run mock   # develop against mock — no API key needed
 npm run dev
@@ -776,7 +834,7 @@ The highest-impact contributions right now:
 
 ### How to contribute
 
-1. Check [open issues](https://github.com/BananaCrystal/mcp-server-package/issues) for `good first issue` labels
+1. Check open issues on [GitHub](https://github.com/BananaCrystal/mcp-server-bananacrystal/issues) for `good first issue` labels
 2. Fork the repo and create a branch: `git checkout -b feature/your-contribution`
 3. Make your changes against the mock server (no API key needed)
 4. Submit a PR with a clear description of what you built and why
@@ -798,8 +856,8 @@ All contributors are credited in the changelog. Significant contributions (new f
 
 If BananaCrystal has been useful:
 
-**Star the repo** — it helps other developers find agent payment infrastructure when they need it.  
-[Star on GitHub](https://github.com/BananaCrystal/mcp-server-package/stargazers)
+**Star the repo** — it helps other developers find agent payment infrastructure when they need it.
+Visit [github.com/BananaCrystal/mcp-server-bananacrystal](https://github.com/BananaCrystal/mcp-server-bananacrystal) to star.
 
 **Share it** — post in your AI agent community, Discord, or newsletter. The agent economy needs infrastructure. Developers building agents need to know this exists.
 
@@ -811,17 +869,16 @@ If BananaCrystal has been useful:
 
 ## Links
 
-|                   |                                                                                      |
-| ----------------- | ------------------------------------------------------------------------------------ |
-| **Get API key**   | [agents.bananacrystal.com](https://agents.bananacrystal.com)                         |
-| **Platform**      | [bananacrystal.com](https://www.bananacrystal.com)                                   |
-| **Documentation** | [Documentation](https://agents.bananacrystal.com/docs)                               |
-| **Website**       | [bananacrystal.com](https://www.bananacrystal.com)                                   |
-| **npm**           | [@bananacrystal/mcp-server](https://www.npmjs.com/package/@bananacrystal/mcp-server) |
-| **MCP Protocol**  | [modelcontextprotocol.io](https://modelcontextprotocol.io)                           |
-| **Hedera**        | [hedera.com](https://hedera.com)                                                     |
-| **Issues**        | [GitHub Issues](https://github.com/BananaCrystal/mcp-server-package/issues)          |
-| **Support**       | support@bananacrystal.com                                                            |
+|                   |                                                                                                     |
+| ----------------- | --------------------------------------------------------------------------------------------------- |
+| **Get API key**   | [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account)                        |
+| **Platform**      | [bananacrystal.com](https://www.bananacrystal.com)                                                  |
+| **Documentation** | [agents.bananacrystal.com/docs](https://agents.bananacrystal.com/docs)                              |
+| **GitHub**        | [BananaCrystal/mcp-server-bananacrystal](https://github.com/BananaCrystal/mcp-server-bananacrystal) |
+| **npm**           | [@bananacrystal/mcp-server](https://www.npmjs.com/package/@bananacrystal/mcp-server)                |
+| **MCP Protocol**  | [modelcontextprotocol.io](https://modelcontextprotocol.io)                                          |
+| **Hedera**        | [hedera.com](https://hedera.com)                                                                    |
+| **Support**       | support@bananacrystal.com                                                                           |
 
 <br/>
 
@@ -833,7 +890,7 @@ If BananaCrystal has been useful:
 
 _Agent Payment Infrastructure · Autonomous Payments · AI-Native Finance_
 
-[Get started free](https://agents.bananacrystal.com) · [Read the docs](https://agents.bananacrystal.com/docs) · [Star this repo](https://github.com/BananaCrystal/mcp-server-package/stargazers)
+[Get started free](https://agents.bananacrystal.com/account) · [Read the docs](https://agents.bananacrystal.com/docs) · [View on GitHub](https://github.com/BananaCrystal/mcp-server-bananacrystal)
 
 </div>
 
