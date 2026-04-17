@@ -1,112 +1,51 @@
-<!--
-  SEO/GEO/AEO METADATA
-  Primary:  agent payment infrastructure · autonomous payments · AI-native finance
-  Secondary: agent wallet · agent economy · MCP payments · LangChain payments
-  Tertiary:  stablecoin payments · Hedera MCP · autonomous payment network · AI agent wallet
--->
+# BananaCrystal MCP Server
 
-<div align="center">
+[![npm version](https://badge.fury.io/js/%40bananacrystal%2Fmcp-server.svg)](https://www.npmjs.com/package/@bananacrystal/mcp-server)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-<img src="https://img.shields.io/badge/-%F0%9F%8D%8C%20BananaCrystal-F5821F?style=for-the-badge&labelColor=07070F" alt="BananaCrystal"/>
+**Agent payment infrastructure for AI.** Give your AI agent autonomous payment capability — stablecoin transfers, multi-currency swaps, agent wallets, and fiat operations. Works with Claude, LangChain, CrewAI, AutoGPT, and any MCP-compatible framework.
 
-# Agent Payment Infrastructure
-### The MCP Server That Gives AI Agents a Wallet
-
-*One endpoint. Every payment capability. The financial primitive of the agent economy.*
-
-<br/>
-
-[![Get API Key](https://img.shields.io/badge/Get%20Free%20API%20Key-agents.bananacrystal.com-F5821F?style=for-the-badge)](https://agents.bananacrystal.com)
-[![npm](https://img.shields.io/npm/v/@bananacrystal/mcp-server?style=for-the-badge&color=5B63A4)](https://www.npmjs.com/package/@bananacrystal/mcp-server)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](https://opensource.org/licenses/MIT)
-[![Hedera](https://img.shields.io/badge/Settled%20on-Hedera%20%3C5s-6b48ff?style=for-the-badge)](https://hedera.com)
-[![MCP](https://img.shields.io/badge/MCP-Compatible-0ea5e9?style=for-the-badge)](https://modelcontextprotocol.io)
-
-<br/>
-
-**Works with Claude · LangChain · CrewAI · AutoGPT · Cursor · Windsurf · Any MCP client**
-
-<br/>
-
-> *"The agent economy is forming now. Developers who integrate payment rails first*
-> *will define how AI agents transact. This is that infrastructure."*
-
-<br/>
+Built on [Hedera](https://hedera.com) — fast, low-cost, enterprise-grade.
 
 ---
 
-**If this project helps you build payment-capable agents, please [star the repo](https://github.com/BananaCrystal/mcp-server-package/stargazers) — it helps other developers find it.**
+## What Your Agent Can Do
+
+Once configured, your AI agent can:
+
+- **Check balances** across all supported stablecoins
+- **Transfer tokens** to any account, email, or username — with OTP security
+- **Swap currencies** between 30+ stablecoins at live exchange rates
+- **Manage fiat** — deposits and withdrawals via ACH/wire
+- **Agent-to-agent payments** — one agent requests, another approves via email
+- **Prediction market** — create and trade offers with escrow
+- **KYC verification** — initiate and check verification status
+
+All through natural language. No code changes needed after setup.
 
 ---
 
-</div>
+## Quick Start (5 minutes)
 
-<br/>
-
-## What this is
-
-**BananaCrystal** provides **agent payment infrastructure** — the missing financial layer of the AI agent stack.
-
-Traditional payment rails (Stripe, banks, card networks) were built for humans: human identity, human authorization, human operating hours. When AI agents try to use them they fail architecturally — $0.30 fixed fees that make micropayments economically impossible, KYC requirements agents cannot satisfy, 3–5 day settlement windows that break autonomous workflows.
-
-This MCP server is the alternative. **One configuration line gives any AI agent:**
-
-- An **agent wallet** with a real stablecoin balance
-- **Autonomous payment authority** within operator-defined spending limits
-- **150+ currencies** — USDb, EURb, NGNb, GBPb, CADb and more
-- **On-chain settlement in under 5 seconds** on Hedera at **$0.001 average fee**
-- An **immutable audit trail** every agent action is written to
-
-This is not a product feature. This is a new category: **autonomous payments** — the financial primitive of the agent economy, built for machines from first principles.
-
-<br/>
-
----
-
-## Why AI agents need their own payment rails
-
-| | Traditional rails | BananaCrystal |
-|---|---|---|
-| **Fee per transaction** | $0.30 + 2.9% (Stripe) · $15–35 (wire) | **$0.001 average** |
-| **Settlement speed** | 1–5 business days | **Under 5 seconds, absolute finality** |
-| **Identity model** | Human KYC required | **Agent ID — programmatic** |
-| **Authorization** | Human approval per transaction | **Programmatic policy — autonomous** |
-| **Operating hours** | Banking hours, weekdays | **24/7/365** |
-| **Micropayments** | Impossible at $0.30/tx | **Native — sub-cent viable** |
-| **Spending controls** | Card limit only | **Per-tx caps, daily limits, allowlists, scopes** |
-| **Audit trail** | Monthly statements | **Immutable on-chain, machine-readable** |
-
-> 1,000 transactions/day on Stripe: **$109,500/year** in fees alone.
-> 1,000 transactions/day on BananaCrystal: **$365/year**.
-> The agent economy runs on micropayments. The infrastructure fee must be microscopic — or the economics collapse entirely.
-
-<br/>
-
----
-
-## Quick start — working agent in 5 minutes
-
-**Step 1 — Install**
+### 1. Install
 
 ```bash
 npm install -g @bananacrystal/mcp-server
 ```
 
-**Step 2 — Get a free API key**
+### 2. Get Your API Key
 
-Sign up at **[agents.bananacrystal.com](https://agents.bananacrystal.com)** → Account → API Keys → Create MCP key.
+1. Sign up at [agents.bananacrystal.com](https://agents.bananacrystal.com)
+2. Go to **Account → API Keys**
+3. Create a **Sandbox key** first (starts with `bc_test_`) — free, no real money
+4. When ready for production, create a **Live key**
 
-First 1,000 transactions free. Then $0.001/tx. No monthly fees. No seat pricing. No lock-in.
+### 3. Configure Claude Desktop
 
-> Keys start with `bc_`. Always set spending limits before production deployment.
+**macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+**Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
-**Step 3 — Pick your agent framework**
-
-<details>
-<summary><b>Claude Desktop</b></summary>
-
-Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
-or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
+**Sandbox (start here — no real money):**
 
 ```json
 {
@@ -114,30 +53,14 @@ or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
     "bananacrystal": {
       "command": "bananacrystal-mcp",
       "env": {
-        "BANANACRYSTAL_API_KEY": "bc_live_your_key_here"
+        "BANANACRYSTAL_API_KEY": "bc_test_your_sandbox_key_here"
       }
     }
   }
 }
 ```
 
-Restart Claude Desktop. Then ask it:
-
-```
-"Check my BananaCrystal balance"
-"Transfer 50 USDb to 0.0.12345 — payment for the data report"
-"Swap 100 USDb to NGNb at the current rate"
-"Show my last 10 transactions"
-```
-
-Your agent now has a payment wallet.
-
-</details>
-
-<details>
-<summary><b>Cursor / Windsurf / Cline</b></summary>
-
-Add to your IDE MCP config:
+**Live (real money):**
 
 ```json
 {
@@ -145,470 +68,517 @@ Add to your IDE MCP config:
     "bananacrystal": {
       "command": "bananacrystal-mcp",
       "env": {
-        "BANANACRYSTAL_API_KEY": "bc_live_your_key_here"
+        "BANANACRYSTAL_API_KEY": "your_live_key_here"
       }
     }
   }
 }
 ```
 
-Your coding agent can now pay for API calls, data feeds, and compute per use — at $0.001 per transaction.
+> The package auto-detects sandbox vs live from your key prefix. No URL configuration needed.
 
-</details>
+### 4. Restart Claude Desktop
 
-<details>
-<summary><b>LangChain (Python)</b></summary>
+Quit and reopen Claude Desktop completely.
+
+### 5. Try It
+
+```
+Check my BananaCrystal balance
+```
+
+```
+Swap 100 USDb to NGNb on BananaCrystal
+```
+
+```
+Transfer 50 USDb to alice@example.com on BananaCrystal
+```
+
+---
+
+## Sandbox vs Live
+
+|                  | Sandbox                               | Live               |
+| ---------------- | ------------------------------------- | ------------------ |
+| Key prefix       | `bc_test_...`                         | No prefix          |
+| Endpoint         | Auto-detected                         | Auto-detected      |
+| Money            | Fake                                  | Real               |
+| Starting balance | 10,000 USDb, 5M NGNb, 50K GHSb + more | Your real balance  |
+| OTP on transfer  | Returned in response (no email)       | Sent to your email |
+| KYC              | Always approved                       | Real verification  |
+| Spend limits     | Unlimited                             | Enforced           |
+| Reset balance    | `reset_sandbox_balance` tool          | N/A                |
+
+**Always start with sandbox.** Test your full integration before switching to a live key.
+
+---
+
+## Supported Currencies
+
+Every currency is a fully-backed stablecoin on Hedera. The token symbol is the ISO currency code with a `b` suffix (e.g. Nigerian Naira NGN → **NGNb**). 130+ currencies supported.
+
+### Africa
+
+| Currency               | Token | Hedera Token ID |
+| ---------------------- | ----- | --------------- |
+| Nigerian Naira         | NGNb  | 0.0.10036627    |
+| Ghanaian Cedi          | GHSb  | 0.0.10036502    |
+| Kenyan Shilling        | KESb  | 0.0.10036559    |
+| South African Rand     | ZARb  | 0.0.10036705    |
+| Egyptian Pound         | EGPb  | 0.0.10036488    |
+| Ethiopian Birr         | ETBb  | 0.0.10036491    |
+| Moroccan Dirham        | MADb  | 0.0.10036592    |
+| Ugandan Shilling       | UGXb  | 0.0.10060747    |
+| Rwandan Franc          | RWFb  | 0.0.10036664    |
+| Zambian Kwacha         | ZMWb  | 0.0.10036706    |
+| Tunisian Dinar         | TNDb  | 0.0.10036684    |
+| Angolan Kwanza         | AOAb  | 0.0.10036443    |
+| Botswana Pula          | BWPb  | 0.0.10036462    |
+| Burundian Franc        | BIFb  | 0.0.10036453    |
+| Cape Verdean Escudo    | CVEb  | 0.0.10036479    |
+| West African CFA Franc | XOFb  | 0.0.10036702    |
+| Djiboutian Franc       | DJFb  | 0.0.10036482    |
+| Eritrean Nakfa         | ERNb  | 0.0.10036490    |
+| Gambian Dalasi         | GMDb  | 0.0.10036508    |
+| Guinean Franc          | GNFb  | 0.0.10036510    |
+| Lesotho Loti           | LSLb  | 0.0.10036588    |
+| Liberian Dollar        | LRDb  | 0.0.10036586    |
+| Libyan Dinar           | LYDb  | 0.0.10036590    |
+| Malagasy Ariary        | MGAb  | 0.0.10036596    |
+| Malawian Kwacha        | MWKb  | 0.0.10036614    |
+| Mauritanian Ouguiya    | MRUb  | 0.0.10036607    |
+| Mauritian Rupee        | MURb  | 0.0.10036609    |
+| Mozambican Metical     | MZNb  | 0.0.10036623    |
+| Namibian Dollar        | NADb  | 0.0.10036625    |
+| São Tomé Dobra         | STNb  | 0.0.10036678    |
+| Seychellois Rupee      | SCRb  | 0.0.10036669    |
+| Somali Shilling        | SOSb  | 0.0.10036675    |
+| Swazi Lilangeni        | SZLb  | 0.0.10036680    |
+
+### Americas
+
+| Currency                 | Token | Hedera Token ID |
+| ------------------------ | ----- | --------------- |
+| US Dollar                | USDb  | 0.0.7118026     |
+| Canadian Dollar          | CADb  | 0.0.10036466    |
+| Mexican Peso             | MXNb  | 0.0.10036615    |
+| Brazilian Real           | BRLb  | 0.0.10036458    |
+| Argentine Peso           | ARSb  | 0.0.10036444    |
+| Chilean Peso             | CLPb  | 0.0.10036472    |
+| Colombian Peso           | COPb  | 0.0.10036474    |
+| Peruvian Sol             | PENb  | 0.0.10036643    |
+| Bolivian Boliviano       | BOBb  | 0.0.10036456    |
+| Costa Rican Colón        | CRCb  | 0.0.10036476    |
+| Dominican Peso           | DOPb  | 0.0.10036485    |
+| Guatemalan Quetzal       | GTQb  | 0.0.10036514    |
+| Haitian Gourde           | HTGb  | 0.0.10036530    |
+| Honduran Lempira         | HNLb  | 0.0.10036521    |
+| Jamaican Dollar          | JMDb  | 0.0.10036551    |
+| Nicaraguan Córdoba       | NIOb  | 0.0.10036629    |
+| Paraguayan Guaraní       | PYGb  | 0.0.10036655    |
+| Trinidad & Tobago Dollar | TTDb  | 0.0.10036687    |
+| Guyanese Dollar          | GYDb  | 0.0.10036516    |
+| Surinamese Dollar        | SRDb  | 0.0.10036676    |
+| Barbadian Dollar         | BBDb  | 0.0.10036449    |
+| Belize Dollar            | BZDb  | 0.0.10036465    |
+| East Caribbean Dollar    | XCDb  | 0.0.10036700    |
+| Bahamian Dollar          | BSDb  | 0.0.10036460    |
+| Cayman Islands Dollar    | KYDb  | 0.0.10036574    |
+| Cuban Peso               | CUPb  | 0.0.10036478    |
+
+### Europe
+
+| Currency         | Token | Hedera Token ID |
+| ---------------- | ----- | --------------- |
+| Euro             | EURb  | 0.0.10036492    |
+| British Pound    | GBPb  | 0.0.10036498    |
+| Swiss Franc      | CHFb  | 0.0.10036469    |
+| Swedish Krona    | SEKb  | 0.0.10036671    |
+| Norwegian Krone  | NOKb  | 0.0.10036632    |
+| Danish Krone     | DKKb  | 0.0.10036484    |
+| Polish Złoty     | PLNb  | 0.0.10036651    |
+| Czech Koruna     | CZKb  | 0.0.10036480    |
+| Hungarian Forint | HUFb  | 0.0.10036533    |
+| Romanian Leu     | RONb  | 0.0.10036658    |
+| Bulgarian Lev    | BGNb  | 0.0.10036451    |
+| Serbian Dinar    | RSDb  | 0.0.10036661    |
+| Icelandic Króna  | ISKb  | 0.0.10036549    |
+| Moldovan Leu     | MDLb  | 0.0.10036594    |
+| Macedonian Denar | MKDb  | 0.0.10036598    |
+| Albanian Lek     | ALLb  | 0.0.10036440    |
+| Bosnian Mark     | BAMb  | 0.0.10036448    |
+
+### Asia & Pacific
+
+| Currency               | Token | Hedera Token ID |
+| ---------------------- | ----- | --------------- |
+| Indian Rupee           | INRb  | 0.0.10036542    |
+| Japanese Yen           | JPYb  | 0.0.10036557    |
+| Chinese Yuan           | CNYb  | 0.0.10036473    |
+| South Korean Won       | KRWb  | 0.0.10036570    |
+| Singapore Dollar       | SGDb  | 0.0.10036672    |
+| Hong Kong Dollar       | HKDb  | 0.0.10036518    |
+| Malaysian Ringgit      | MYRb  | 0.0.10036621    |
+| Thai Baht              | THBb  | 0.0.10036681    |
+| Indonesian Rupiah      | IDRb  | 0.0.10036536    |
+| Philippine Peso        | PHPb  | 0.0.10036648    |
+| Vietnamese Đồng        | VNDb  | 0.0.10036696    |
+| New Taiwan Dollar      | TWDb  | 0.0.10036688    |
+| Pakistani Rupee        | PKRb  | 0.0.10036649    |
+| Bangladeshi Taka       | BDTb  | 0.0.10036450    |
+| Sri Lankan Rupee       | LKRb  | 0.0.10036584    |
+| Nepalese Rupee         | NPRb  | 0.0.10036634    |
+| Kazakhstani Tenge      | KZTb  | 0.0.10036576    |
+| Uzbekistani Som        | UZSb  | 0.0.10036694    |
+| Kyrgyzstani Som        | KGSb  | 0.0.10036562    |
+| Tajikistani Somoni     | TJSb  | 0.0.10036682    |
+| Turkmenistan Manat     | TMTb  | 0.0.10036683    |
+| Armenian Dram          | AMDb  | 0.0.10036441    |
+| Azerbaijani Manat      | AZNb  | 0.0.10036447    |
+| Georgian Lari          | GELb  | 0.0.10036500    |
+| Mongolian Tögrög       | MNTb  | 0.0.10036602    |
+| Cambodian Riel         | KHRb  | 0.0.10036564    |
+| Lao Kip                | LAKb  | 0.0.10036578    |
+| Maldivian Rufiyaa      | MVRb  | 0.0.10036611    |
+| Bhutanese Ngultrum     | BTNb  | 0.0.10036461    |
+| Brunei Dollar          | BNDb  | 0.0.10036455    |
+| Afghan Afghani         | AFNb  | 0.0.10036438    |
+| Australian Dollar      | AUDb  | 0.0.10036445    |
+| New Zealand Dollar     | NZDb  | 0.0.10036636    |
+| Papua New Guinean Kina | PGKb  | 0.0.10036645    |
+| Fijian Dollar          | FJDb  | 0.0.10036494    |
+| Samoan Tala            | WSTb  | 0.0.10036698    |
+| Tongan Paʻanga         | TOPb  | 0.0.10036685    |
+| Vanuatu Vatu           | VUVb  | 0.0.10036697    |
+| CFP Franc              | XPFb  | 0.0.10036703    |
+
+### Middle East
+
+| Currency        | Token | Hedera Token ID |
+| --------------- | ----- | --------------- |
+| UAE Dirham      | AEDb  | 0.0.10036437    |
+| Saudi Riyal     | SARb  | 0.0.10036666    |
+| Qatari Riyal    | QARb  | 0.0.10036657    |
+| Kuwaiti Dinar   | KWDb  | 0.0.10036572    |
+| Bahraini Dinar  | BHDb  | 0.0.10036452    |
+| Omani Rial      | OMRb  | 0.0.10036638    |
+| Jordanian Dinar | JODb  | 0.0.10036553    |
+| Lebanese Pound  | LBPb  | 0.0.10036582    |
+| Israeli Shekel  | ILSb  | 0.0.10036539    |
+| Turkish Lira    | TRYb  | 0.0.10036686    |
+| Yemeni Rial     | YERb  | 0.0.10036704    |
+| Syrian Pound    | SYPb  | 0.0.10036679    |
+
+> Use `list_available_tokens` to get the live list with current token IDs and exchange rates.
+
+---
+
+## Fee Structure
+
+| Operation            | Fee                        |
+| -------------------- | -------------------------- |
+| Token transfer       | 0.3% of transfer amount    |
+| Currency swap        | 0.5% of swap amount        |
+| Fiat deposit         | Varies by rail (ACH, wire) |
+| Fiat withdrawal      | Varies by rail             |
+| Balance check        | Free                       |
+| Exchange rate lookup | Free                       |
+
+Fees are charged by the network and deducted automatically. No hidden fees.
+
+---
+
+## All 40 Tools
+
+### Utility
+
+| Tool              | Description                    |
+| ----------------- | ------------------------------ |
+| `ping`            | Health check                   |
+| `get_server_info` | Server version and environment |
+| `echo`            | Echo a message back            |
+
+### Account & Profile
+
+| Tool                      | Description                                |
+| ------------------------- | ------------------------------------------ |
+| `get_my_profile`          | Your profile, wallets, and MCP key info    |
+| `get_balances`            | Token balances (all or specific token)     |
+| `get_transaction_history` | Paginated transaction history with filters |
+| `get_my_limits`           | API key limits and current usage           |
+
+### Transfers
+
+| Tool                   | Description                                                                |
+| ---------------------- | -------------------------------------------------------------------------- |
+| `request_transfer_otp` | Step 1 — request OTP code (sent to email, or returned directly in sandbox) |
+| `transfer_tokens`      | Step 2 — execute transfer with OTP                                         |
+
+### Swaps
+
+| Tool                        | Description                           |
+| --------------------------- | ------------------------------------- |
+| `swap_currency`             | Swap between any two supported tokens |
+| `estimate_swap_fees`        | Estimate fees before swapping         |
+| `get_exchange_rate`         | Live buy/sell rates for a currency    |
+| `list_supported_currencies` | All supported currencies with fees    |
+| `list_available_tokens`     | All Hedera token IDs                  |
+
+### Fiat (KYC required)
+
+| Tool                    | Description                         |
+| ----------------------- | ----------------------------------- |
+| `initiate_deposit`      | Deposit via ACH or wire             |
+| `request_withdrawal`    | Withdraw to bank account            |
+| `get_deposit_status`    | Check deposit status by transfer ID |
+| `get_withdrawal_status` | Check withdrawal requests           |
+| `initiate_kyc`          | Start KYC verification              |
+| `get_kyc_status`        | Check KYC verification status       |
+
+### Settings
+
+| Tool                       | Description                                      |
+| -------------------------- | ------------------------------------------------ |
+| `update_my_agent_settings` | Toggle approval requirements and set webhook URL |
+
+### Agent-to-Agent Payments
+
+| Tool                           | Description                                     |
+| ------------------------------ | ----------------------------------------------- |
+| `request_agent_transaction`    | Request a transaction from another user's agent |
+| `check_approval_status`        | Poll approval status                            |
+| `execute_approved_transaction` | Execute after approval                          |
+| `get_agent_config`             | Check if another user supports agent requests   |
+
+### Prediction Market
+
+| Tool                  | Description                       |
+| --------------------- | --------------------------------- |
+| `list_offers`         | Browse active offers              |
+| `get_offer`           | Get offer details                 |
+| `get_my_offers`       | Your offers                       |
+| `create_offer`        | Create a new offer                |
+| `update_offer`        | Edit an offer (before any trades) |
+| `delist_offer`        | Remove offer from marketplace     |
+| `delete_offer`        | Permanently delete offer          |
+| `list_trades`         | Browse all trades                 |
+| `get_trade`           | Get trade details                 |
+| `get_my_trades`       | Your trades                       |
+| `engage_offer`        | Trade against an offer            |
+| `cancel_trade`        | Cancel an active trade            |
+| `get_escrow_balances` | Escrow balance breakdown          |
+| `get_escrow_history`  | Full escrow transaction history   |
+
+### Sandbox Only
+
+| Tool                    | Description                     |
+| ----------------------- | ------------------------------- |
+| `reset_sandbox_balance` | Reset fake balances to defaults |
+
+---
+
+## Usage Examples
+
+### Check Balance
+
+```
+You: What's my BananaCrystal balance?
+
+Claude: You have:
+  • 10,000.00 USDb
+  • 5,000,000.00 NGNb
+  • 50,000.00 GHSb
+```
+
+### Transfer Tokens
+
+```
+You: Send 100 USDb to alice@example.com on BananaCrystal
+
+Claude: I'll transfer 100 USDb to alice@example.com.
+        Requesting OTP verification...
+        [OTP sent to your email]
+
+You: The code is 847291
+
+Claude: Transfer complete! 100 USDb sent to alice@example.com.
+        Transaction ID: 0x7f3a...
+```
+
+### Swap Currencies
+
+```
+You: Swap 50 USDb to NGNb on BananaCrystal
+
+Claude: Current rate: 1 USD = 1,612 NGN
+        You'll receive approximately 80,600 NGNb (after 0.5% fee)
+        Executing swap...
+        Done! Swapped 50 USDb → 80,197.00 NGNb
+```
+
+### Agent-to-Agent Payment
+
+```
+You: Request 200 USDb from bob@example.com for the project invoice
+
+Claude: Sent approval request to Bob.
+        He'll receive an email to approve or reject.
+        Approval ID: d7f50bd2-...
+        [Approval links never expire — Bob can approve anytime]
+```
+
+### LangChain Integration
 
 ```python
 from langchain_mcp_adapters.client import MultiServerMCPClient
-from langchain.agents import AgentExecutor, create_openai_tools_agent
-from langchain_openai import ChatOpenAI
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
-import asyncio, os
 
-async def create_payment_agent():
-    client = MultiServerMCPClient({
-        "bananacrystal": {
-            "command": "bananacrystal-mcp",
-            "env": {
-                "BANANACRYSTAL_API_KEY": os.getenv("BANANACRYSTAL_API_KEY")
-            },
-            "transport": "stdio"
-        }
-    })
-    tools = await client.get_tools()
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", """You are a financial operations AI agent with an 
-        agent wallet on BananaCrystal agent payment infrastructure.
-        Always check balance before large transfers.
-        Always include a memo with every payment.
-        Report the transaction ID for every settled payment."""),
-        ("human", "{input}"),
-        MessagesPlaceholder(variable_name="agent_scratchpad")
-    ])
-    agent = create_openai_tools_agent(llm, tools, prompt)
-    return AgentExecutor(agent=agent, tools=tools, verbose=True)
+async with MultiServerMCPClient({
+    "bananacrystal": {
+        "command": "bananacrystal-mcp",
+        "env": {"BANANACRYSTAL_API_KEY": "bc_test_your_key"},
+        "transport": "stdio",
+    }
+}) as client:
+    tools = client.get_tools()
+    # Use tools with any LangChain agent
+```
 
-agent = asyncio.run(create_payment_agent())
-result = agent.invoke({
-    "input": "Check balance, then pay 12.50 USDb to vendor:data-provider-01 for today's market data report"
+### CrewAI Integration
+
+```python
+from crewai import Agent
+from crewai_tools import MCPServerAdapter
+
+mcp_server = MCPServerAdapter({
+    "command": "bananacrystal-mcp",
+    "env": {"BANANACRYSTAL_API_KEY": "bc_test_your_key"},
 })
-# Agent checks balance → verifies limits → requests OTP → executes transfer
-# Settlement confirmed on Hedera in 3.2s · txId: 0.0.789@1711234567
-```
 
-</details>
-
-<details>
-<summary><b>CrewAI</b></summary>
-
-```python
-from crewai import Agent, Task, Crew
-from langchain_mcp_adapters.client import MultiServerMCPClient
-import asyncio, os
-
-async def setup_payment_tools():
-    client = MultiServerMCPClient({
-        "bananacrystal": {
-            "command": "bananacrystal-mcp",
-            "env": {"BANANACRYSTAL_API_KEY": os.getenv("BANANACRYSTAL_API_KEY")},
-            "transport": "stdio"
-        }
-    })
-    return await client.get_tools()
-
-payment_tools = asyncio.run(setup_payment_tools())
-
-treasury_agent = Agent(
-    role="Autonomous Treasury Manager",
-    goal="Monitor stablecoin balances and execute payments within defined limits",
-    backstory="""You are an AI-native finance agent on the BananaCrystal 
-    agent payment infrastructure. You manage a multi-currency stablecoin 
-    treasury, executing transfers, swaps, and vendor payments autonomously.""",
-    tools=payment_tools,
-    verbose=True
+payment_agent = Agent(
+    role="Payment Manager",
+    goal="Handle all payment operations",
+    tools=mcp_server.tools,
 )
-
-treasury_task = Task(
-    description="""Check USDb balance. If above 10,000 USDb, swap 5,000 USDb 
-    to EURb. Then pay vendor invoice of 500 USDb to vendor:accounting-service-01.""",
-    agent=treasury_agent,
-    expected_output="Balance checked, swap executed, vendor paid. All transaction IDs logged."
-)
-
-result = Crew(agents=[treasury_agent], tasks=[treasury_task]).kickoff()
 ```
-
-</details>
-
-<details>
-<summary><b>AutoGPT</b></summary>
-
-```yaml
-plugins:
-  - name: BananaCrystal Payments
-    package: "@bananacrystal/mcp-server"
-    description: >
-      Agent payment infrastructure — autonomous stablecoin transfers, 
-      currency swaps, and fiat operations on Hedera blockchain.
-    env:
-      BANANACRYSTAL_API_KEY: "${BC_API_KEY}"
-```
-
-</details>
-
-<br/>
 
 ---
 
-## 15 production-ready payment tools
+## Security
 
-Every tool an agent needs for complete autonomous payment capability. All live. All guarded.
+### API Key Security
 
-<details>
-<summary><b>Read-only tools</b> — safe for any agent, any scope</summary>
+- Never commit API keys to version control
+- Use environment variables — never hardcode
+- Rotate keys regularly in your BananaCrystal dashboard
+- Revoke unused keys immediately
 
-| Tool | What it does | Parameters |
-|------|-------------|------------|
-| `get_my_profile` | Agent wallet identity and account info | — |
-| `get_balances` | All token balances in the agent wallet | — |
-| `get_exchange_rate` | Live rates for any currency pair | `currency` |
-| `list_supported_currencies` | All 150+ available stablecoins | — |
-| `get_transaction_history` | Paginated transaction log with filters | `limit`, `type`, `direction` |
-| `get_my_limits` | API key spending limits and current usage | — |
-| `estimate_swap_fees` | Calculate exact fees before swapping | `from_token`, `to_token`, `amount` |
-| `get_agent_config` | Look up another agent's payment config | `identifier` |
-| `check_approval_status` | Status of a pending agent transaction | `token` |
+### Transaction Security
 
-</details>
+- **OTP verification** on all transfers (email code required by default)
+- **Email approval** for agent-to-agent transactions (on by default)
+- **Spend limits** enforced server-side — set per-transaction, daily, and monthly caps
+- **Rate limiting** on all operations
+- **Idempotency** — duplicate requests are safely deduplicated
 
-<details>
-<summary><b>Write tools</b> — require <code>transfer</code> or <code>swap</code> scope</summary>
+### What This Package Does NOT Have Access To
 
-| Tool | What it does | Parameters |
-|------|-------------|------------|
-| `request_transfer_otp` | Request OTP before executing a transfer | `amount`, `token`, `recipient` |
-| `transfer_tokens` | Execute stablecoin transfer on Hedera | `amount`, `token`, `recipient`, `otp_code` |
-| `swap_currency` | Swap between any stablecoin pair | `from_token`, `to_token`, `amount` |
+- Your private keys (managed by BananaCrystal's secure infrastructure)
+- Other users' data
+- Internal business logic
 
-</details>
-
-<details>
-<summary><b>Agent-to-agent tools</b> — autonomous commerce primitives</summary>
-
-| Tool | What it does | Parameters |
-|------|-------------|------------|
-| `request_agent_transaction` | Request payment from another agent or user | `recipient`, `amount`, `memo` |
-| `execute_approved_transaction` | Execute a pre-approved agent transaction | `execution_token` |
-| `update_my_agent_settings` | Configure approval rules and webhooks | `settings` |
-
-</details>
-
-<br/>
-
----
-
-## Real-world agent economy use cases
-
-<details>
-<summary><b>Autonomous treasury management</b></summary>
-
-```
-Task:    "Monitor USDb balance. If above 50,000, swap 20% to EURb."
-
-Flow:    get_balances → check threshold → estimate_swap_fees
-         → swap_currency → audit log written to Hedera
-
-Result:  Rebalanced $42,000 in 4.2 seconds.
-         Human involvement: zero.
-         Fee: $0.001.
-```
-
-</details>
-
-<details>
-<summary><b>AI customer service refunds</b></summary>
-
-```
-Task:    "Process refund for order #84921. Customer verified. Amount: 45.00 USDb."
-
-Flow:    Verify eligibility → transfer_tokens → settlement confirmed
-
-Result:  Before: 48-hour queue, 3 staff touchpoints.
-         After:  2.8 second settlement. Zero staff involvement.
-```
-
-</details>
-
-<details>
-<summary><b>Multi-agent payroll</b></summary>
-
-```
-Task:    "Verify task completion by agent:worker-03. If verified, pay 12.50 USDb."
-
-Flow:    Orchestrator verifies output → request_agent_transaction
-         → agent:worker-03 receives payment atomically
-
-This is the agent economy: agents hiring agents, paying for output.
-```
-
-</details>
-
-<details>
-<summary><b>Cross-border vendor payments</b></summary>
-
-```
-Task:    "Pay Nigerian vendor 500 USD equivalent in NGNb."
-
-Flow:    get_exchange_rate (USDb/NGNb: 1,580)
-         → swap_currency (500 USDb → 790,000 NGNb)
-         → transfer_tokens to vendor wallet
-
-Traditional wire: 3–5 days, $35 fee.
-BananaCrystal:    4.1 seconds, $0.001 fee.
-```
-
-</details>
-
-<details>
-<summary><b>Per-call API billing for research agents</b></summary>
-
-```
-Task:    "Query the pricing data API. Pay per result."
-
-Flow:    Agent calls data provider → provider returns HTTP 402
-         → agent calls transfer_tokens ($0.001 per query)
-         → data unlocked → agent continues workflow
-
-1,000 queries/day = $1.00 in payments + $1.00 in fees.
-Economically impossible on Stripe ($300/day in fees alone).
-```
-
-</details>
-
-<br/>
-
----
-
-## Security architecture
-
-| Layer | Mechanism | What it prevents |
-|-------|-----------|-----------------|
-| API Key Scopes | `read_only`, `transfer`, `swap`, `fiat` per key | Agent scope creep |
-| Spending Limits | Per-tx max + daily cap enforced server-side | Runaway agent spending |
-| OTP Verification | 6-digit code to registered email for transfers | Unauthorized payments |
-| Idempotency Keys | Redis deduplication per request | Double-spend on retries |
-| Rate Limiting | Per-key per-minute and per-day caps | Runaway agent loops |
-| Immutable Audit | Every tool call written to Hedera consensus layer | Tampered transaction history |
-
-**What this package does NOT have access to:**
-
-- Your private keys — managed server-side
-- Other users' wallets or data
-- The ability to modify its own spending limits
-- Anything outside your API key's scope
-
-This MCP server is a thin authenticated client. All security enforcement executes server-side at BananaCrystal's infrastructure layer — not in this package.
-
-<br/>
+This package is a thin client. All security, validation, and business logic runs server-side at BananaCrystal.
 
 ---
 
 ## Configuration
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `BANANACRYSTAL_API_KEY` | **Yes** | — | Your API key (starts with `bc_`) |
-| `BANANACRYSTAL_API_URL` | No | `https://agentic.bananacrystal.com/mcp` | Override API endpoint |
-| `DEBUG` | No | `false` | Enable verbose debug logging |
-
-<br/>
-
----
-
-## Pricing
-
-| Tier | Volume | Cost | For |
-|------|--------|------|-----|
-| **Free** | First 1,000 transactions/month | $0 | Development and early agents |
-| **Pay-per-use** | 1,001+ /month | $0.001 per transaction | Production agents at any scale |
-| **Enterprise** | Unlimited | Contact us | High-volume autonomous payment networks |
-
-No monthly fee. No seat pricing. No lock-in. You pay exactly $0.001 for every transaction above the free tier — nothing else.
-
-<br/>
-
----
-
-## Frequently asked questions
-
-<details>
-<summary><b>What exactly is agent payment infrastructure?</b></summary>
-
-Agent payment infrastructure is the class of financial technology designed from first principles for AI agents as the primary economic actor. It provides agent wallets with programmatic identity (no human KYC), autonomous transaction authorization without per-transaction human approval, machine-speed settlement, and machine-readable audit trails.
-
-Traditional payment infrastructure (Stripe, bank APIs, card networks) assumes a human is the accountable party behind every payment. Agent payment infrastructure assumes the payer may be an autonomous software process operating 24/7 at machine speed. These are architecturally different requirements — which is why BananaCrystal exists as a category, not just a product.
-
-</details>
-
-<details>
-<summary><b>How is this different from just using Stripe's API?</b></summary>
-
-Seven architectural differences:
-
-1. **Identity** — Stripe requires human KYC and a legal entity. BananaCrystal issues agent wallets with programmatic identity in seconds.
-2. **Authorization** — Stripe requires a human to authorize each transaction (3DS2, card PIN, etc.). BananaCrystal uses programmatic spending policy set once by the operator.
-3. **Fees** — Stripe charges $0.30 + 2.9% per transaction, making micropayments economically impossible. BananaCrystal charges $0.001 average.
-4. **Settlement** — Stripe settlements take 2–3 days. BananaCrystal settles on Hedera in under 5 seconds with absolute finality.
-5. **Hours** — Banks and card networks have operating hours. BananaCrystal is 24/7/365.
-6. **Fraud detection** — Stripe's fraud system is trained on human transaction patterns and flags automated agent behavior as suspicious. BananaCrystal is designed for machine transaction patterns.
-7. **Spending controls** — Stripe offers card limits only. BananaCrystal offers per-transaction caps, daily limits, recipient allowlists, and currency restrictions — all enforced at infrastructure level, not application layer.
-
-</details>
-
-<details>
-<summary><b>Is this safe to give to an AI agent? What stops it spending everything?</b></summary>
-
-Spending controls are enforced at the infrastructure layer — not in your application code, and not in the agent's code. The agent cannot override them.
-
-You set:
-- **Daily spending cap** — hard limit on total daily spend (e.g. $100/day)
-- **Per-transaction maximum** — no single payment over a threshold (e.g. $25 max)
-- **Recipient allowlist** — agent can only pay pre-approved wallet addresses
-- **Currency restrictions** — agent can only transact in currencies you permit
-- **OTP requirement** — transfers above a threshold require a 6-digit email code
-
-A runaway agent hitting its limit receives a `SpendingLimitExceeded` error and stops. No funds move.
-
-</details>
-
-<details>
-<summary><b>What is an agent wallet?</b></summary>
-
-An agent wallet is a non-custodial financial account owned and operated by an AI agent — not a human. Its identity derives from a programmatic agent ID, not from government documents or KYC verification of a person. The wallet holds a real stablecoin balance, has an on-chain Hedera address, and can send and receive value autonomously within the spending limits you configure.
-
-When you sign up at agents.bananacrystal.com and create an API key, an agent wallet is automatically provisioned. Your agents reference it via the API key — they never need to know private keys or manage cryptographic identity directly.
-
-</details>
-
-<details>
-<summary><b>Which AI frameworks work with this MCP server?</b></summary>
-
-Any framework that supports the Model Context Protocol (MCP). Confirmed integrations:
-
-- **Claude Desktop** (Anthropic) — native MCP support
-- **Cursor, Windsurf, Cline** — IDE agents with MCP support
-- **LangChain** — via `langchain-mcp-adapters` package
-- **CrewAI** — via LangChain MCP adapter
-- **AutoGPT** — via plugin configuration
-- **Custom agents** — any agent that can call JSON-RPC over stdio or HTTP
-
-OpenAI adopted MCP in March 2025. Microsoft added it to Copilot Studio in May 2025. Gartner projects 75% of API gateway vendors will support MCP by 2026. This is the standard — build on it.
-
-</details>
-
-<details>
-<summary><b>What currencies are supported?</b></summary>
-
-150+ stablecoin currency pairs. The core flow:
-
-1. Deposit USDC (external stablecoin) into your BananaCrystal account
-2. Convert to USDb (BananaCrystal's native 1:1 USD stablecoin)
-3. Swap USDb to any of 150+ local currency stablecoins: EURb (Euro), NGNb (Nigerian Naira), GBPb (British Pound), CADb (Canadian Dollar), and 140+ more
-4. Withdraw back to USDC or your local bank anytime
-
-Every swap settles on Hedera in under 5 seconds. No banks. No SWIFT. No weekends.
-
-</details>
-
-<details>
-<summary><b>What is Hedera and why does it matter for agent payments?</b></summary>
-
-Hedera is an enterprise-grade public distributed ledger chosen for three properties critical to autonomous agent payments:
-
-- **Absolute finality in under 5 seconds** — unlike Ethereum (probabilistic finality over minutes) or Bitcoin (10+ minute blocks), Hedera's hashgraph consensus provides certainty that a transaction has cleared. An agent's next action depends on knowing the payment settled — absolute finality is a functional requirement, not a preference.
-- **$0.001 average transaction fee** — Hedera's fee structure makes agent micropayments economically viable at scale. No other production blockchain offers this combination of speed and cost.
-- **Carbon-negative network** — the only carbon-negative public distributed ledger, which matters for enterprises running agents at millions of transactions per month.
-
-</details>
-
-<details>
-<summary><b>Is the MCP server open source? Can I self-host it?</b></summary>
-
-Yes — MIT licensed. The server is a thin authenticated client that makes HTTP requests to BananaCrystal's API. You can fork it, modify it, and run it locally. A mock server is included for development without a real API key.
-
-To run locally without an API key:
-
-```bash
-git clone https://github.com/BananaCrystal/mcp-server-package.git
-cd mcp-server-package
-npm install && npm run mock
-```
-
-The mock server returns realistic data so you can build integrations, write tests, and explore all 15 tools without touching production.
-
-</details>
-
-<details>
-<summary><b>What is the agent economy?</b></summary>
-
-The agent economy is the emerging economic layer in which AI agents participate as independent economic actors — not just tools that assist humans, but participants that earn, spend, negotiate, and operate on their own financial behalf.
-
-It requires three new infrastructure primitives: **agent wallets** (programmatic identity, no human KYC), **autonomous payments** (programmatic spending policy, not per-transaction human approval), and **machine-speed settlement** (on-chain, under 5 seconds, machine-readable confirmation).
-
-BananaCrystal is the agent payment infrastructure layer. We don't sell a product. We represent a category: **AI-native finance** — the financial system built for machines, not adapted from the one built for humans. The agent economy is forming now. Developers who integrate payment rails first will define how it works.
-
-</details>
-
-<details>
-<summary><b>How do I report a security vulnerability?</b></summary>
-
-Do not open a public GitHub issue for security vulnerabilities. Email security@bananacrystal.com with:
-
-1. Description of the vulnerability
-2. Steps to reproduce
-3. Potential impact
-
-We will acknowledge within 24 hours and aim to resolve critical issues within 72 hours. We do not currently have a formal bug bounty program but we recognize responsible disclosures publicly and in our changelog.
-
-</details>
-
-<br/>
-
----
-
-## Development and local testing
-
-```bash
-# Clone
-git clone https://github.com/BananaCrystal/mcp-server-package.git
-cd mcp-server-package
-
-# Install
-npm install
-
-# Start mock server — no API key needed, all 15 tools return realistic data
-npm run mock
-
-# Build from source
-npm run build
-
-# Run in development mode
-npm run dev
-
-# Test with MCP Inspector
-export BANANACRYSTAL_API_KEY=bc_test_your_key_here
-npx @modelcontextprotocol/inspector node dist/index.js
-```
-
-**Configure your agent to use the mock server:**
+### Environment Variables
+
+| Variable                | Required | Default                | Description                              |
+| ----------------------- | -------- | ---------------------- | ---------------------------------------- |
+| `BANANACRYSTAL_API_KEY` | Yes      | —                      | Your API key (`bc_test_...` for sandbox) |
+| `BANANACRYSTAL_API_URL` | No       | Auto-detected from key | Override the MCP endpoint URL            |
+| `DEBUG`                 | No       | `false`                | Set to `true` for verbose logging        |
+
+### Debug Mode
 
 ```json
 {
   "mcpServers": {
     "bananacrystal": {
       "command": "bananacrystal-mcp",
+      "env": {
+        "BANANACRYSTAL_API_KEY": "your_key_here",
+        "DEBUG": "true"
+      }
+    }
+  }
+}
+```
+
+---
+
+## Troubleshooting
+
+### "API key invalid"
+
+- Verify the key is copied correctly (no extra spaces)
+- Check it hasn't been revoked at [agents.bananacrystal.com](https://agents.bananacrystal.com)
+- Sandbox keys start with `bc_test_`, live keys have no prefix
+
+### "Rate limit exceeded"
+
+- Wait for the retry-after period shown in the error
+- Contact support to increase your limits
+
+### MCP server not showing in Claude
+
+1. Verify the JSON config is valid (use a JSON validator)
+2. Quit Claude Desktop completely (not just close the window)
+3. Reopen Claude Desktop
+4. Check Claude's MCP logs: **Help → Enable MCP Logging**
+
+### "Insufficient balance" in sandbox
+
+- Use the `reset_sandbox_balance` tool to restore default balances
+- Or ask Claude: "Reset my BananaCrystal sandbox balance"
+
+### Connection errors
+
+- Check your internet connection
+- Verify the API key is set correctly
+- Try `DEBUG=true` to see detailed logs
+
+---
+
+## For Contributors: Local Development
+
+### Setup
+
+```bash
+git clone https://github.com/bananacrystal/mcp-server.git
+cd mcp-server
+npm install
+```
+
+### Run with Mock Server (no API key needed)
+
+```bash
+# Terminal 1 — start mock server
+npm run mock
+
+# Terminal 2 — configure Claude to use mock
+```
+
+Add to Claude Desktop config:
+
+```json
+{
+  "mcpServers": {
+    "bananacrystal": {
+      "command": "node",
+      "args": ["dist/index.js"],
       "env": {
         "BANANACRYSTAL_API_KEY": "test_key",
         "BANANACRYSTAL_API_URL": "http://localhost:3000"
@@ -618,206 +588,83 @@ npx @modelcontextprotocol/inspector node dist/index.js
 }
 ```
 
-<br/>
+### Build
+
+```bash
+npm run build
+```
+
+### Test with MCP Inspector
+
+```bash
+npm run build
+npx @modelcontextprotocol/inspector node dist/index.js
+```
+
+Set `BANANACRYSTAL_API_KEY` to your sandbox key in the inspector environment.
 
 ---
 
-## Troubleshooting
+## FAQ
 
-<details>
-<summary><b>"API key invalid"</b></summary>
+**Q: Do I need to know blockchain to use this?**
+No. You interact through natural language with your AI agent. BananaCrystal handles all the blockchain complexity.
 
-- Key must start with `bc_`
-- Verify key is active at [agents.bananacrystal.com](https://agents.bananacrystal.com) → API Keys
-- Check the key has the required scope for the tool being called (`transfer` scope for `transfer_tokens`, `swap` scope for `swap_currency`)
-- Check for whitespace or truncation in the environment variable
+**Q: What is a stablecoin?**
+A stablecoin is a digital currency pegged to a real-world currency. USDb is always worth 1 USD. NGNb is always worth 1 Nigerian Naira. They live on Hedera blockchain for fast, cheap transfers.
 
-</details>
+**Q: Is this safe to use with real money?**
+Yes. All transactions require OTP verification by default. Agent-to-agent transactions require email approval. Spend limits are enforced server-side. Start with sandbox to test before going live.
 
-<details>
-<summary><b>"Spending limit exceeded"</b></summary>
+**Q: Can I disable OTP for automated workflows?**
+Yes. You can disable OTP per API key for fully autonomous transfer flows. Use `update_my_agent_settings` with `require_otp: false`. Only do this for trusted, controlled environments.
 
-This is working as designed — limits are enforced at infrastructure level and cannot be bypassed.
+**Q: What happens if my agent makes a mistake?**
+Transfers require OTP confirmation by default — your agent can't send money without you confirming. For agent-to-agent transactions, you receive an email to approve or reject. Approval links never expire.
 
-To increase limits: [agents.bananacrystal.com](https://agents.bananacrystal.com) → API Keys → Edit → adjust daily cap or per-transaction maximum.
+**Q: How do I add funds to my account?**
+Use the `initiate_deposit` tool (requires KYC verification) or transfer tokens from another BananaCrystal account.
 
-If you are building a production agent, set limits conservatively first and increase after observing real usage patterns.
+**Q: What's the difference between sandbox and live?**
+Sandbox uses fake money — perfect for testing. Live uses real money. You can switch by changing your API key. No code changes needed.
 
-</details>
+**Q: Which AI frameworks are supported?**
+Any framework that supports MCP (Model Context Protocol): Claude Desktop, Cursor, Windsurf, LangChain (via `langchain-mcp-adapters`), CrewAI (via `crewai-tools`), AutoGPT, and more.
 
-<details>
-<summary><b>MCP server not appearing in Claude / Cursor</b></summary>
+**Q: Are there transaction limits?**
+Default limits: $10,000 per transaction, $50,000 per day, $500,000 per month. Contact support to increase limits.
 
-1. Validate config file is valid JSON at [jsonlint.com](https://jsonlint.com)
-2. Confirm file is at the correct path for your OS
-3. Restart the application completely (full quit, not just reload)
-4. Check the application's MCP logs for the exact error message
-
-</details>
-
-<details>
-<summary><b>OTP not received</b></summary>
-
-- Check spam/junk folder for email from BananaCrystal
-- OTP expires in 10 minutes — request a fresh one if needed
-- Verify your registered email at [agents.bananacrystal.com](https://agents.bananacrystal.com)
-
-</details>
-
-<details>
-<summary><b>"Rate limit exceeded"</b></summary>
-
-- Implement exponential backoff in your agent retry logic
-- The error response includes a `retry_after` field in seconds — respect it
-- For high-volume production agents, contact support to increase rate limits
-
-</details>
-
-<br/>
+**Q: How fast are transactions?**
+Hedera finalizes transactions in 3-5 seconds. Swaps are instant. Fiat deposits/withdrawals depend on the rail (ACH: 1-3 days, wire: same day).
 
 ---
 
 ## Contributing
 
-**We are building the financial infrastructure of the agent economy. This is early. Your contributions shape the category.**
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-```bash
-git clone https://github.com/BananaCrystal/mcp-server-package.git
-cd mcp-server-package
-npm install
-npm run mock   # develop against mock — no API key needed
-npm run dev
-```
+**Good first issues:**
 
-### What to work on
-
-The highest-impact contributions right now:
-
-| Area | What we need | Impact |
-|------|-------------|--------|
-| **Framework guides** | Eliza, Dify, n8n, Zapier AI integration examples | Expands reach to new developer communities |
-| **Language SDKs** | Python wrapper (`pip install bananacrystal`), Go client | Makes the package accessible to non-JS developers |
-| **Agent workflow examples** | Refund bots, treasury agents, payroll orchestrators | Developers copy real-world patterns directly |
-| **Test coverage** | Unit and integration tests against mock server | Makes every PR reviewable with confidence |
-| **Documentation** | Edge cases, error handling, advanced patterns | Reduces support burden, accelerates adoption |
-| **Platform integrations** | OpenWebUI, LibreChat, Continue.dev MCP configs | Puts BananaCrystal in front of new developer audiences |
-
-### How to contribute
-
-1. Check [open issues](https://github.com/BananaCrystal/mcp-server-package/issues) for `good first issue` labels
-2. Fork the repo and create a branch: `git checkout -b feature/your-contribution`
-3. Make your changes against the mock server (no API key needed)
-4. Submit a PR with a clear description of what you built and why
-5. We review within 48 hours
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full guide and [GETTING_STARTED.md](./GETTING_STARTED.md) for a developer walkthrough.
-
-### Recognition
-
-All contributors are credited in the changelog. Significant contributions (new framework integrations, language SDKs, major examples) are highlighted in release notes and on [bananacrystal.com](https://bananacrystal.com).
-
-**If you build something interesting with this MCP server, open an issue tagged `showcase` and we will feature it.**
-
-<br/>
+- Add integration examples for new frameworks
+- Improve error messages
+- Add more usage examples to README
+- Improve TypeScript types
 
 ---
 
-## Star, share, and spread the category
+## Support & Links
 
-If BananaCrystal has been useful:
-
-**Star the repo** — it helps other developers find agent payment infrastructure when they need it.  
-[Star on GitHub](https://github.com/BananaCrystal/mcp-server-package/stargazers)
-
-**Share it** — post in your AI agent community, Discord, or newsletter. The agent economy needs infrastructure. Developers building agents need to know this exists.
-
-**Open an issue** — if something doesn't work, if you need a framework that isn't supported, or if you have ideas. Every issue makes the project more useful for everyone.
-
-<br/>
+- **Documentation:** [agents.bananacrystal.com/docs](https://agents.bananacrystal.com/docs)
+- **Sign up:** [agents.bananacrystal.com](https://agents.bananacrystal.com)
+- **Issues:** [GitHub Issues](https://github.com/bananacrystal/mcp-server/issues)
+- **Email:** support@bananacrystal.com
 
 ---
 
-## Links
+## License
 
-| | |
-|---|---|
-| **Get API key** | [agents.bananacrystal.com](https://agents.bananacrystal.com) |
-| **Platform** | [bananacrystal.com](https://www.bananacrystal.com) |
-| **Documentation** | [Documentation](https://agent.bananacrystal.com/docs) |
-| **Website** | [bananacrystal.com](https://www.bananacrystal.com) |
-| **npm** | [@bananacrystal/mcp-server](https://www.npmjs.com/package/@bananacrystal/mcp-server) |
-| **MCP Protocol** | [modelcontextprotocol.io](https://modelcontextprotocol.io) |
-| **Hedera** | [hedera.com](https://hedera.com) |
-| **Issues** | [GitHub Issues](https://github.com/BananaCrystal/mcp-server-package/issues) |
-| **Support** | support@bananacrystal.com |
-
-<br/>
+MIT — see [LICENSE](LICENSE) for details.
 
 ---
 
-<div align="center">
-
-**MIT licensed · Built by [BananaCrystal](https://bananacrystal.com)**
-
-*Agent Payment Infrastructure · Autonomous Payments · AI-Native Finance*
-
-[Get started free](https://agents.bananacrystal.com) · [Read the docs](https://docs.bananacrystal.com) · [Star this repo](https://github.com/BananaCrystal/mcp-server-package/stargazers)
-
-</div>
-
-<!--
-SCHEMA MARKUP — for AI engine indexing and GEO/AEO optimisation
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "SoftwareApplication",
-      "name": "BananaCrystal MCP Server",
-      "applicationCategory": "FinancialApplication",
-      "operatingSystem": "Node.js",
-      "description": "Agent payment infrastructure MCP server. Gives AI agents autonomous payment capability — stablecoin transfers, currency swaps, agent wallets, and fiat operations on Hedera blockchain. Works with Claude, LangChain, CrewAI, AutoGPT.",
-      "featureList": "get_balances, get_exchange_rate, transfer_tokens, swap_currency, get_transaction_history, get_my_limits, request_agent_transaction, execute_approved_transaction",
-      "offers": {
-        "@type": "Offer",
-        "price": "0.001",
-        "priceCurrency": "USD",
-        "description": "Per transaction after 1,000 free per month"
-      },
-      "provider": {
-        "@type": "Organization",
-        "name": "BananaCrystal",
-        "url": "https://bananacrystal.com"
-      }
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is agent payment infrastructure?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Agent payment infrastructure is financial technology designed from first principles for AI agents as the primary economic actor — providing agent wallets, autonomous payment authorization, machine-speed settlement, and machine-readable audit trails. BananaCrystal provides this through a single MCP endpoint."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do AI agents make autonomous payments?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "AI agents make autonomous payments through BananaCrystal's MCP server. The agent calls payment tools (transfer_tokens, swap_currency) within operator-defined spending limits. Transactions settle on Hedera blockchain in under 5 seconds at $0.001 average fee. No human approval is required per transaction — the operator sets policy once and the agent operates within it autonomously."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is an agent wallet?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "An agent wallet is a non-custodial financial account owned and operated by an AI agent. Its identity derives from a programmatic agent ID — not human KYC or government documents. The wallet holds a real stablecoin balance, has an on-chain Hedera address, and can send and receive value autonomously within operator-configured spending limits."
-          }
-        }
-      ]
-    }
-  ]
-}
--->
+_Built by the BananaCrystal team. Powering the agent economy._

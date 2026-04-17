@@ -1,25 +1,67 @@
 # Getting Started with BananaCrystal MCP Server
 
-## 🚀 Quick Setup (5 minutes)
+## What is This?
 
-### 1. Install the Package
+This package connects AI agents (Claude, LangChain, CrewAI, etc.) to BananaCrystal's payment infrastructure. Your agent can check balances, transfer stablecoins, swap currencies, and manage payments — all through natural language.
+
+## Prerequisites
+
+- Node.js 20+
+- Claude Desktop, Cursor, or any MCP-compatible AI client
+- A BananaCrystal account ([agents.bananacrystal.com](https://agents.bananacrystal.com))
+
+---
+
+## Step 1: Install
 
 ```bash
 npm install -g @bananacrystal/mcp-server
 ```
 
-### 2. Get Your API Key
+Verify:
 
-1. Visit [agents.bananacrystal.com](https://agents.bananacrystal.com)
+```bash
+bananacrystal-mcp --version
+```
+
+---
+
+## Step 2: Create Your API Key
+
+### Start with Sandbox (Recommended)
+
+Sandbox gives you fake money to test with — no risk, no real transactions.
+
+1. Go to [agents.bananacrystal.com](https://agents.bananacrystal.com)
 2. Sign up or log in
-3. Go to **Account** → **API Keys**
-4. Click **Create New Key**
-5. Copy your key (starts with `bc_`)
+3. Navigate to **Account → API Keys**
+4. Click **Create Sandbox Key**
+5. Copy the key (starts with `bc_test_`)
 
-### 3. Configure Claude Desktop
+Your sandbox account starts with:
 
-**macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`  
-**Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+- **10,000 USDb** (US Dollar stablecoin)
+- **5,000,000 NGNb** (Nigerian Naira stablecoin)
+- **50,000 GHSb** (Ghanaian Cedi stablecoin)
+- **1,000,000 KESb** (Kenyan Shilling stablecoin)
+- **150,000 ZARb** (South African Rand stablecoin)
+
+### Create a Live Key (When Ready)
+
+Same process — click **Create Live Key** instead. Live keys have no `bc_test_` prefix.
+
+---
+
+## Step 3: Configure Your AI Client
+
+### Claude Desktop
+
+Edit the config file:
+
+- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+
+**Sandbox:**
 
 ```json
 {
@@ -27,186 +69,146 @@ npm install -g @bananacrystal/mcp-server
     "bananacrystal": {
       "command": "bananacrystal-mcp",
       "env": {
-        "BANANACRYSTAL_API_KEY": "bc_live_your_key_here"
+        "BANANACRYSTAL_API_KEY": "bc_test_your_sandbox_key_here"
       }
     }
   }
 }
 ```
 
-**⚠️ Note:** This connects to production with real money. Start with small amounts to test!
+**Live:**
 
-### 4. Restart Claude Desktop
+```json
+{
+  "mcpServers": {
+    "bananacrystal": {
+      "command": "bananacrystal-mcp",
+      "env": {
+        "BANANACRYSTAL_API_KEY": "your_live_key_here"
+      }
+    }
+  }
+}
+```
 
-Quit and reopen Claude Desktop completely.
+> The package automatically routes to the correct endpoint based on your key prefix. No URL configuration needed.
 
-### 5. Test It!
+### Cursor / Windsurf
 
-Try these commands in Claude:
+Same JSON format — check your editor's MCP configuration docs for the file location.
+
+### LangChain
+
+```python
+from langchain_mcp_adapters.client import MultiServerMCPClient
+
+async with MultiServerMCPClient({
+    "bananacrystal": {
+        "command": "bananacrystal-mcp",
+        "env": {"BANANACRYSTAL_API_KEY": "bc_test_your_key"},
+        "transport": "stdio",
+    }
+}) as client:
+    tools = client.get_tools()
+```
+
+### CrewAI
+
+```python
+from crewai_tools import MCPServerAdapter
+
+mcp = MCPServerAdapter({
+    "command": "bananacrystal-mcp",
+    "env": {"BANANACRYSTAL_API_KEY": "bc_test_your_key"},
+})
+tools = mcp.tools
+```
+
+---
+
+## Step 4: Restart and Test
+
+Restart your AI client completely, then try:
 
 ```
 Check my BananaCrystal balance
 ```
 
-```
-Show my recent BananaCrystal transactions
-```
+Expected response:
 
 ```
-What tokens are supported on BananaCrystal?
+You have:
+• 10,000.00 USDb
+• 5,000,000.00 NGNb
+• 50,000.00 GHSb
+...
 ```
 
 ---
 
-## 🧪 For Developers: Testing Without Production
-
-If you're contributing to the package, use the **mock server**:
-
-### 1. Clone and Setup
-
-```bash
-git clone https://github.com/bananacrystal/mcp-server.git
-cd mcp-server
-npm install
-```
-
-### 2. Start Mock Server
-
-```bash
-npm run mock
-```
-
-You'll see:
-
-```
-🚀 Mock API Server running on http://localhost:3000
-```
-
-### 3. Configure Claude for Mock
-
-```json
-{
-  "mcpServers": {
-    "bananacrystal": {
-      "command": "bananacrystal-mcp",
-      "env": {
-        "BANANACRYSTAL_API_KEY": "test_key",
-        "BANANACRYSTAL_API_URL": "http://localhost:3000"
-      }
-    }
-  }
-}
-```
-
-### 4. Test with Fake Data
-
-Now all API calls go to your local mock server with fake responses. Perfect for development!
-
----
-
-## 📍 Important URLs
-
-| Purpose             | URL                                                          |
-| ------------------- | ------------------------------------------------------------ |
-| **Sign Up / Login** | [agents.bananacrystal.com](https://agents.bananacrystal.com) |
-| **Production API**  | `https://agentic.bananacrystal.com/mcp` (default)            |
-| **Mock Server**     | `http://localhost:3000` (for developers)                     |
-| **Documentation**   | [GitHub README](README.md)                                   |
-
----
-
-## 🎯 What You Can Do
-
-### 💰 Balance & Account
-
-- Check balances for all tokens
-- View specific token balances
-- Get your profile information
-
-### 💸 Transfers
-
-- Transfer tokens to Hedera accounts
-- Transfer by email or username
-- OTP verification for security
-
-### 🔄 Swaps
-
-- Swap between any supported tokens
-- Get exchange rates
-- Estimate fees before swapping
-
-### 📊 History & Info
-
-- View transaction history
-- Filter by type and direction
-- Check API limits and usage
-
-### 🤖 Agent-to-Agent
-
-- Request transactions from other users
-- Email approval workflow
-- Secure execution
-
----
-
-## 💡 Example Conversations
-
-### Check Balance
-
-**You:** "What's my USDC balance on BananaCrystal?"  
-**Claude:** "You have 1,250.00 USDC"
+## Step 5: Explore the Tools
 
 ### Transfer Tokens
 
-**You:** "Send 100 USDC to alice@example.com on BananaCrystal"  
-**Claude:** "I'll request an OTP code..."  
-_(You receive email, provide code, transfer completes)_
+```
+Transfer 100 USDb to alice@example.com on BananaCrystal
+```
 
-### Swap Currency
+In sandbox: the OTP code is returned directly in the response.
+In live: you receive an email with the OTP code.
 
-**You:** "Swap 50 USD to NGN on BananaCrystal"  
-**Claude:** "Done! You swapped 50 USD for 41,250 NGN"
+### Swap Currencies
 
-### View History
+```
+Swap 50 USDb to NGNb on BananaCrystal
+```
 
-**You:** "Show my last 5 BananaCrystal transactions"  
-**Claude:** _(Lists your recent transactions)_
+### Check Exchange Rate
 
----
+```
+What's the current USD to NGN rate on BananaCrystal?
+```
 
-## 🔧 Troubleshooting
+### View Transaction History
 
-### API Key Issues
+```
+Show my last 10 BananaCrystal transactions
+```
 
-- ✅ Key starts with `bc_`
-- ✅ No extra spaces in config
-- ✅ Key not revoked at [agents.bananacrystal.com](https://agents.bananacrystal.com)
+### Reset Sandbox Balance (Sandbox Only)
 
-### MCP Server Not Showing
-
-- ✅ Valid JSON in config file
-- ✅ Claude Desktop fully restarted
-- ✅ Check Claude's logs
-
-### Connection Errors
-
-- ✅ Internet connection working
-- ✅ API URL correct (or use default)
-- ✅ Try mock server for development
+```
+Reset my BananaCrystal sandbox balance
+```
 
 ---
 
-## 📚 Next Steps
+## Sandbox vs Live Reference
 
-1. **Read Full Docs:** [README.md](README.md)
-2. **Quick Start Guide:** [QUICKSTART.md](QUICKSTART.md)
-3. **Contributing:** [CONTRIBUTING.md](CONTRIBUTING.md)
-4. **Get Help:** support@bananacrystal.com
+| Feature       | Sandbox         | Live              |
+| ------------- | --------------- | ----------------- |
+| Key prefix    | `bc_test_...`   | No prefix         |
+| Money         | Fake            | Real              |
+| OTP delivery  | In API response | Email             |
+| KYC           | Always approved | Required for fiat |
+| Spend limits  | Unlimited       | Enforced          |
+| Balance reset | Available       | N/A               |
 
 ---
 
-## 🎉 You're Ready!
+## Important URLs
 
-Start using BananaCrystal with Claude naturally. Just talk to Claude about what you want to do, and it will use the MCP server to interact with BananaCrystal for you.
+| Purpose              | URL                                                                    |
+| -------------------- | ---------------------------------------------------------------------- |
+| Sign up / Dashboard  | [agents.bananacrystal.com](https://agents.bananacrystal.com)           |
+| Documentation        | [agents.bananacrystal.com/docs](https://agents.bananacrystal.com/docs) |
+| Live MCP endpoint    | `https://agentic.bananacrystal.com/mcp`                                |
+| Sandbox MCP endpoint | `https://agentic.bananacrystal.com/mcp/sandbox`                        |
 
-**Happy building!** 🚀
+---
+
+## Next Steps
+
+- Read the full [README](README.md) for all 40 tools
+- See [CONTRIBUTING.md](CONTRIBUTING.md) to contribute
+- Check [agents.bananacrystal.com/docs](https://agents.bananacrystal.com/docs) for API documentation

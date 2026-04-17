@@ -1,6 +1,11 @@
 /**
- * HTTP client for BananaCrystal API
- * Makes requests to the hosted BananaCrystal backend
+ * HTTP client for BananaCrystal MCP Server
+ *
+ * Forwards tool calls to the hosted BananaCrystal MCP endpoint
+ * using the MCP Streamable HTTP protocol (JSON-RPC over HTTP).
+ *
+ * Live endpoint:    https://agentic.bananacrystal.com/mcp
+ * Sandbox endpoint: https://agentic.bananacrystal.com/mcp/sandbox
  */
 
 export class BananaCrystalClient {
@@ -10,115 +15,155 @@ export class BananaCrystalClient {
     private readonly debug: boolean = false,
   ) {}
 
-  private async request<T>(
-    endpoint: string,
-    options: RequestInit = {},
-  ): Promise<T> {
-    const url = `${this.apiUrl}${endpoint}`;
-
+  /**
+   * Call a tool on the hosted MCP server.
+   * Sends a JSON-RPC tools/call request and returns the parsed result.
+   */
+  async callTool(
+    toolName: string,
+    args: Record<string, unknown> = {},
+  ): Promise<unknown> {
     if (this.debug) {
-      console.error(`[API] ${options.method || 'GET'} ${endpoint}`);
+      console.error(`[BananaCrystal MCP] → ${toolName}`, JSON.stringify(args));
     }
 
-    const response = await fetch(url, {
-      ...options,
+    const body = JSON.stringify({
+      jsonrpc: '2.0',
+      id: Date.now(),
+      method: 'tools/call',
+      params: { name: toolName, arguments: args },
+    });
+
+    const response = await fetch(this.apiUrl, {
+      method: 'POST',
       headers: {
-        'x-api-key': this.apiKey,
         'Content-Type': 'application/json',
-        ...options.headers,
+        Accept: 'application/json, text/event-stream',
+        'x-api-key': this.apiKey,
       },
+      body,
     });
 
     if (!response.ok) {
       const errorText = await response.text();
       let errorMessage: string;
-
       try {
         const errorJson = JSON.parse(errorText);
         errorMessage = errorJson.message || errorJson.error || errorText;
       } catch {
         errorMessage = errorText || response.statusText;
       }
-
       throw new Error(
         `BananaCrystal API error (${response.status}): ${errorMessage}`,
       );
     }
 
-    return response.json();
+    const contentType = response.headers.get('content-type') || '';
+
+    // Handle SSE (text/event-stream) response
+    if (contentType.includes('text/event-stream')) {
+      const text = await response.text();
+      // Extract the data line from SSE
+      const dataLine = text
+        .split('\n')
+        .find((line) => line.startsWith('data: '));
+      if (!dataLine)
+        throw new Error('Empty SSE response from BananaCrystal MCP');
+      const json = JSON.parse(dataLine.slice(6));
+      return this.extractContent(json);
+    }
+
+    // Handle plain JSON response
+    const json = await response.json();
+    return this.extractContent(json);
   }
 
-  // Profile & Identity
-  async getMyProfile() {
-    return this.request('/api/v1/mcp/profile', { method: 'GET' });
+  /**
+   * Extract the text content from an MCP tool response.
+   * Returns parsed JSON if the content is valid JSON, otherwise returns the raw string.
+   */
+  private extractContent(json: any): unknown {
+    if (json.error) {
+      throw new Error(json.error.message || JSON.stringify(json.error));
+    }
+    const content = json.result?.content;
+    if (!Array.isArray(content) || content.length === 0) {
+      return json.result ?? json;
+    }
+    const text = content[0]?.text;
+    if (typeof text !== 'string') return content;
+    try {
+      return JSON.parse(text);
+    } catch {
+      return text;
+    }
   }
 
-  // Utility & Health
+  // ── Utility ────────────────────────────────────────────────────────────────
+
   async ping() {
-    return this.request('/api/v1/mcp/ping', { method: 'GET' });
+    return this.callTool('ping');
   }
-
   async getServerInfo() {
-    return this.request('/api/v1/mcp/server-info', { method: 'GET' });
+    return this.callTool('get_server_info');
   }
-
   async echo(message: string) {
-    return this.request('/api/v1/mcp/echo', {
-      method: 'POST',
-      body: JSON.stringify({ message }),
-    });
+    return this.callTool('echo', { message });
   }
 
-  // Balances
-  async getBalances(params?: { accountId?: string; tokenId?: string }) {
-    const query = new URLSearchParams();
-    if (params?.accountId) query.set('accountId', params.accountId);
-    if (params?.tokenId) query.set('tokenId', params.tokenId);
+  // ── Profile ────────────────────────────────────────────────────────────────
 
-    const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/balances${queryString ? `?${queryString}` : ''}`;
-
-    return this.request(endpoint, { method: 'GET' });
+  async getMyProfile() {
+    return this.callTool('get_my_profile');
   }
 
-  // Transfers
-  async requestTransferOtp(params: {
-    tokenId: string;
-    recipientAccountId: string;
-    amount: string;
-    tokenSymbol?: string;
+  // ── Balances ───────────────────────────────────────────────────────────────
+
+  async getBalances(params?: {
+    accountId?: string;
+    tokenId?: string;
+    chainId?: number;
   }) {
-    return this.request('/api/v1/mcp/transfer/request-otp', {
-      method: 'POST',
-      body: JSON.stringify(params),
-    });
+    return this.callTool('get_balances', params ?? {});
+  }
+
+  // ── Transfers ──────────────────────────────────────────────────────────────
+
+  async requestTransferOtp(params: {
+    token_id: string;
+    recipient_account_id: string;
+    amount: string;
+    token_symbol?: string;
+    user_id?: string;
+    wallet_id?: string;
+  }) {
+    return this.callTool('request_transfer_otp', params);
   }
 
   async transferTokens(params: {
-    tokenId: string;
-    recipientAccountId: string;
+    token_id: string;
+    recipient_account_id: string;
     amount: string;
-    otpCode: string;
-    transactionRef: string;
-    tokenSymbol?: string;
+    otp_code?: string;
+    transaction_ref?: string;
+    token_symbol?: string;
+    user_id?: string;
+    wallet_id?: string;
   }) {
-    return this.request('/api/v1/mcp/transfer', {
-      method: 'POST',
-      body: JSON.stringify(params),
-    });
+    return this.callTool('transfer_tokens', params);
   }
 
-  // Swaps
+  // ── Swaps ──────────────────────────────────────────────────────────────────
+
   async swapCurrency(params: {
-    fromTokenId: string;
-    fromAmount: string;
-    toTokenId: string;
+    user_id: string;
+    from_token_id: string;
+    from_amount: string;
+    to_token_id: string;
+    wallet_id?: string;
     memo?: string;
   }) {
-    return this.request('/api/v1/mcp/swap', {
-      method: 'POST',
-      body: JSON.stringify(params),
-    });
+    return this.callTool('swap_currency', params);
   }
 
   async estimateSwapFees(params: {
@@ -126,301 +171,183 @@ export class BananaCrystalClient {
     toCurrency: string;
     amount: number;
   }) {
-    return this.request('/api/v1/mcp/swap/estimate-fees', {
-      method: 'POST',
-      body: JSON.stringify(params),
-    });
+    return this.callTool('estimate_swap_fees', params);
   }
 
-  // Exchange Rates
+  // ── Exchange Rates & Info ──────────────────────────────────────────────────
+
   async getExchangeRate(currency: string) {
-    return this.request(`/api/v1/mcp/exchange-rate/${currency}`, {
-      method: 'GET',
-    });
+    return this.callTool('get_exchange_rate', { currency });
   }
 
-  // Tokens & Currencies
   async listSupportedCurrencies() {
-    return this.request('/api/v1/mcp/currencies', { method: 'GET' });
+    return this.callTool('list_supported_currencies');
   }
-
   async listAvailableTokens() {
-    return this.request('/api/v1/mcp/tokens', { method: 'GET' });
+    return this.callTool('list_available_tokens');
   }
 
-  // Transaction History
+  // ── Transaction History ────────────────────────────────────────────────────
+
   async getTransactionHistory(params?: {
+    userExtId?: string;
     limit?: number;
     page?: number;
     type?: string;
     direction?: string;
   }) {
-    const query = new URLSearchParams();
-    if (params?.limit) query.set('limit', params.limit.toString());
-    if (params?.page) query.set('page', params.page.toString());
-    if (params?.type) query.set('type', params.type);
-    if (params?.direction) query.set('direction', params.direction);
-
-    const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/transactions${queryString ? `?${queryString}` : ''}`;
-
-    return this.request(endpoint, { method: 'GET' });
+    return this.callTool('get_transaction_history', params ?? {});
   }
 
-  // Limits & Settings
+  // ── Limits & Settings ─────────────────────────────────────────────────────
+
   async getMyLimits() {
-    return this.request('/api/v1/mcp/limits', { method: 'GET' });
+    return this.callTool('get_my_limits');
   }
 
   async updateMyAgentSettings(params: {
-    requireHumanApproval?: boolean;
-    callbackUrl?: string | null;
+    require_human_approval?: boolean;
+    require_otp?: boolean;
+    callback_url?: string | null;
   }) {
-    return this.request('/api/v1/mcp/agent-settings', {
-      method: 'PATCH',
-      body: JSON.stringify(params),
-    });
+    return this.callTool('update_my_agent_settings', params);
   }
 
-  // Agent-to-Agent Approvals
-  async requestAgentTransaction(params: {
-    targetOwnerUserExtId: string;
-    transactionType: string;
-    amount: number;
-    currency: string;
-    transactionParams: Record<string, unknown>;
-    reason?: string;
-    requesterName?: string;
-  }) {
-    return this.request('/api/v1/mcp/agent/request-transaction', {
-      method: 'POST',
-      body: JSON.stringify(params),
-    });
+  // ── KYC ───────────────────────────────────────────────────────────────────
+
+  async initiateKyc(params?: { user_id?: string; ttl_in_secs?: number }) {
+    return this.callTool('initiate_kyc', params ?? {});
   }
 
-  async checkApprovalStatus(approvalRequestId: string) {
-    return this.request(`/api/v1/mcp/agent/approval/${approvalRequestId}`, {
-      method: 'GET',
-    });
+  async getKycStatus(params?: { user_id?: string }) {
+    return this.callTool('get_kyc_status', params ?? {});
   }
 
-  async executeApprovedTransaction(params: {
-    approvalRequestId: string;
-    executionToken: string;
-  }) {
-    return this.request('/api/v1/mcp/agent/execute', {
-      method: 'POST',
-      body: JSON.stringify(params),
-    });
-  }
+  // ── Fiat Operations ───────────────────────────────────────────────────────
 
-  async getAgentConfig(targetOwnerUserExtId: string) {
-    return this.request(`/api/v1/mcp/agent/config/${targetOwnerUserExtId}`, {
-      method: 'GET',
-    });
-  }
-
-  // KYC (if needed)
-  async initiateKyc(params?: { userId?: string; ttlInSecs?: number }) {
-    return this.request('/api/v1/mcp/kyc/initiate', {
-      method: 'POST',
-      body: JSON.stringify(params || {}),
-    });
-  }
-
-  async getKycStatus(params?: { userId?: string }) {
-    const query = new URLSearchParams();
-    if (params?.userId) query.set('userId', params.userId);
-
-    const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/kyc/status${queryString ? `?${queryString}` : ''}`;
-
-    return this.request(endpoint, { method: 'GET' });
-  }
-
-  // Fiat Operations (Brale)
   async initiateDeposit(params: {
-    userId?: string;
     amount: number;
     currency: string;
-    accountId?: string;
-    railType?: string;
+    user_id?: string;
+    account_id?: string;
+    rail_type?: string;
   }) {
-    return this.request('/api/v1/mcp/brale/deposit', {
-      method: 'POST',
-      body: JSON.stringify(params),
-    });
+    return this.callTool('initiate_deposit', params);
   }
 
   async requestWithdrawal(params: {
-    userId?: string;
     amount: number;
     currency: string;
-    destinationAccount?: string;
-    railType?: string;
+    user_id?: string;
+    destination_account?: string;
+    rail_type?: string;
   }) {
-    return this.request('/api/v1/mcp/brale/withdrawal', {
-      method: 'POST',
-      body: JSON.stringify(params),
-    });
+    return this.callTool('request_withdrawal', params);
   }
 
-  async getDepositStatus(params: { transferId: string; userId?: string }) {
-    const query = new URLSearchParams();
-    if (params.userId) query.set('userId', params.userId);
-
-    const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/brale/deposit/${params.transferId}${queryString ? `?${queryString}` : ''}`;
-
-    return this.request(endpoint, { method: 'GET' });
+  async getDepositStatus(params: { transfer_id: string; user_id?: string }) {
+    return this.callTool('get_deposit_status', params);
   }
 
-  async getWithdrawalStatus(params?: { userId?: string }) {
-    const query = new URLSearchParams();
-    if (params?.userId) query.set('userId', params.userId);
-
-    const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/brale/withdrawal/status${queryString ? `?${queryString}` : ''}`;
-
-    return this.request(endpoint, { method: 'GET' });
+  async getWithdrawalStatus(params?: { user_id?: string }) {
+    return this.callTool('get_withdrawal_status', params ?? {});
   }
 
-  // Offers & Trades (prediction market)
+  // ── Offers & Trades ───────────────────────────────────────────────────────
+
   async listOffers(params?: {
     currency?: string;
-    offerType?: string;
+    offer_type?: string;
     search?: string;
-    sortBy?: string;
+    sort_by?: string;
     limit?: number;
     page?: number;
   }) {
-    const query = new URLSearchParams();
-    if (params?.currency) query.set('currency', params.currency);
-    if (params?.offerType) query.set('offerType', params.offerType);
-    if (params?.search) query.set('search', params.search);
-    if (params?.sortBy) query.set('sortBy', params.sortBy);
-    if (params?.limit) query.set('limit', params.limit.toString());
-    if (params?.page) query.set('page', params.page.toString());
-
-    const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/offers${queryString ? `?${queryString}` : ''}`;
-
-    return this.request(endpoint, { method: 'GET' });
+    return this.callTool('list_offers', params ?? {});
   }
 
-  async getOffer(offerId: string) {
-    return this.request(`/api/v1/mcp/offers/${offerId}`, { method: 'GET' });
+  async getOffer(offer_id: string) {
+    return this.callTool('get_offer', { offer_id });
   }
 
-  async getMyOffers(params?: { userId?: string; offerType?: string }) {
-    const query = new URLSearchParams();
-    if (params?.userId) query.set('userId', params.userId);
-    if (params?.offerType) query.set('offerType', params.offerType);
-
-    const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/offers/my${queryString ? `?${queryString}` : ''}`;
-
-    return this.request(endpoint, { method: 'GET' });
+  async getMyOffers(params?: { user_id?: string; offer_type?: string }) {
+    return this.callTool('get_my_offers', params ?? {});
   }
 
   async createOffer(params: Record<string, unknown>) {
-    return this.request('/api/v1/mcp/offers', {
-      method: 'POST',
-      body: JSON.stringify(params),
-    });
+    return this.callTool('create_offer', params);
   }
 
-  async updateOffer(params: {
-    offerId: string;
-    userId?: string;
-    exchangeRate?: string;
-    isActive?: boolean;
-    advertiser?: string;
-    durationHours?: number;
-  }) {
-    const { offerId, ...body } = params;
-    return this.request(`/api/v1/mcp/offers/${offerId}`, {
-      method: 'PATCH',
-      body: JSON.stringify(body),
-    });
+  async updateOffer(params: { offer_id: string; [key: string]: unknown }) {
+    return this.callTool('update_offer', params);
   }
 
-  async delistOffer(params: { offerId: string; userId?: string }) {
-    return this.request(`/api/v1/mcp/offers/${params.offerId}/delist`, {
-      method: 'POST',
-      body: JSON.stringify({ userId: params.userId }),
-    });
+  async delistOffer(params: { offer_id: string; user_id?: string }) {
+    return this.callTool('delist_offer', params);
   }
 
-  async deleteOffer(params: { offerId: string; userId?: string }) {
-    return this.request(`/api/v1/mcp/offers/${params.offerId}`, {
-      method: 'DELETE',
-      body: JSON.stringify({ userId: params.userId }),
-    });
+  async deleteOffer(params: { offer_id: string; user_id?: string }) {
+    return this.callTool('delete_offer', params);
   }
 
-  async listTrades(params?: { tradeType?: string; state?: string }) {
-    const query = new URLSearchParams();
-    if (params?.tradeType) query.set('tradeType', params.tradeType);
-    if (params?.state) query.set('state', params.state);
-
-    const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/trades${queryString ? `?${queryString}` : ''}`;
-
-    return this.request(endpoint, { method: 'GET' });
+  async listTrades(params?: { trade_type?: string; state?: string }) {
+    return this.callTool('list_trades', params ?? {});
   }
 
-  async getTrade(tradeId: string) {
-    return this.request(`/api/v1/mcp/trades/${tradeId}`, { method: 'GET' });
+  async getTrade(trade_id: string) {
+    return this.callTool('get_trade', { trade_id });
   }
 
   async getMyTrades(params?: {
-    userId?: string;
-    tradeType?: string;
+    user_id?: string;
+    trade_type?: string;
     state?: string;
   }) {
-    const query = new URLSearchParams();
-    if (params?.userId) query.set('userId', params.userId);
-    if (params?.tradeType) query.set('tradeType', params.tradeType);
-    if (params?.state) query.set('state', params.state);
-
-    const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/trades/my${queryString ? `?${queryString}` : ''}`;
-
-    return this.request(endpoint, { method: 'GET' });
+    return this.callTool('get_my_trades', params ?? {});
   }
 
   async engageOffer(params: Record<string, unknown>) {
-    return this.request('/api/v1/mcp/trades', {
-      method: 'POST',
-      body: JSON.stringify(params),
-    });
+    return this.callTool('engage_offer', params);
   }
 
-  async cancelTrade(params: { tradeId: string; userId?: string }) {
-    return this.request(`/api/v1/mcp/trades/${params.tradeId}/cancel`, {
-      method: 'POST',
-      body: JSON.stringify({ userId: params.userId }),
-    });
+  async cancelTrade(params: { trade_id: string; user_id?: string }) {
+    return this.callTool('cancel_trade', params);
   }
 
-  async getEscrowBalances(params?: { userId?: string }) {
-    const query = new URLSearchParams();
-    if (params?.userId) query.set('userId', params.userId);
-
-    const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/escrow/balances${queryString ? `?${queryString}` : ''}`;
-
-    return this.request(endpoint, { method: 'GET' });
+  async getEscrowBalances(params?: { user_id?: string }) {
+    return this.callTool('get_escrow_balances', params ?? {});
   }
 
-  async getEscrowHistory(params?: { userId?: string }) {
-    const query = new URLSearchParams();
-    if (params?.userId) query.set('userId', params.userId);
+  async getEscrowHistory(params?: { user_id?: string }) {
+    return this.callTool('get_escrow_history', params ?? {});
+  }
 
-    const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/escrow/history${queryString ? `?${queryString}` : ''}`;
+  // ── Agent-to-Agent Transactions ───────────────────────────────────────────
 
-    return this.request(endpoint, { method: 'GET' });
+  async requestAgentTransaction(params: {
+    target_owner_user_ext_id: string;
+    transaction_type: string;
+    amount: number;
+    currency: string;
+    transaction_params: Record<string, unknown>;
+    reason?: string;
+    requester_name?: string;
+  }) {
+    return this.callTool('request_agent_transaction', params);
+  }
+
+  async checkApprovalStatus(approval_request_id: string) {
+    return this.callTool('check_approval_status', { approval_request_id });
+  }
+
+  async executeApprovedTransaction(params: {
+    approval_request_id: string;
+    execution_token: string;
+  }) {
+    return this.callTool('execute_approved_transaction', params);
+  }
+
+  async getAgentConfig(target_owner_user_ext_id: string) {
+    return this.callTool('get_agent_config', { target_owner_user_ext_id });
   }
 }

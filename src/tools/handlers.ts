@@ -1,6 +1,7 @@
 /**
  * MCP tool handlers for BananaCrystal
- * These implement the actual logic by calling the API client
+ * Delegates each tool call to the BananaCrystalClient which forwards
+ * the request to the hosted MCP server at agentic.bananacrystal.com/mcp
  */
 
 import { BananaCrystalClient } from '../client.js';
@@ -12,171 +13,71 @@ export function createToolHandlers(
 ): Record<string, ToolHandler> {
   return {
     // Utility & Health
-    ping: async () => {
-      return await client.ping();
-    },
-
-    get_server_info: async () => {
-      return await client.getServerInfo();
-    },
-
-    echo: async (args) => {
-      return await client.echo(args.message);
-    },
+    ping: async () => client.ping(),
+    get_server_info: async () => client.getServerInfo(),
+    echo: async (args) => client.echo(args.message),
 
     // Profile & Identity
-    get_my_profile: async () => {
-      return await client.getMyProfile();
-    },
+    get_my_profile: async () => client.getMyProfile(),
 
     // Balances
-    get_balances: async (args) => {
-      return await client.getBalances(args);
-    },
+    get_balances: async (args) => client.getBalances(args),
 
     // Transfers
-    request_transfer_otp: async (args) => {
-      return await client.requestTransferOtp(args);
-    },
-
-    transfer_tokens: async (args) => {
-      return await client.transferTokens(args);
-    },
+    request_transfer_otp: async (args) => client.requestTransferOtp(args),
+    transfer_tokens: async (args) => client.transferTokens(args),
 
     // Swaps
-    swap_currency: async (args) => {
-      return await client.swapCurrency(args);
-    },
-
-    estimate_swap_fees: async (args) => {
-      return await client.estimateSwapFees(args);
-    },
+    swap_currency: async (args) => client.swapCurrency(args),
+    estimate_swap_fees: async (args) => client.estimateSwapFees(args),
 
     // Exchange Rates & Info
-    get_exchange_rate: async (args) => {
-      return await client.getExchangeRate(args.currency);
-    },
-
-    list_supported_currencies: async () => {
-      return await client.listSupportedCurrencies();
-    },
-
-    list_available_tokens: async () => {
-      return await client.listAvailableTokens();
-    },
+    get_exchange_rate: async (args) => client.getExchangeRate(args.currency),
+    list_supported_currencies: async () => client.listSupportedCurrencies(),
+    list_available_tokens: async () => client.listAvailableTokens(),
 
     // Transaction History
-    get_transaction_history: async (args) => {
-      return await client.getTransactionHistory(args);
-    },
+    get_transaction_history: async (args) => client.getTransactionHistory(args),
 
     // Limits & Settings
-    get_my_limits: async () => {
-      return await client.getMyLimits();
-    },
-
-    update_my_agent_settings: async (args) => {
-      return await client.updateMyAgentSettings(args);
-    },
+    get_my_limits: async () => client.getMyLimits(),
+    update_my_agent_settings: async (args) =>
+      client.updateMyAgentSettings(args),
 
     // KYC
-    initiate_kyc: async (args) => {
-      return await client.initiateKyc(args);
-    },
+    initiate_kyc: async (args) => client.initiateKyc(args),
+    get_kyc_status: async (args) => client.getKycStatus(args),
 
-    get_kyc_status: async (args) => {
-      return await client.getKycStatus(args);
-    },
+    // Fiat Operations
+    initiate_deposit: async (args) => client.initiateDeposit(args),
+    request_withdrawal: async (args) => client.requestWithdrawal(args),
+    get_deposit_status: async (args) => client.getDepositStatus(args),
+    get_withdrawal_status: async (args) => client.getWithdrawalStatus(args),
 
-    // Fiat Operations (Brale)
-    initiate_deposit: async (args) => {
-      return await client.initiateDeposit(args);
-    },
-
-    request_withdrawal: async (args) => {
-      return await client.requestWithdrawal(args);
-    },
-
-    get_deposit_status: async (args) => {
-      return await client.getDepositStatus(args);
-    },
-
-    get_withdrawal_status: async (args) => {
-      return await client.getWithdrawalStatus(args);
-    },
-
-    // Offers & Trades (Prediction Market)
-    list_offers: async (args) => {
-      return await client.listOffers(args);
-    },
-
-    get_offer: async (args) => {
-      return await client.getOffer(args.offerId);
-    },
-
-    get_my_offers: async (args) => {
-      return await client.getMyOffers(args);
-    },
-
-    create_offer: async (args) => {
-      return await client.createOffer(args);
-    },
-
-    update_offer: async (args) => {
-      return await client.updateOffer(args);
-    },
-
-    delist_offer: async (args) => {
-      return await client.delistOffer(args);
-    },
-
-    delete_offer: async (args) => {
-      return await client.deleteOffer(args);
-    },
-
-    list_trades: async (args) => {
-      return await client.listTrades(args);
-    },
-
-    get_trade: async (args) => {
-      return await client.getTrade(args.tradeId);
-    },
-
-    get_my_trades: async (args) => {
-      return await client.getMyTrades(args);
-    },
-
-    engage_offer: async (args) => {
-      return await client.engageOffer(args);
-    },
-
-    cancel_trade: async (args) => {
-      return await client.cancelTrade(args);
-    },
-
-    get_escrow_balances: async (args) => {
-      return await client.getEscrowBalances(args);
-    },
-
-    get_escrow_history: async (args) => {
-      return await client.getEscrowHistory(args);
-    },
+    // Offers & Trades
+    list_offers: async (args) => client.listOffers(args),
+    get_offer: async (args) => client.getOffer(args.offer_id),
+    get_my_offers: async (args) => client.getMyOffers(args),
+    create_offer: async (args) => client.createOffer(args),
+    update_offer: async (args) => client.updateOffer(args),
+    delist_offer: async (args) => client.delistOffer(args),
+    delete_offer: async (args) => client.deleteOffer(args),
+    list_trades: async (args) => client.listTrades(args),
+    get_trade: async (args) => client.getTrade(args.trade_id),
+    get_my_trades: async (args) => client.getMyTrades(args),
+    engage_offer: async (args) => client.engageOffer(args),
+    cancel_trade: async (args) => client.cancelTrade(args),
+    get_escrow_balances: async (args) => client.getEscrowBalances(args),
+    get_escrow_history: async (args) => client.getEscrowHistory(args),
 
     // Agent-to-Agent Transactions
-    request_agent_transaction: async (args) => {
-      return await client.requestAgentTransaction(args);
-    },
-
-    check_approval_status: async (args) => {
-      return await client.checkApprovalStatus(args.approvalRequestId);
-    },
-
-    execute_approved_transaction: async (args) => {
-      return await client.executeApprovedTransaction(args);
-    },
-
-    get_agent_config: async (args) => {
-      return await client.getAgentConfig(args.targetOwnerUserExtId);
-    },
+    request_agent_transaction: async (args) =>
+      client.requestAgentTransaction(args),
+    check_approval_status: async (args) =>
+      client.checkApprovalStatus(args.approval_request_id),
+    execute_approved_transaction: async (args) =>
+      client.executeApprovedTransaction(args),
+    get_agent_config: async (args) =>
+      client.getAgentConfig(args.target_owner_user_ext_id),
   };
 }

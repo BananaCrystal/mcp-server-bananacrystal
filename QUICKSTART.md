@@ -1,49 +1,22 @@
-# Quick Start Guide
+# BananaCrystal MCP — Quick Start
 
-Get up and running with BananaCrystal MCP Server in 5 minutes.
-
-## Step 1: Install (1 minute)
+## 1. Install
 
 ```bash
 npm install -g @bananacrystal/mcp-server
 ```
 
-Verify installation:
+## 2. Get a Sandbox Key (free, no real money)
 
-```bash
-bananacrystal-mcp --version
-```
+1. Sign up at [agents.bananacrystal.com](https://agents.bananacrystal.com)
+2. Go to **Account → API Keys**
+3. Click **Create Sandbox Key**
+4. Copy the key — it starts with `bc_test_`
 
-## Step 2: Get API Key (2 minutes)
+## 3. Add to Claude Desktop
 
-1. Go to [agents.bananacrystal.com](https://agents.bananacrystal.com)
-2. Sign up or log in
-3. Navigate to **Account** → **API Keys**
-4. Click **Create New Key**
-5. Select **MCP Server** as the key type
-6. Copy the key (it starts with `bc_`)
-
-⚠️ **Important**: Save your key securely. You won't be able to see it again!
-
-## Step 3: Configure Claude Desktop (1 minute)
-
-### macOS
-
-```bash
-# Open config file
-open ~/Library/Application\ Support/Claude/claude_desktop_config.json
-```
-
-### Windows
-
-```bash
-# Open config file
-notepad %APPDATA%\Claude\claude_desktop_config.json
-```
-
-### Add Configuration
-
-Paste this into the file:
+**macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+**Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
 ```json
 {
@@ -51,98 +24,56 @@ Paste this into the file:
     "bananacrystal": {
       "command": "bananacrystal-mcp",
       "env": {
-        "BANANACRYSTAL_API_KEY": "PASTE_YOUR_KEY_HERE"
+        "BANANACRYSTAL_API_KEY": "bc_test_your_key_here"
       }
     }
   }
 }
 ```
 
-Replace `PASTE_YOUR_KEY_HERE` with your actual API key.
+## 4. Restart Claude Desktop
 
-**Note:** This connects to production. Start with small amounts to test!
+Quit completely and reopen.
 
-## Step 4: Restart Claude (30 seconds)
+## 5. Test It
 
-1. Quit Claude Desktop completely
-2. Reopen Claude Desktop
-3. Wait for it to fully load
-
-## Step 5: Test It! (30 seconds)
-
-Open a new conversation in Claude and try:
+Ask Claude:
 
 ```
 Check my BananaCrystal balance
 ```
 
-Claude should respond with your account balances!
+You should see your sandbox balances:
 
-## What to Try Next
+- 10,000 USDb
+- 5,000,000 NGNb
+- 50,000 GHSb
+- and more...
 
-### Check Balances
-
-```
-What's my USDC balance on BananaCrystal?
-```
-
-### View Transactions
+## 6. Try a Swap
 
 ```
-Show my recent BananaCrystal transactions
+Swap 100 USDb to NGNb on BananaCrystal
 ```
 
-### Get Exchange Rates
+## 7. Try a Transfer
 
 ```
-What's the current USD to NGN exchange rate on BananaCrystal?
+Transfer 50 USDb to test@example.com on BananaCrystal
 ```
 
-### Transfer Tokens
+In sandbox, the OTP code is returned directly in the response — no email needed.
 
-```
-Transfer 10 USDC to 0.0.12345 on BananaCrystal
-```
+## 8. Go Live
 
-_(You'll receive an OTP via email)_
+When you're ready:
 
-### Swap Currencies
+1. Create a **Live key** at [agents.bananacrystal.com](https://agents.bananacrystal.com)
+2. Replace `bc_test_your_key_here` with your live key
+3. Restart Claude Desktop
 
-```
-Swap 50 USD to NGN on BananaCrystal
-```
+That's it. Same tools, real money.
 
-## Troubleshooting
+---
 
-### "API key invalid"
-
-- Check you copied the full key
-- Verify key hasn't been revoked
-- Ensure no extra spaces in config
-
-### MCP server not showing
-
-- Verify JSON syntax in config file
-- Restart Claude completely
-- Check Claude's logs for errors
-
-### Connection errors
-
-- Check your internet connection
-- Verify API URL is correct (default should work)
-- Try again in a few moments
-
-## Need Help?
-
-- 📖 [Full Documentation](README.md)
-- 💬 [Discord Community](https://discord.gg/bananacrystal)
-- 📧 Email: support@bananacrystal.com
-- 🐛 [Report Issues](https://github.com/bananacrystal/mcp-server/issues)
-
-## Next Steps
-
-- Read the [full README](README.md) for all features
-- Check out [example conversations](examples/)
-- Join our [Discord](https://discord.gg/bananacrystal) to share your experience
-
-Happy building! 🚀
+**Full documentation:** [agents.bananacrystal.com/docs](https://agents.bananacrystal.com/docs)
