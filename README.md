@@ -48,7 +48,7 @@ _One endpoint. Every payment capability. The financial primitive of the agent ec
 
 **BananaCrystal** provides **agent payment infrastructure** — the missing financial layer of the AI agent stack.
 
-Traditional payment rails (Stripe, banks, card networks) were built for humans: human identity, human authorization, human operating hours. When AI agents try to use them they fail architecturally — $0.30 fixed fees that make micropayments economically impossible, KYC requirements agents cannot satisfy, 3–5 day settlement windows that break autonomous workflows.
+Traditional payment rails (banks, card networks, legacy APIs) were built for humans: human identity, human authorization, human operating hours. When AI agents try to use them they fail architecturally — fixed fees that make micropayments economically impossible, KYC requirements agents cannot satisfy, 3–5 day settlement windows that break autonomous workflows.
 
 This MCP server is the alternative. **One configuration line gives any AI agent:**
 
@@ -66,18 +66,18 @@ This is not a product feature. This is a new category: **autonomous payments** �
 
 ## Why AI agents need their own payment rails
 
-|                         | Traditional rails                     | BananaCrystal                                     |
-| ----------------------- | ------------------------------------- | ------------------------------------------------- |
-| **Fee per transaction** | $0.30 + 2.9% (Stripe) · $15–35 (wire) | **$0.001 average**                                |
-| **Settlement speed**    | 1–5 business days                     | **Under 5 seconds, absolute finality**            |
-| **Identity model**      | Human KYC required                    | **Agent ID — programmatic**                       |
-| **Authorization**       | Human approval per transaction        | **Programmatic policy — autonomous**              |
-| **Operating hours**     | Banking hours, weekdays               | **24/7/365**                                      |
-| **Micropayments**       | Impossible at $0.30/tx                | **Native — sub-cent viable**                      |
-| **Spending controls**   | Card limit only                       | **Per-tx caps, daily limits, allowlists, scopes** |
-| **Audit trail**         | Monthly statements                    | **Immutable on-chain, machine-readable**          |
+|                         | Traditional rails              | BananaCrystal                                     |
+| ----------------------- | ------------------------------ | ------------------------------------------------- |
+| **Fee per transaction** | $0.30+ fixed · $15–35 (wire)   | **$0.001 average**                                |
+| **Settlement speed**    | 1–5 business days              | **Under 5 seconds, absolute finality**            |
+| **Identity model**      | Human KYC required             | **Agent ID — programmatic**                       |
+| **Authorization**       | Human approval per transaction | **Programmatic policy — autonomous**              |
+| **Operating hours**     | Banking hours, weekdays        | **24/7/365**                                      |
+| **Micropayments**       | Impossible at $0.30/tx         | **Native — sub-cent viable**                      |
+| **Spending controls**   | Card limit only                | **Per-tx caps, daily limits, allowlists, scopes** |
+| **Audit trail**         | Monthly statements             | **Immutable on-chain, machine-readable**          |
 
-> 1,000 transactions/day on Stripe: **$109,500/year** in fees alone.
+> 1,000 transactions/day on traditional rails: **$100,000+/year** in fees alone.
 > 1,000 transactions/day on BananaCrystal: **$365/year**.
 > The agent economy runs on micropayments. The infrastructure fee must be microscopic — or the economics collapse entirely.
 
@@ -415,7 +415,7 @@ Flow:    Agent calls data provider → provider returns HTTP 402
          → data unlocked → agent continues workflow
 
 1,000 queries/day = $1.00 in payments + $1.00 in fees.
-Economically impossible on Stripe ($300/day in fees alone).
+Economically impossible on legacy payment rails ($300/day in fees alone).
 ```
 
 </details>
@@ -481,22 +481,22 @@ No monthly fee. No seat pricing. No lock-in. You pay exactly $0.001 for every tr
 
 Agent payment infrastructure is the class of financial technology designed from first principles for AI agents as the primary economic actor. It provides agent wallets with programmatic identity (no human KYC), autonomous transaction authorization without per-transaction human approval, machine-speed settlement, and machine-readable audit trails.
 
-Traditional payment infrastructure (Stripe, bank APIs, card networks) assumes a human is the accountable party behind every payment. Agent payment infrastructure assumes the payer may be an autonomous software process operating 24/7 at machine speed. These are architecturally different requirements — which is why BananaCrystal exists as a category, not just a product.
+Traditional payment infrastructure (bank APIs, card networks, legacy payment processors) assumes a human is the accountable party behind every payment. Agent payment infrastructure assumes the payer may be an autonomous software process operating 24/7 at machine speed. These are architecturally different requirements — which is why BananaCrystal exists as a category, not just a product.
 
 </details>
 
 <details>
-<summary><b>How is this different from just using Stripe's API?</b></summary>
+<summary><b>How is this different from traditional payment APIs?</b></summary>
 
 Seven architectural differences:
 
-1. **Identity** — Stripe requires human KYC and a legal entity. BananaCrystal issues agent wallets with programmatic identity in seconds.
-2. **Authorization** — Stripe requires a human to authorize each transaction (3DS2, card PIN, etc.). BananaCrystal uses programmatic spending policy set once by the operator.
-3. **Fees** — Stripe charges $0.30 + 2.9% per transaction, making micropayments economically impossible. BananaCrystal charges $0.001 average.
-4. **Settlement** — Stripe settlements take 2–3 days. BananaCrystal settles on Hedera in under 5 seconds with absolute finality.
+1. **Identity** — Traditional payment processors require human KYC and a legal entity. BananaCrystal issues agent wallets with programmatic identity in seconds.
+2. **Authorization** — Legacy payment rails require a human to authorize each transaction. BananaCrystal uses programmatic spending policy set once by the operator.
+3. **Fees** — Traditional processors charge $0.30+ fixed fees per transaction, making micropayments economically impossible. BananaCrystal charges $0.001 average.
+4. **Settlement** — Bank settlements take 2–3 days. BananaCrystal settles on Hedera in under 5 seconds with absolute finality.
 5. **Hours** — Banks and card networks have operating hours. BananaCrystal is 24/7/365.
-6. **Fraud detection** — Stripe's fraud system is trained on human transaction patterns and flags automated agent behavior as suspicious. BananaCrystal is designed for machine transaction patterns.
-7. **Spending controls** — Stripe offers card limits only. BananaCrystal offers per-transaction caps, daily limits, recipient allowlists, and currency restrictions — all enforced at infrastructure level, not application layer.
+6. **Fraud detection** — Legacy fraud systems are trained on human transaction patterns and flag automated agent behavior as suspicious. BananaCrystal is designed for machine transaction patterns.
+7. **Spending controls** — Traditional rails offer basic limits only. BananaCrystal offers per-transaction caps, daily limits, recipient allowlists, and currency restrictions — all enforced at infrastructure level, not application layer.
 
 </details>
 
