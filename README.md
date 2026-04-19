@@ -836,7 +836,7 @@ The highest-impact contributions right now:
 4. Submit a PR with a clear description of what you built and why
 5. We review within 48 hours
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full guide and [GETTING_STARTED.md](./GETTING_STARTED.md) for a developer walkthrough.
+See [CONTRIBUTING.md](https://github.com/BananaCrystal/mcp-server-bananacrystal/blob/main/CONTRIBUTING.md) for the full guide and [GETTING_STARTED.md](https://github.com/BananaCrystal/mcp-server-bananacrystal/blob/main/GETTING_STARTED.md) for a developer walkthrough.
 
 ### Recognition
 
