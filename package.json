@@ -65,6 +65,7 @@
     "dist",
     "README.md",
     "LICENSE",
-    "QUICKSTART.md"
+    "QUICKSTART.md",
+    "CURRENCIES.md"
   ]
 }
