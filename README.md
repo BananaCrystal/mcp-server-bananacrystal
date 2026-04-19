@@ -101,7 +101,7 @@ First 1,000 API calls free. No monthly fees. No seat pricing. No lock-in.
 
 **Fees:** Transfers: 0.3% of amount · Swaps: 0.5% of amount · Read-only operations (balances, history, rates): free.
 
-> **Start with a Sandbox key** (`bc_test_...`) — fake money, zero risk, full functionality. Switch to a Live key when ready. The package auto-detects which endpoint to use from your key prefix — no URL configuration needed.
+> **Start with a Sandbox key** — fake money, zero risk, full functionality. Sandbox keys start with `bc_test_` so you can always tell them apart from live keys. Switch to a Live key (no prefix) when ready.
 
 **Step 3 — Pick your agent framework**
 
@@ -110,7 +110,7 @@ First 1,000 API calls free. No monthly fees. No seat pricing. No lock-in.
 
 Create a **Sandbox key** at **[agents.bananacrystal.com/account](https://agents.bananacrystal.com/account)** → API Keys → Create Sandbox Key.
 
-Sandbox keys start with `bc_test_`. The package automatically routes them to the sandbox endpoint — no URL change needed.
+Sandbox keys start with `bc_test_` — this prefix is how you (and the package) know it's a test key with no real money. Live keys have no prefix. The package automatically routes each key to the correct endpoint.
 
 ```json
 {
@@ -511,7 +511,7 @@ This MCP server is a thin authenticated client. All security enforcement execute
 
 | Variable                | Required | Default                                 | Description                      |
 | ----------------------- | -------- | --------------------------------------- | -------------------------------- |
-| `BANANACRYSTAL_API_KEY` | **Yes**  | —                                       | Your API key (starts with `bc_`) |
+| `BANANACRYSTAL_API_KEY` | **Yes**  | —                                       | Your API key from agents.bananacrystal.com/account. Sandbox keys start with `bc_test_` (no real money). Live keys have no prefix. |
 | `BANANACRYSTAL_API_URL` | No       | `https://agentic.bananacrystal.com/mcp` | Override API endpoint            |
 | `DEBUG`                 | No       | `false`                                 | Enable verbose debug logging     |
 
@@ -748,7 +748,8 @@ npx @modelcontextprotocol/inspector node dist/index.js
 <details>
 <summary><b>"API key invalid"</b></summary>
 
-- Key must start with `bc_`
+- Verify the key is copied correctly from [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account)
+- Sandbox keys start with `bc_test_` (testing only — no real money). Live keys have no prefix.
 - Verify key is active at [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account) → API Keys
 - Check the key has the required scope for the tool being called (`transfer` scope for `transfer_tokens`, `swap` scope for `swap_currency`)
 - Check for whitespace or truncation in the environment variable
