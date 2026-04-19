@@ -7,7 +7,7 @@
 
 <div align="center">
 
-<img src="https://img.shields.io/badge/-%F0%9F%8D%8C%20BananaCrystal-F5821F?style=for-the-badge&labelColor=07070F" alt="BananaCrystal"/>
+<img src="https://www.bananacrystal.com/wp-content/uploads/2024/02/bananacrystal-logo.png" alt="BananaCrystal" height="60"/>
 
 # Agent Payment Infrastructure
 
@@ -590,7 +590,7 @@ A runaway agent hitting its limit receives a `SpendingLimitExceeded` error and s
 
 An agent wallet is a non-custodial financial account owned and operated by an AI agent — not a human. Its identity derives from a programmatic agent ID, not from government documents or KYC verification of a person. The wallet holds a real stablecoin balance, has an on-chain Hedera address, and can send and receive value autonomously within the spending limits you configure.
 
-When you sign up at agents.bananacrystal.com and create an API key, an agent wallet is automatically provisioned. Your agents reference it via the API key — they never need to know private keys or manage cryptographic identity directly.
+When you sign up at [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account) and create an API key, an agent wallet is automatically provisioned. Your agents reference it via the API key — they never need to know private keys or manage cryptographic identity directly.
 
 </details>
 
@@ -749,7 +749,7 @@ npx @modelcontextprotocol/inspector node dist/index.js
 <summary><b>"API key invalid"</b></summary>
 
 - Key must start with `bc_`
-- Verify key is active at [agents.bananacrystal.com](https://agents.bananacrystal.com) → API Keys
+- Verify key is active at [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account) → API Keys
 - Check the key has the required scope for the tool being called (`transfer` scope for `transfer_tokens`, `swap` scope for `swap_currency`)
 - Check for whitespace or truncation in the environment variable
 
@@ -760,7 +760,7 @@ npx @modelcontextprotocol/inspector node dist/index.js
 
 This is working as designed — limits are enforced at infrastructure level and cannot be bypassed.
 
-To increase limits: [agents.bananacrystal.com](https://agents.bananacrystal.com) → API Keys → Edit → adjust daily cap or per-transaction maximum.
+To increase limits: [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account) → API Keys → Edit → adjust daily cap or per-transaction maximum.
 
 If you are building a production agent, set limits conservatively first and increase after observing real usage patterns.
 
@@ -781,7 +781,7 @@ If you are building a production agent, set limits conservatively first and incr
 
 - Check spam/junk folder for email from BananaCrystal
 - OTP expires in 10 minutes — request a fresh one if needed
-- Verify your registered email at [agents.bananacrystal.com](https://agents.bananacrystal.com)
+- Verify your registered email at [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account)
 
 </details>
 
