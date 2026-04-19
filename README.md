@@ -38,6 +38,10 @@ _One endpoint. Every payment capability. The financial primitive of the agent ec
 
 **If this project helps you build payment-capable agents, please star the repo on [GitHub](https://github.com/BananaCrystal/mcp-server-bananacrystal) — it helps other developers find it.**
 
+[![Star on GitHub](https://img.shields.io/github/stars/BananaCrystal/mcp-server-bananacrystal?style=social)](https://github.com/BananaCrystal/mcp-server-bananacrystal)
+
+> **How to star:** Open the repo, then click the ⭐ **Star** button in the top-right corner (free GitHub account required).
+
 ---
 
 </div>
@@ -66,16 +70,16 @@ This is not a product feature. This is a new category: **autonomous payments** �
 
 ## Why AI agents need their own payment rails
 
-|                         | Traditional rails              | BananaCrystal                                     |
-| ----------------------- | ------------------------------ | ------------------------------------------------- |
-| **Fee per transaction** | $0.30 + 2.9% (Stripe) · $15–35 (wire) | **0.3% transfers · 0.5% swaps · free for reads** |
-| **Settlement speed**    | 1–5 business days              | **Under 5 seconds, absolute finality**            |
-| **Identity model**      | Human KYC required             | **Agent ID — programmatic**                       |
-| **Authorization**       | Human approval per transaction | **Programmatic policy — autonomous**              |
-| **Operating hours**     | Banking hours, weekdays        | **24/7/365**                                      |
-| **Micropayments**       | Impossible at $0.30/tx         | **Native — sub-cent viable**                      |
-| **Spending controls**   | Card limit only                | **Per-tx caps, daily limits, allowlists, scopes** |
-| **Audit trail**         | Monthly statements             | **Immutable on-chain, machine-readable**          |
+|                         | Traditional rails                     | BananaCrystal                                     |
+| ----------------------- | ------------------------------------- | ------------------------------------------------- |
+| **Fee per transaction** | $0.30 + 2.9% (Stripe) · $15–35 (wire) | **0.3% transfers · 0.5% swaps · free for reads**  |
+| **Settlement speed**    | 1–5 business days                     | **Under 5 seconds, absolute finality**            |
+| **Identity model**      | Human KYC required                    | **Agent ID — programmatic**                       |
+| **Authorization**       | Human approval per transaction        | **Programmatic policy — autonomous**              |
+| **Operating hours**     | Banking hours, weekdays               | **24/7/365**                                      |
+| **Micropayments**       | Impossible at $0.30/tx                | **Native — sub-cent viable**                      |
+| **Spending controls**   | Card limit only                       | **Per-tx caps, daily limits, allowlists, scopes** |
+| **Audit trail**         | Monthly statements                    | **Immutable on-chain, machine-readable**          |
 
 > 1,000 transactions/day on Stripe: **$109,500/year** in fees alone.
 > 1,000 transactions/day on BananaCrystal: **$365/year**.
@@ -304,50 +308,50 @@ Every tool an agent needs for complete autonomous payment capability. All live. 
 <details>
 <summary><b>Read-only tools</b> — free, safe for any agent</summary>
 
-| Tool | What it does |
-|------|-------------|
-| `ping` | Health check |
-| `get_server_info` | Server version and environment |
-| `echo` | Echo a message |
-| `get_my_profile` | Your profile, wallets, and MCP key info |
-| `get_balances` | Token balances (all or specific token) |
-| `get_exchange_rate` | Live buy/sell rates for any currency |
-| `list_supported_currencies` | All supported stablecoins |
-| `list_available_tokens` | All Hedera token IDs |
-| `get_transaction_history` | Paginated transaction log with filters |
-| `get_my_limits` | API key spending limits and current usage |
-| `estimate_swap_fees` | Calculate fees before swapping |
-| `get_agent_config` | Look up another agent's payment config |
-| `check_approval_status` | Status of a pending approval request |
-| `get_kyc_status` | KYC verification status |
-| `get_deposit_status` | Fiat deposit status by transfer ID |
-| `get_withdrawal_status` | Fiat withdrawal requests |
-| `get_escrow_balances` | Escrow balance breakdown |
-| `get_escrow_history` | Full escrow transaction history |
-| `list_offers` | Browse prediction market offers |
-| `get_offer` | Single offer details |
-| `get_my_offers` | Your offers |
-| `list_trades` | Browse all trades |
-| `get_trade` | Single trade details |
-| `get_my_trades` | Your trades |
+| Tool                        | What it does                              |
+| --------------------------- | ----------------------------------------- |
+| `ping`                      | Health check                              |
+| `get_server_info`           | Server version and environment            |
+| `echo`                      | Echo a message                            |
+| `get_my_profile`            | Your profile, wallets, and MCP key info   |
+| `get_balances`              | Token balances (all or specific token)    |
+| `get_exchange_rate`         | Live buy/sell rates for any currency      |
+| `list_supported_currencies` | All supported stablecoins                 |
+| `list_available_tokens`     | All Hedera token IDs                      |
+| `get_transaction_history`   | Paginated transaction log with filters    |
+| `get_my_limits`             | API key spending limits and current usage |
+| `estimate_swap_fees`        | Calculate fees before swapping            |
+| `get_agent_config`          | Look up another agent's payment config    |
+| `check_approval_status`     | Status of a pending approval request      |
+| `get_kyc_status`            | KYC verification status                   |
+| `get_deposit_status`        | Fiat deposit status by transfer ID        |
+| `get_withdrawal_status`     | Fiat withdrawal requests                  |
+| `get_escrow_balances`       | Escrow balance breakdown                  |
+| `get_escrow_history`        | Full escrow transaction history           |
+| `list_offers`               | Browse prediction market offers           |
+| `get_offer`                 | Single offer details                      |
+| `get_my_offers`             | Your offers                               |
+| `list_trades`               | Browse all trades                         |
+| `get_trade`                 | Single trade details                      |
+| `get_my_trades`             | Your trades                               |
 
 </details>
 
 <details>
 <summary><b>Transfer tools</b> — require <code>transfer</code> scope · fee: 0.3% of amount</summary>
 
-| Tool | What it does |
-|------|-------------|
+| Tool                   | What it does                                                            |
+| ---------------------- | ----------------------------------------------------------------------- |
 | `request_transfer_otp` | Step 1 — request OTP code (email in live, returned directly in sandbox) |
-| `transfer_tokens` | Step 2 — execute transfer with OTP |
+| `transfer_tokens`      | Step 2 — execute transfer with OTP                                      |
 
 </details>
 
 <details>
 <summary><b>Swap tools</b> — require <code>swap</code> scope · fee: 0.5% of amount</summary>
 
-| Tool | What it does |
-|------|-------------|
+| Tool            | What it does                               |
+| --------------- | ------------------------------------------ |
 | `swap_currency` | Swap between any two supported stablecoins |
 
 </details>
@@ -355,10 +359,10 @@ Every tool an agent needs for complete autonomous payment capability. All live. 
 <details>
 <summary><b>Fiat tools</b> — require <code>fiat</code> scope + KYC</summary>
 
-| Tool | What it does |
-|------|-------------|
-| `initiate_kyc` | Start KYC verification |
-| `initiate_deposit` | Deposit via ACH or wire |
+| Tool                 | What it does             |
+| -------------------- | ------------------------ |
+| `initiate_kyc`       | Start KYC verification   |
+| `initiate_deposit`   | Deposit via ACH or wire  |
 | `request_withdrawal` | Withdraw to bank account |
 
 </details>
@@ -366,33 +370,33 @@ Every tool an agent needs for complete autonomous payment capability. All live. 
 <details>
 <summary><b>Offers & trades tools</b> — require <code>offers</code> scope</summary>
 
-| Tool | What it does |
-|------|-------------|
-| `create_offer` | Create a prediction market offer |
+| Tool           | What it does                      |
+| -------------- | --------------------------------- |
+| `create_offer` | Create a prediction market offer  |
 | `update_offer` | Edit an offer (before any trades) |
-| `delist_offer` | Remove offer from marketplace |
-| `delete_offer` | Permanently delete offer |
-| `engage_offer` | Trade against an offer |
-| `cancel_trade` | Cancel an active trade |
+| `delist_offer` | Remove offer from marketplace     |
+| `delete_offer` | Permanently delete offer          |
+| `engage_offer` | Trade against an offer            |
+| `cancel_trade` | Cancel an active trade            |
 
 </details>
 
 <details>
 <summary><b>Agent-to-agent tools</b> — require <code>transfer</code> scope</summary>
 
-| Tool | What it does |
-|------|-------------|
-| `request_agent_transaction` | Request a transaction from another user's agent |
-| `execute_approved_transaction` | Execute after approval |
-| `update_my_agent_settings` | Configure approval rules and webhook URL |
+| Tool                           | What it does                                    |
+| ------------------------------ | ----------------------------------------------- |
+| `request_agent_transaction`    | Request a transaction from another user's agent |
+| `execute_approved_transaction` | Execute after approval                          |
+| `update_my_agent_settings`     | Configure approval rules and webhook URL        |
 
 </details>
 
 <details>
 <summary><b>Sandbox-only tools</b></summary>
 
-| Tool | What it does |
-|------|-------------|
+| Tool                    | What it does                    |
+| ----------------------- | ------------------------------- |
 | `reset_sandbox_balance` | Reset fake balances to defaults |
 
 </details>
@@ -509,11 +513,11 @@ This MCP server is a thin authenticated client. All security enforcement execute
 
 ## Configuration
 
-| Variable                | Required | Default                                 | Description                      |
-| ----------------------- | -------- | --------------------------------------- | -------------------------------- |
+| Variable                | Required | Default                                 | Description                                                                                                                       |
+| ----------------------- | -------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | `BANANACRYSTAL_API_KEY` | **Yes**  | —                                       | Your API key from agents.bananacrystal.com/account. Sandbox keys start with `bc_test_` (no real money). Live keys have no prefix. |
-| `BANANACRYSTAL_API_URL` | No       | `https://agentic.bananacrystal.com/mcp` | Override API endpoint            |
-| `DEBUG`                 | No       | `false`                                 | Enable verbose debug logging     |
+| `BANANACRYSTAL_API_URL` | No       | `https://agentic.bananacrystal.com/mcp` | Override API endpoint                                                                                                             |
+| `DEBUG`                 | No       | `false`                                 | Enable verbose debug logging                                                                                                      |
 
 <br/>
 
@@ -523,18 +527,18 @@ This MCP server is a thin authenticated client. All security enforcement execute
 
 **Read-only operations are always free.** Fees only apply when moving money.
 
-| Operation | Fee |
-|---|---|
-| Balance checks, history, rates, profile | **Free** |
-| Token transfers (`transfer_tokens`) | **0.3%** of transfer amount |
-| Currency swaps (`swap_currency`) | **0.5%** of swap amount |
-| Fiat deposits / withdrawals | Varies by rail (ACH, wire) |
+| Operation                               | Fee                         |
+| --------------------------------------- | --------------------------- |
+| Balance checks, history, rates, profile | **Free**                    |
+| Token transfers (`transfer_tokens`)     | **0.3%** of transfer amount |
+| Currency swaps (`swap_currency`)        | **0.5%** of swap amount     |
+| Fiat deposits / withdrawals             | Varies by rail (ACH, wire)  |
 
-| Tier | Volume | Cost | For |
-|------|--------|------|-----|
-| **Free** | First 1,000 API calls/month | $0 | Development and testing |
-| **Pay-per-use** | 1,001+ /month | 0.3% transfers · 0.5% swaps | Production agents at any scale |
-| **Enterprise** | Unlimited | Contact us | High-volume autonomous payment networks |
+| Tier            | Volume                      | Cost                        | For                                     |
+| --------------- | --------------------------- | --------------------------- | --------------------------------------- |
+| **Free**        | First 1,000 API calls/month | $0                          | Development and testing                 |
+| **Pay-per-use** | 1,001+ /month               | 0.3% transfers · 0.5% swaps | Production agents at any scale          |
+| **Enterprise**  | Unlimited                   | Contact us                  | High-volume autonomous payment networks |
 
 No monthly fee. No seat pricing. No lock-in.
 
@@ -626,16 +630,16 @@ Every swap settles on Hedera in under 5 seconds. No banks. No SWIFT. No weekends
 
 A sample of supported currencies:
 
-| Currency | Token | | Currency | Token |
-|---|---|---|---|---|
-| US Dollar | USDb | | Nigerian Naira | NGNb |
-| Euro | EURb | | Ghanaian Cedi | GHSb |
-| British Pound | GBPb | | Kenyan Shilling | KESb |
-| UAE Dirham | AEDb | | South African Rand | ZARb |
-| Indian Rupee | INRb | | Egyptian Pound | EGPb |
-| Canadian Dollar | CADb | | Ethiopian Birr | ETBb |
-| Australian Dollar | AUDb | | Moroccan Dirham | MADb |
-| Japanese Yen | JPYb | | Ugandan Shilling | UGXb |
+| Currency          | Token |     | Currency           | Token |
+| ----------------- | ----- | --- | ------------------ | ----- |
+| US Dollar         | USDb  |     | Nigerian Naira     | NGNb  |
+| Euro              | EURb  |     | Ghanaian Cedi      | GHSb  |
+| British Pound     | GBPb  |     | Kenyan Shilling    | KESb  |
+| UAE Dirham        | AEDb  |     | South African Rand | ZARb  |
+| Indian Rupee      | INRb  |     | Egyptian Pound     | EGPb  |
+| Canadian Dollar   | CADb  |     | Ethiopian Birr     | ETBb  |
+| Australian Dollar | AUDb  |     | Moroccan Dirham    | MADb  |
+| Japanese Yen      | JPYb  |     | Ugandan Shilling   | UGXb  |
 
 **[View all 150+ supported currencies →](./CURRENCIES.md)**
 
