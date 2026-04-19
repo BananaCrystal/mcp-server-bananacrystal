@@ -7,7 +7,7 @@
 
 <div align="center">
 
-<img src="https://img.shields.io/badge/-%F0%9F%8D%8C%20BananaCrystal-F5821F?style=for-the-badge&labelColor=07070F" alt="BananaCrystal"/>
+<img src="https://www.bananacrystal.com/wp-content/uploads/2024/02/bananacrystal-logo.png" alt="BananaCrystal" height="60"/>
 
 # Agent Payment Infrastructure
 ### The MCP Server That Gives AI Agents a Wallet
@@ -65,16 +65,16 @@ This is not a product feature. This is a new category: **autonomous payments** �
 
 ## Why AI agents need their own payment rails
 
-| | Traditional rails | BananaCrystal |
-|---|---|---|
-| **Fee per transaction** | $0.30 + 2.9% (Stripe) · $15–35 (wire) | **$0.001 average** |
-| **Settlement speed** | 1–5 business days | **Under 5 seconds, absolute finality** |
-| **Identity model** | Human KYC required | **Agent ID — programmatic** |
-| **Authorization** | Human approval per transaction | **Programmatic policy — autonomous** |
-| **Operating hours** | Banking hours, weekdays | **24/7/365** |
-| **Micropayments** | Impossible at $0.30/tx | **Native — sub-cent viable** |
-| **Spending controls** | Card limit only | **Per-tx caps, daily limits, allowlists, scopes** |
-| **Audit trail** | Monthly statements | **Immutable on-chain, machine-readable** |
+|                         | Traditional rails              | BananaCrystal                                     |
+| ----------------------- | ------------------------------ | ------------------------------------------------- |
+| **Fee per transaction** | $0.30 + 2.9% (Stripe) · $15–35 (wire) | **0.3% transfers · 0.5% swaps · free for reads** |
+| **Settlement speed**    | 1–5 business days              | **Under 5 seconds, absolute finality**            |
+| **Identity model**      | Human KYC required             | **Agent ID — programmatic**                       |
+| **Authorization**       | Human approval per transaction | **Programmatic policy — autonomous**              |
+| **Operating hours**     | Banking hours, weekdays        | **24/7/365**                                      |
+| **Micropayments**       | Impossible at $0.30/tx         | **Native — sub-cent viable**                      |
+| **Spending controls**   | Card limit only                | **Per-tx caps, daily limits, allowlists, scopes** |
+| **Audit trail**         | Monthly statements             | **Immutable on-chain, machine-readable**          |
 
 > 1,000 transactions/day on Stripe: **$109,500/year** in fees alone.
 > 1,000 transactions/day on BananaCrystal: **$365/year**.
@@ -98,9 +98,41 @@ Sign up at **[agents.bananacrystal.com](https://agents.bananacrystal.com)** → 
 
 First 1,000 transactions free. Then $0.001/tx. No monthly fees. No seat pricing. No lock-in.
 
-> Keys start with `bc_`. Always set spending limits before production deployment.
+> **Start with a Sandbox key** — fake money, zero risk, full functionality. Sandbox keys start with `bc_test_` so you can always tell them apart from live keys. Switch to a Live key (no prefix) when ready.
 
 **Step 3 — Pick your agent framework**
+
+<details>
+<summary><b>Sandbox mode — test without real money</b></summary>
+
+Create a **Sandbox key** at **[agents.bananacrystal.com/account](https://agents.bananacrystal.com/account)** → API Keys → Create Sandbox Key.
+
+Sandbox keys start with `bc_test_` — this prefix is how you (and the package) know it's a test key with no real money. Live keys have no prefix. The package automatically routes each key to the correct endpoint.
+
+```json
+{
+  "mcpServers": {
+    "bananacrystal": {
+      "command": "bananacrystal-mcp",
+      "env": {
+        "BANANACRYSTAL_API_KEY": "bc_test_your_sandbox_key_here"
+      }
+    }
+  }
+}
+```
+
+**Sandbox behaviour:**
+
+- Pre-seeded balances: 10,000 USDb · 5,000,000 NGNb · 50,000 GHSb · 1,000,000 KESb · 150,000 ZARb
+- OTP codes returned directly in the API response — no email sent
+- KYC always approved
+- Spend limits unlimited
+- Reset balances anytime with the `reset_sandbox_balance` tool
+
+Switch to a live key when you're ready. Same tools, same config, real money.
+
+</details>
 
 <details>
 <summary><b>Claude Desktop</b></summary>
@@ -417,11 +449,11 @@ This MCP server is a thin authenticated client. All security enforcement execute
 
 ## Configuration
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `BANANACRYSTAL_API_KEY` | **Yes** | — | Your API key (starts with `bc_`) |
-| `BANANACRYSTAL_API_URL` | No | `https://agentic.bananacrystal.com/mcp` | Override API endpoint |
-| `DEBUG` | No | `false` | Enable verbose debug logging |
+| Variable                | Required | Default                                 | Description                      |
+| ----------------------- | -------- | --------------------------------------- | -------------------------------- |
+| `BANANACRYSTAL_API_KEY` | **Yes**  | —                                       | Your API key from agents.bananacrystal.com/account. Sandbox keys start with `bc_test_` (no real money). Live keys have no prefix. |
+| `BANANACRYSTAL_API_URL` | No       | `https://agentic.bananacrystal.com/mcp` | Override API endpoint            |
+| `DEBUG`                 | No       | `false`                                 | Enable verbose debug logging     |
 
 <br/>
 
@@ -429,13 +461,22 @@ This MCP server is a thin authenticated client. All security enforcement execute
 
 ## Pricing
 
+**Read-only operations are always free.** Fees only apply when moving money.
+
+| Operation | Fee |
+|---|---|
+| Balance checks, history, rates, profile | **Free** |
+| Token transfers (`transfer_tokens`) | **0.3%** of transfer amount |
+| Currency swaps (`swap_currency`) | **0.5%** of swap amount |
+| Fiat deposits / withdrawals | Varies by rail (ACH, wire) |
+
 | Tier | Volume | Cost | For |
 |------|--------|------|-----|
-| **Free** | First 1,000 transactions/month | $0 | Development and early agents |
-| **Pay-per-use** | 1,001+ /month | $0.001 per transaction | Production agents at any scale |
+| **Free** | First 1,000 API calls/month | $0 | Development and testing |
+| **Pay-per-use** | 1,001+ /month | 0.3% transfers · 0.5% swaps | Production agents at any scale |
 | **Enterprise** | Unlimited | Contact us | High-volume autonomous payment networks |
 
-No monthly fee. No seat pricing. No lock-in. You pay exactly $0.001 for every transaction above the free tier — nothing else.
+No monthly fee. No seat pricing. No lock-in.
 
 <br/>
 
@@ -453,13 +494,13 @@ Traditional payment infrastructure (Stripe, bank APIs, card networks) assumes a 
 </details>
 
 <details>
-<summary><b>How is this different from just using Stripe's API?</b></summary>
+<summary><b>How is this different from Stripe or traditional payment APIs?</b></summary>
 
 Seven architectural differences:
 
 1. **Identity** — Stripe requires human KYC and a legal entity. BananaCrystal issues agent wallets with programmatic identity in seconds.
 2. **Authorization** — Stripe requires a human to authorize each transaction (3DS2, card PIN, etc.). BananaCrystal uses programmatic spending policy set once by the operator.
-3. **Fees** — Stripe charges $0.30 + 2.9% per transaction, making micropayments economically impossible. BananaCrystal charges $0.001 average.
+3. **Fees** — Stripe charges $0.30 + 2.9% per transaction, making micropayments economically impossible. BananaCrystal charges a percentage of the amount (0.3% for transfers, 0.5% for swaps) with no fixed fee — making micropayments viable.
 4. **Settlement** — Stripe settlements take 2–3 days. BananaCrystal settles on Hedera in under 5 seconds with absolute finality.
 5. **Hours** — Banks and card networks have operating hours. BananaCrystal is 24/7/365.
 6. **Fraud detection** — Stripe's fraud system is trained on human transaction patterns and flags automated agent behavior as suspicious. BananaCrystal is designed for machine transaction patterns.
@@ -488,7 +529,7 @@ A runaway agent hitting its limit receives a `SpendingLimitExceeded` error and s
 
 An agent wallet is a non-custodial financial account owned and operated by an AI agent — not a human. Its identity derives from a programmatic agent ID, not from government documents or KYC verification of a person. The wallet holds a real stablecoin balance, has an on-chain Hedera address, and can send and receive value autonomously within the spending limits you configure.
 
-When you sign up at agents.bananacrystal.com and create an API key, an agent wallet is automatically provisioned. Your agents reference it via the API key — they never need to know private keys or manage cryptographic identity directly.
+When you sign up at [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account) and create an API key, an agent wallet is automatically provisioned. Your agents reference it via the API key — they never need to know private keys or manage cryptographic identity directly.
 
 </details>
 
@@ -627,8 +668,9 @@ npx @modelcontextprotocol/inspector node dist/index.js
 <details>
 <summary><b>"API key invalid"</b></summary>
 
-- Key must start with `bc_`
-- Verify key is active at [agents.bananacrystal.com](https://agents.bananacrystal.com) → API Keys
+- Verify the key is copied correctly from [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account)
+- Sandbox keys start with `bc_test_` (testing only — no real money). Live keys have no prefix.
+- Verify key is active at [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account) → API Keys
 - Check the key has the required scope for the tool being called (`transfer` scope for `transfer_tokens`, `swap` scope for `swap_currency`)
 - Check for whitespace or truncation in the environment variable
 
@@ -639,7 +681,7 @@ npx @modelcontextprotocol/inspector node dist/index.js
 
 This is working as designed — limits are enforced at infrastructure level and cannot be bypassed.
 
-To increase limits: [agents.bananacrystal.com](https://agents.bananacrystal.com) → API Keys → Edit → adjust daily cap or per-transaction maximum.
+To increase limits: [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account) → API Keys → Edit → adjust daily cap or per-transaction maximum.
 
 If you are building a production agent, set limits conservatively first and increase after observing real usage patterns.
 
@@ -660,7 +702,7 @@ If you are building a production agent, set limits conservatively first and incr
 
 - Check spam/junk folder for email from BananaCrystal
 - OTP expires in 10 minutes — request a fresh one if needed
-- Verify your registered email at [agents.bananacrystal.com](https://agents.bananacrystal.com)
+- Verify your registered email at [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account)
 
 </details>
 

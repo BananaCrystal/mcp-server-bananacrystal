@@ -5,10 +5,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "bananacrystal-mcp": "./dist/cli/index.js"
+    "bananacrystal-mcp": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsc && chmod +x dist/cli/index.js",
+    "build": "tsc && chmod +x dist/index.js",
     "dev": "tsx src/index.ts",
     "mock": "tsx mock/server.ts",
     "test": "vitest",
@@ -30,12 +30,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bananacrystal/mcp-server.git"
+    "url": "https://github.com/BananaCrystal/mcp-server-bananacrystal.git"
   },
   "bugs": {
-    "url": "https://github.com/bananacrystal/mcp-server/issues"
+    "url": "https://github.com/BananaCrystal/mcp-server-bananacrystal/issues"
   },
-  "homepage": "https://github.com/bananacrystal/mcp-server#readme",
+  "homepage": "https://github.com/BananaCrystal/mcp-server-bananacrystal#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4",
     "commander": "^12.0.0",
