@@ -789,14 +789,13 @@ If BananaCrystal has been useful:
 
 |                   |                                                                                      |
 | ----------------- | ------------------------------------------------------------------------------------ |
-| **Get API key**   | [agents.bananacrystal.com](https://agents.bananacrystal.com)                         |
-| **Platform**      | [bananacrystal.com](https://www.bananacrystal.com)                                   |
+| **Get API key**   | [agents.bananacrystal.com](https://agents.bananacrystal.com/account)                         |
+| **Platform**      | [bananacrystal.com](https://agents.bananacrystal.com)                                   |
 | **Documentation** | [Documentation](https://agent.bananacrystal.com/docs)                                |
 | **Website**       | [bananacrystal.com](https://www.bananacrystal.com)                                   |
 | **npm**           | [@bananacrystal/mcp-server](https://www.npmjs.com/package/@bananacrystal/mcp-server) |
 | **MCP Protocol**  | [modelcontextprotocol.io](https://modelcontextprotocol.io)                           |
 | **Hedera**        | [hedera.com](https://hedera.com)                                                     |
-| **Issues**        | [GitHub Issues](https://github.com/BananaCrystal/mcp-server-package/issues)          |
 | **Support**       | support@bananacrystal.com                                                            |
 
 <br/>
