@@ -10,9 +10,10 @@
 <img src="https://www.bananacrystal.com/wp-content/uploads/2024/02/bananacrystal-logo.png" alt="BananaCrystal" height="60"/>
 
 # Agent Payment Infrastructure
+
 ### The MCP Server That Gives AI Agents a Wallet
 
-*One endpoint. Every payment capability. The financial primitive of the agent economy.*
+_One endpoint. Every payment capability. The financial primitive of the agent economy._
 
 <br/>
 
@@ -28,14 +29,18 @@
 
 <br/>
 
-> *"The agent economy is forming now. Developers who integrate payment rails first*
-> *will define how AI agents transact. This is that infrastructure."*
+> _"The agent economy is forming now. Developers who integrate payment rails first_
+> _will define how AI agents transact. This is that infrastructure."_
 
 <br/>
 
 ---
 
 **If this project helps you build payment-capable agents, please [star the repo](https://github.com/BananaCrystal/mcp-server-bananacrystal) — it helps other developers find it.**
+
+[![Star on GitHub](https://img.shields.io/github/stars/BananaCrystal/mcp-server-bananacrystal?style=social)](https://github.com/BananaCrystal/mcp-server-bananacrystal)
+
+> **How to star:** Visit the repo, then click the ⭐ **Star** button in the top-right corner (you need a free GitHub account).
 
 ---
 
@@ -65,16 +70,16 @@ This is not a product feature. This is a new category: **autonomous payments** �
 
 ## Why AI agents need their own payment rails
 
-|                         | Traditional rails              | BananaCrystal                                     |
-| ----------------------- | ------------------------------ | ------------------------------------------------- |
-| **Fee per transaction** | $0.30 + 2.9% (Stripe) · $15–35 (wire) | **0.3% transfers · 0.5% swaps · free for reads** |
-| **Settlement speed**    | 1–5 business days              | **Under 5 seconds, absolute finality**            |
-| **Identity model**      | Human KYC required             | **Agent ID — programmatic**                       |
-| **Authorization**       | Human approval per transaction | **Programmatic policy — autonomous**              |
-| **Operating hours**     | Banking hours, weekdays        | **24/7/365**                                      |
-| **Micropayments**       | Impossible at $0.30/tx         | **Native — sub-cent viable**                      |
-| **Spending controls**   | Card limit only                | **Per-tx caps, daily limits, allowlists, scopes** |
-| **Audit trail**         | Monthly statements             | **Immutable on-chain, machine-readable**          |
+|                         | Traditional rails                     | BananaCrystal                                     |
+| ----------------------- | ------------------------------------- | ------------------------------------------------- |
+| **Fee per transaction** | $0.30 + 2.9% (Stripe) · $15–35 (wire) | **0.3% transfers · 0.5% swaps · free for reads**  |
+| **Settlement speed**    | 1–5 business days                     | **Under 5 seconds, absolute finality**            |
+| **Identity model**      | Human KYC required                    | **Agent ID — programmatic**                       |
+| **Authorization**       | Human approval per transaction        | **Programmatic policy — autonomous**              |
+| **Operating hours**     | Banking hours, weekdays               | **24/7/365**                                      |
+| **Micropayments**       | Impossible at $0.30/tx                | **Native — sub-cent viable**                      |
+| **Spending controls**   | Card limit only                       | **Per-tx caps, daily limits, allowlists, scopes** |
+| **Audit trail**         | Monthly statements                    | **Immutable on-chain, machine-readable**          |
 
 > 1,000 transactions/day on Stripe: **$109,500/year** in fees alone.
 > 1,000 transactions/day on BananaCrystal: **$365/year**.
@@ -211,7 +216,7 @@ async def create_payment_agent():
     tools = await client.get_tools()
     llm = ChatOpenAI(model="gpt-4o", temperature=0)
     prompt = ChatPromptTemplate.from_messages([
-        ("system", """You are a financial operations AI agent with an 
+        ("system", """You are a financial operations AI agent with an
         agent wallet on BananaCrystal agent payment infrastructure.
         Always check balance before large transfers.
         Always include a memo with every payment.
@@ -255,15 +260,15 @@ payment_tools = asyncio.run(setup_payment_tools())
 treasury_agent = Agent(
     role="Autonomous Treasury Manager",
     goal="Monitor stablecoin balances and execute payments within defined limits",
-    backstory="""You are an AI-native finance agent on the BananaCrystal 
-    agent payment infrastructure. You manage a multi-currency stablecoin 
+    backstory="""You are an AI-native finance agent on the BananaCrystal
+    agent payment infrastructure. You manage a multi-currency stablecoin
     treasury, executing transfers, swaps, and vendor payments autonomously.""",
     tools=payment_tools,
     verbose=True
 )
 
 treasury_task = Task(
-    description="""Check USDb balance. If above 10,000 USDb, swap 5,000 USDb 
+    description="""Check USDb balance. If above 10,000 USDb, swap 5,000 USDb
     to EURb. Then pay vendor invoice of 500 USDb to vendor:accounting-service-01.""",
     agent=treasury_agent,
     expected_output="Balance checked, swap executed, vendor paid. All transaction IDs logged."
@@ -301,39 +306,39 @@ Every tool an agent needs for complete autonomous payment capability. All live. 
 <details>
 <summary><b>Read-only tools</b> — safe for any agent, any scope</summary>
 
-| Tool | What it does | Parameters |
-|------|-------------|------------|
-| `get_my_profile` | Agent wallet identity and account info | — |
-| `get_balances` | All token balances in the agent wallet | — |
-| `get_exchange_rate` | Live rates for any currency pair | `currency` |
-| `list_supported_currencies` | All 150+ available stablecoins | — |
-| `get_transaction_history` | Paginated transaction log with filters | `limit`, `type`, `direction` |
-| `get_my_limits` | API key spending limits and current usage | — |
-| `estimate_swap_fees` | Calculate exact fees before swapping | `from_token`, `to_token`, `amount` |
-| `get_agent_config` | Look up another agent's payment config | `identifier` |
-| `check_approval_status` | Status of a pending agent transaction | `token` |
+| Tool                        | What it does                              | Parameters                         |
+| --------------------------- | ----------------------------------------- | ---------------------------------- |
+| `get_my_profile`            | Agent wallet identity and account info    | —                                  |
+| `get_balances`              | All token balances in the agent wallet    | —                                  |
+| `get_exchange_rate`         | Live rates for any currency pair          | `currency`                         |
+| `list_supported_currencies` | All 150+ available stablecoins            | —                                  |
+| `get_transaction_history`   | Paginated transaction log with filters    | `limit`, `type`, `direction`       |
+| `get_my_limits`             | API key spending limits and current usage | —                                  |
+| `estimate_swap_fees`        | Calculate exact fees before swapping      | `from_token`, `to_token`, `amount` |
+| `get_agent_config`          | Look up another agent's payment config    | `identifier`                       |
+| `check_approval_status`     | Status of a pending agent transaction     | `token`                            |
 
 </details>
 
 <details>
 <summary><b>Write tools</b> — require <code>transfer</code> or <code>swap</code> scope</summary>
 
-| Tool | What it does | Parameters |
-|------|-------------|------------|
-| `request_transfer_otp` | Request OTP before executing a transfer | `amount`, `token`, `recipient` |
-| `transfer_tokens` | Execute stablecoin transfer on Hedera | `amount`, `token`, `recipient`, `otp_code` |
-| `swap_currency` | Swap between any stablecoin pair | `from_token`, `to_token`, `amount` |
+| Tool                   | What it does                            | Parameters                                 |
+| ---------------------- | --------------------------------------- | ------------------------------------------ |
+| `request_transfer_otp` | Request OTP before executing a transfer | `amount`, `token`, `recipient`             |
+| `transfer_tokens`      | Execute stablecoin transfer on Hedera   | `amount`, `token`, `recipient`, `otp_code` |
+| `swap_currency`        | Swap between any stablecoin pair        | `from_token`, `to_token`, `amount`         |
 
 </details>
 
 <details>
 <summary><b>Agent-to-agent tools</b> — autonomous commerce primitives</summary>
 
-| Tool | What it does | Parameters |
-|------|-------------|------------|
-| `request_agent_transaction` | Request payment from another agent or user | `recipient`, `amount`, `memo` |
-| `execute_approved_transaction` | Execute a pre-approved agent transaction | `execution_token` |
-| `update_my_agent_settings` | Configure approval rules and webhooks | `settings` |
+| Tool                           | What it does                               | Parameters                    |
+| ------------------------------ | ------------------------------------------ | ----------------------------- |
+| `request_agent_transaction`    | Request payment from another agent or user | `recipient`, `amount`, `memo` |
+| `execute_approved_transaction` | Execute a pre-approved agent transaction   | `execution_token`             |
+| `update_my_agent_settings`     | Configure approval rules and webhooks      | `settings`                    |
 
 </details>
 
@@ -425,14 +430,14 @@ Economically impossible on Stripe ($300/day in fees alone).
 
 ## Security architecture
 
-| Layer | Mechanism | What it prevents |
-|-------|-----------|-----------------|
-| API Key Scopes | `read_only`, `transfer`, `swap`, `fiat` per key | Agent scope creep |
-| Spending Limits | Per-tx max + daily cap enforced server-side | Runaway agent spending |
-| OTP Verification | 6-digit code to registered email for transfers | Unauthorized payments |
-| Idempotency Keys | Redis deduplication per request | Double-spend on retries |
-| Rate Limiting | Per-key per-minute and per-day caps | Runaway agent loops |
-| Immutable Audit | Every tool call written to Hedera consensus layer | Tampered transaction history |
+| Layer            | Mechanism                                         | What it prevents             |
+| ---------------- | ------------------------------------------------- | ---------------------------- |
+| API Key Scopes   | `read_only`, `transfer`, `swap`, `fiat` per key   | Agent scope creep            |
+| Spending Limits  | Per-tx max + daily cap enforced server-side       | Runaway agent spending       |
+| OTP Verification | 6-digit code to registered email for transfers    | Unauthorized payments        |
+| Idempotency Keys | Redis deduplication per request                   | Double-spend on retries      |
+| Rate Limiting    | Per-key per-minute and per-day caps               | Runaway agent loops          |
+| Immutable Audit  | Every tool call written to Hedera consensus layer | Tampered transaction history |
 
 **What this package does NOT have access to:**
 
@@ -449,11 +454,11 @@ This MCP server is a thin authenticated client. All security enforcement execute
 
 ## Configuration
 
-| Variable                | Required | Default                                 | Description                      |
-| ----------------------- | -------- | --------------------------------------- | -------------------------------- |
+| Variable                | Required | Default                                 | Description                                                                                                                       |
+| ----------------------- | -------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | `BANANACRYSTAL_API_KEY` | **Yes**  | —                                       | Your API key from agents.bananacrystal.com/account. Sandbox keys start with `bc_test_` (no real money). Live keys have no prefix. |
-| `BANANACRYSTAL_API_URL` | No       | `https://agentic.bananacrystal.com/mcp` | Override API endpoint            |
-| `DEBUG`                 | No       | `false`                                 | Enable verbose debug logging     |
+| `BANANACRYSTAL_API_URL` | No       | `https://agentic.bananacrystal.com/mcp` | Override API endpoint                                                                                                             |
+| `DEBUG`                 | No       | `false`                                 | Enable verbose debug logging                                                                                                      |
 
 <br/>
 
@@ -463,18 +468,18 @@ This MCP server is a thin authenticated client. All security enforcement execute
 
 **Read-only operations are always free.** Fees only apply when moving money.
 
-| Operation | Fee |
-|---|---|
-| Balance checks, history, rates, profile | **Free** |
-| Token transfers (`transfer_tokens`) | **0.3%** of transfer amount |
-| Currency swaps (`swap_currency`) | **0.5%** of swap amount |
-| Fiat deposits / withdrawals | Varies by rail (ACH, wire) |
+| Operation                               | Fee                         |
+| --------------------------------------- | --------------------------- |
+| Balance checks, history, rates, profile | **Free**                    |
+| Token transfers (`transfer_tokens`)     | **0.3%** of transfer amount |
+| Currency swaps (`swap_currency`)        | **0.5%** of swap amount     |
+| Fiat deposits / withdrawals             | Varies by rail (ACH, wire)  |
 
-| Tier | Volume | Cost | For |
-|------|--------|------|-----|
-| **Free** | First 1,000 API calls/month | $0 | Development and testing |
-| **Pay-per-use** | 1,001+ /month | 0.3% transfers · 0.5% swaps | Production agents at any scale |
-| **Enterprise** | Unlimited | Contact us | High-volume autonomous payment networks |
+| Tier            | Volume                      | Cost                        | For                                     |
+| --------------- | --------------------------- | --------------------------- | --------------------------------------- |
+| **Free**        | First 1,000 API calls/month | $0                          | Development and testing                 |
+| **Pay-per-use** | 1,001+ /month               | 0.3% transfers · 0.5% swaps | Production agents at any scale          |
+| **Enterprise**  | Unlimited                   | Contact us                  | High-volume autonomous payment networks |
 
 No monthly fee. No seat pricing. No lock-in.
 
@@ -514,6 +519,7 @@ Seven architectural differences:
 Spending controls are enforced at the infrastructure layer — not in your application code, and not in the agent's code. The agent cannot override them.
 
 You set:
+
 - **Daily spending cap** — hard limit on total daily spend (e.g. $100/day)
 - **Per-transaction maximum** — no single payment over a threshold (e.g. $25 max)
 - **Recipient allowlist** — agent can only pay pre-approved wallet addresses
@@ -735,14 +741,14 @@ npm run dev
 
 The highest-impact contributions right now:
 
-| Area | What we need | Impact |
-|------|-------------|--------|
-| **Framework guides** | Eliza, Dify, n8n, Zapier AI integration examples | Expands reach to new developer communities |
-| **Language SDKs** | Python wrapper (`pip install bananacrystal`), Go client | Makes the package accessible to non-JS developers |
-| **Agent workflow examples** | Refund bots, treasury agents, payroll orchestrators | Developers copy real-world patterns directly |
-| **Test coverage** | Unit and integration tests against mock server | Makes every PR reviewable with confidence |
-| **Documentation** | Edge cases, error handling, advanced patterns | Reduces support burden, accelerates adoption |
-| **Platform integrations** | OpenWebUI, LibreChat, Continue.dev MCP configs | Puts BananaCrystal in front of new developer audiences |
+| Area                        | What we need                                            | Impact                                                 |
+| --------------------------- | ------------------------------------------------------- | ------------------------------------------------------ |
+| **Framework guides**        | Eliza, Dify, n8n, Zapier AI integration examples        | Expands reach to new developer communities             |
+| **Language SDKs**           | Python wrapper (`pip install bananacrystal`), Go client | Makes the package accessible to non-JS developers      |
+| **Agent workflow examples** | Refund bots, treasury agents, payroll orchestrators     | Developers copy real-world patterns directly           |
+| **Test coverage**           | Unit and integration tests against mock server          | Makes every PR reviewable with confidence              |
+| **Documentation**           | Edge cases, error handling, advanced patterns           | Reduces support burden, accelerates adoption           |
+| **Platform integrations**   | OpenWebUI, LibreChat, Continue.dev MCP configs          | Puts BananaCrystal in front of new developer audiences |
 
 ### How to contribute
 
@@ -781,17 +787,17 @@ If BananaCrystal has been useful:
 
 ## Links
 
-| | |
-|---|---|
-| **Get API key** | [agents.bananacrystal.com](https://agents.bananacrystal.com) |
-| **Platform** | [bananacrystal.com](https://www.bananacrystal.com) |
-| **Documentation** | [Documentation](https://agent.bananacrystal.com/docs) |
-| **Website** | [bananacrystal.com](https://www.bananacrystal.com) |
-| **npm** | [@bananacrystal/mcp-server](https://www.npmjs.com/package/@bananacrystal/mcp-server) |
-| **MCP Protocol** | [modelcontextprotocol.io](https://modelcontextprotocol.io) |
-| **Hedera** | [hedera.com](https://hedera.com) |
-| **Issues** | [GitHub Issues](https://github.com/BananaCrystal/mcp-server-package/issues) |
-| **Support** | support@bananacrystal.com |
+|                   |                                                                                      |
+| ----------------- | ------------------------------------------------------------------------------------ |
+| **Get API key**   | [agents.bananacrystal.com](https://agents.bananacrystal.com)                         |
+| **Platform**      | [bananacrystal.com](https://www.bananacrystal.com)                                   |
+| **Documentation** | [Documentation](https://agent.bananacrystal.com/docs)                                |
+| **Website**       | [bananacrystal.com](https://www.bananacrystal.com)                                   |
+| **npm**           | [@bananacrystal/mcp-server](https://www.npmjs.com/package/@bananacrystal/mcp-server) |
+| **MCP Protocol**  | [modelcontextprotocol.io](https://modelcontextprotocol.io)                           |
+| **Hedera**        | [hedera.com](https://hedera.com)                                                     |
+| **Issues**        | [GitHub Issues](https://github.com/BananaCrystal/mcp-server-package/issues)          |
+| **Support**       | support@bananacrystal.com                                                            |
 
 <br/>
 
@@ -801,7 +807,7 @@ If BananaCrystal has been useful:
 
 **MIT licensed · Built by [BananaCrystal](https://bananacrystal.com)**
 
-*Agent Payment Infrastructure · Autonomous Payments · AI-Native Finance*
+_Agent Payment Infrastructure · Autonomous Payments · AI-Native Finance_
 
 [Get started free](https://agents.bananacrystal.com) · [Read the docs](https://docs.bananacrystal.com) · [Star this repo](https://github.com/BananaCrystal/mcp-server-bananacrystal)
 
