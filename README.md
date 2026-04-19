@@ -17,7 +17,7 @@ _One endpoint. Every payment capability. The financial primitive of the agent ec
 
 <br/>
 
-[![Get API Key](https://img.shields.io/badge/Get%20Free%20API%20Key-agents.bananacrystal.com-F5821F?style=for-the-badge)](https://agents.bananacrystal.com/account)
+[![Get API Key](https://img.shields.io/badge/Get%20Free%20API%20Key-agents.bananacrystal.com-F5821F?style=for-the-badge)](https://agents.bananacrystal.com)
 [![npm](https://img.shields.io/npm/v/@bananacrystal/mcp-server?style=for-the-badge&color=5B63A4)](https://www.npmjs.com/package/@bananacrystal/mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Hedera](https://img.shields.io/badge/Settled%20on-Hedera%20%3C5s-6b48ff?style=for-the-badge)](https://hedera.com)
@@ -36,7 +36,11 @@ _One endpoint. Every payment capability. The financial primitive of the agent ec
 
 ---
 
-**If this project helps you build payment-capable agents, please star the repo on [GitHub](https://github.com/BananaCrystal/mcp-server-bananacrystal) — it helps other developers find it.**
+**If this project helps you build payment-capable agents, please [star the repo](https://github.com/BananaCrystal/mcp-server-bananacrystal) — it helps other developers find it.**
+
+[![Star on GitHub](https://img.shields.io/github/stars/BananaCrystal/mcp-server-bananacrystal?style=social)](https://github.com/BananaCrystal/mcp-server-bananacrystal)
+
+> **How to star:** Visit the repo, then click the ⭐ **Star** button in the top-right corner (you need a free GitHub account).
 
 [![Star on GitHub](https://img.shields.io/github/stars/BananaCrystal/mcp-server-bananacrystal?style=social)](https://github.com/BananaCrystal/mcp-server-bananacrystal)
 
@@ -52,14 +56,14 @@ _One endpoint. Every payment capability. The financial primitive of the agent ec
 
 **BananaCrystal** provides **agent payment infrastructure** — the missing financial layer of the AI agent stack.
 
-Traditional payment rails (banks, card networks, legacy APIs) were built for humans: human identity, human authorization, human operating hours. When AI agents try to use them they fail architecturally — fixed fees that make micropayments economically impossible, KYC requirements agents cannot satisfy, 3–5 day settlement windows that break autonomous workflows.
+Traditional payment rails (Stripe, banks, card networks) were built for humans: human identity, human authorization, human operating hours. When AI agents try to use them they fail architecturally — $0.30 fixed fees that make micropayments economically impossible, KYC requirements agents cannot satisfy, 3–5 day settlement windows that break autonomous workflows.
 
 This MCP server is the alternative. **One configuration line gives any AI agent:**
 
 - An **agent wallet** with a real stablecoin balance
 - **Autonomous payment authority** within operator-defined spending limits
 - **150+ currencies** — USDb, EURb, NGNb, GBPb, CADb and more
-- **On-chain settlement in under 5 seconds** on Hedera
+- **On-chain settlement in under 5 seconds** on Hedera at **$0.001 average fee**
 - An **immutable audit trail** every agent action is written to
 
 This is not a product feature. This is a new category: **autonomous payments** — the financial primitive of the agent economy, built for machines from first principles.
@@ -99,9 +103,9 @@ npm install -g @bananacrystal/mcp-server
 
 **Step 2 — Get a free API key**
 
-Sign up at **[agents.bananacrystal.com](https://agents.bananacrystal.com)** → **[Account → API Keys](https://agents.bananacrystal.com/account)** → Create MCP key.
+Sign up at **[agents.bananacrystal.com](https://agents.bananacrystal.com)** → Account → API Keys → Create MCP key.
 
-First 1,000 API calls free. No monthly fees. No seat pricing. No lock-in.
+First 1,000 transactions free. Then $0.001/tx. No monthly fees. No seat pricing. No lock-in.
 
 **Fees:** Transfers: 0.3% of amount · Swaps: 0.5% of amount · Read-only operations (balances, history, rates): free.
 
@@ -191,7 +195,7 @@ Add to your IDE MCP config:
 }
 ```
 
-Your coding agent can now pay for API calls, data feeds, and compute per use.
+Your coding agent can now pay for API calls, data feeds, and compute per use — at $0.001 per transaction.
 
 </details>
 
@@ -301,7 +305,7 @@ plugins:
 
 ---
 
-## 40 production-ready payment tools
+## 15 production-ready payment tools
 
 Every tool an agent needs for complete autonomous payment capability. All live. All guarded.
 
@@ -348,7 +352,7 @@ Every tool an agent needs for complete autonomous payment capability. All live. 
 </details>
 
 <details>
-<summary><b>Swap tools</b> — require <code>swap</code> scope · fee: 0.5% of amount</summary>
+<summary><b>Write tools</b> — require <code>transfer</code> or <code>swap</code> scope</summary>
 
 | Tool            | What it does                               |
 | --------------- | ------------------------------------------ |
@@ -357,7 +361,7 @@ Every tool an agent needs for complete autonomous payment capability. All live. 
 </details>
 
 <details>
-<summary><b>Fiat tools</b> — require <code>fiat</code> scope + KYC</summary>
+<summary><b>Agent-to-agent tools</b> — autonomous commerce primitives</summary>
 
 | Tool                 | What it does             |
 | -------------------- | ------------------------ |
@@ -418,7 +422,7 @@ Flow:    get_balances → check threshold → estimate_swap_fees
 
 Result:  Rebalanced $42,000 in 4.2 seconds.
          Human involvement: zero.
-         Fee: 0.5% of swap amount.
+         Fee: $0.001.
 ```
 
 </details>
@@ -462,7 +466,7 @@ Flow:    get_exchange_rate (USDb/NGNb: 1,580)
          → transfer_tokens to vendor wallet
 
 Traditional wire: 3–5 days, $35 fee.
-BananaCrystal:    4.1 seconds, 0.3% fee.
+BananaCrystal:    4.1 seconds, $0.001 fee.
 ```
 
 </details>
@@ -474,7 +478,7 @@ BananaCrystal:    4.1 seconds, 0.3% fee.
 Task:    "Query the pricing data API. Pay per result."
 
 Flow:    Agent calls data provider → provider returns HTTP 402
-         → agent calls transfer_tokens (0.3% of transfer amount)
+         → agent calls transfer_tokens ($0.001 per query)
          → data unlocked → agent continues workflow
 
 1,000 queries/day = $1.00 in payments + $1.00 in fees.
@@ -621,7 +625,7 @@ OpenAI adopted MCP in March 2025. Microsoft added it to Copilot Studio in May 20
 
 1. Deposit USDC (external stablecoin) into your BananaCrystal account
 2. Convert to USDb (BananaCrystal's native 1:1 USD stablecoin)
-3. Swap USDb to any of 150+ local currency stablecoins
+3. Swap USDb to any of 150+ local currency stablecoins: EURb (Euro), NGNb (Nigerian Naira), GBPb (British Pound), CADb (Canadian Dollar), and 140+ more
 4. Withdraw back to USDC or your local bank anytime
 
 Every swap settles on Hedera in under 5 seconds. No banks. No SWIFT. No weekends.
@@ -653,7 +657,7 @@ Use `list_available_tokens` to get the live list with Hedera token IDs and curre
 Hedera is an enterprise-grade public distributed ledger chosen for three properties critical to autonomous agent payments:
 
 - **Absolute finality in under 5 seconds** — unlike Ethereum (probabilistic finality over minutes) or Bitcoin (10+ minute blocks), Hedera's hashgraph consensus provides certainty that a transaction has cleared. An agent's next action depends on knowing the payment settled — absolute finality is a functional requirement, not a preference.
-- **Low transaction fees** — Hedera's fee structure makes agent micropayments economically viable at scale. No other production blockchain offers this combination of speed and cost.
+- **$0.001 average transaction fee** — Hedera's fee structure makes agent micropayments economically viable at scale. No other production blockchain offers this combination of speed and cost.
 - **Carbon-negative network** — the only carbon-negative public distributed ledger, which matters for enterprises running agents at millions of transactions per month.
 
 </details>
@@ -666,12 +670,12 @@ Yes — MIT licensed. The server is a thin authenticated client that makes HTTP 
 To run locally without an API key:
 
 ```bash
-git clone https://github.com/BananaCrystal/mcp-server-bananacrystal.git
-cd mcp-server-bananacrystal
+git clone https://github.com/BananaCrystal/mcp-server-package.git
+cd mcp-server-package
 npm install && npm run mock
 ```
 
-The mock server returns realistic data so you can build integrations, write tests, and explore all 40 tools without touching production.
+The mock server returns realistic data so you can build integrations, write tests, and explore all 15 tools without touching production.
 
 </details>
 
@@ -707,13 +711,13 @@ We will acknowledge within 24 hours and aim to resolve critical issues within 72
 
 ```bash
 # Clone
-git clone https://github.com/BananaCrystal/mcp-server-bananacrystal.git
-cd mcp-server-bananacrystal
+git clone https://github.com/BananaCrystal/mcp-server-package.git
+cd mcp-server-package
 
 # Install
 npm install
 
-# Start mock server — no API key needed, all 40 tools return realistic data
+# Start mock server — no API key needed, all 15 tools return realistic data
 npm run mock
 
 # Build from source
@@ -808,8 +812,8 @@ If you are building a production agent, set limits conservatively first and incr
 **We are building the financial infrastructure of the agent economy. This is early. Your contributions shape the category.**
 
 ```bash
-git clone https://github.com/BananaCrystal/mcp-server-bananacrystal.git
-cd mcp-server-bananacrystal
+git clone https://github.com/BananaCrystal/mcp-server-package.git
+cd mcp-server-package
 npm install
 npm run mock   # develop against mock — no API key needed
 npm run dev
@@ -830,7 +834,7 @@ The highest-impact contributions right now:
 
 ### How to contribute
 
-1. Check open issues on [GitHub](https://github.com/BananaCrystal/mcp-server-bananacrystal/issues) for `good first issue` labels
+1. Check [open issues](https://github.com/BananaCrystal/mcp-server-package/issues) for `good first issue` labels
 2. Fork the repo and create a branch: `git checkout -b feature/your-contribution`
 3. Make your changes against the mock server (no API key needed)
 4. Submit a PR with a clear description of what you built and why
@@ -840,7 +844,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full guide and [GETTING_STARTED
 
 ### Recognition
 
-All contributors are credited in the commit history. Significant contributions (new framework integrations, language SDKs, major examples) are highlighted in the project README and on [bananacrystal.com](https://bananacrystal.com).
+All contributors are credited in the changelog. Significant contributions (new framework integrations, language SDKs, major examples) are highlighted in release notes and on [bananacrystal.com](https://bananacrystal.com).
 
 **If you build something interesting with this MCP server, open an issue tagged `showcase` and we will feature it.**
 
@@ -852,8 +856,8 @@ All contributors are credited in the commit history. Significant contributions (
 
 If BananaCrystal has been useful:
 
-**Star the repo** — it helps other developers find agent payment infrastructure when they need it.
-Visit [github.com/BananaCrystal/mcp-server-bananacrystal](https://github.com/BananaCrystal/mcp-server-bananacrystal) to star.
+**Star the repo** — it helps other developers find agent payment infrastructure when they need it.  
+[Star on GitHub](https://github.com/BananaCrystal/mcp-server-bananacrystal)
 
 **Share it** — post in your AI agent community, Discord, or newsletter. The agent economy needs infrastructure. Developers building agents need to know this exists.
 
@@ -865,16 +869,16 @@ Visit [github.com/BananaCrystal/mcp-server-bananacrystal](https://github.com/Ban
 
 ## Links
 
-|                   |                                                                                                     |
-| ----------------- | --------------------------------------------------------------------------------------------------- |
-| **Get API key**   | [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account)                        |
-| **Platform**      | [bananacrystal.com](https://www.bananacrystal.com)                                                  |
-| **Documentation** | [agents.bananacrystal.com/docs](https://agents.bananacrystal.com/docs)                              |
-| **GitHub**        | [BananaCrystal/mcp-server-bananacrystal](https://github.com/BananaCrystal/mcp-server-bananacrystal) |
-| **npm**           | [@bananacrystal/mcp-server](https://www.npmjs.com/package/@bananacrystal/mcp-server)                |
-| **MCP Protocol**  | [modelcontextprotocol.io](https://modelcontextprotocol.io)                                          |
-| **Hedera**        | [hedera.com](https://hedera.com)                                                                    |
-| **Support**       | support@bananacrystal.com                                                                           |
+|                   |                                                                                      |
+| ----------------- | ------------------------------------------------------------------------------------ |
+| **Get API key**   | [agents.bananacrystal.com](https://agents.bananacrystal.com/account)                         |
+| **Platform**      | [bananacrystal.com](https://agents.bananacrystal.com)                                   |
+| **Documentation** | [Documentation](https://agent.bananacrystal.com/docs)                                |
+| **Website**       | [bananacrystal.com](https://www.bananacrystal.com)                                   |
+| **npm**           | [@bananacrystal/mcp-server](https://www.npmjs.com/package/@bananacrystal/mcp-server) |
+| **MCP Protocol**  | [modelcontextprotocol.io](https://modelcontextprotocol.io)                           |
+| **Hedera**        | [hedera.com](https://hedera.com)                                                     |
+| **Support**       | support@bananacrystal.com                                                            |
 
 <br/>
 
@@ -886,7 +890,7 @@ Visit [github.com/BananaCrystal/mcp-server-bananacrystal](https://github.com/Ban
 
 _Agent Payment Infrastructure · Autonomous Payments · AI-Native Finance_
 
-[Get started free](https://agents.bananacrystal.com/account) · [Read the docs](https://agents.bananacrystal.com/docs) · [View on GitHub](https://github.com/BananaCrystal/mcp-server-bananacrystal)
+[Get started free](https://agents.bananacrystal.com) · [Read the docs](https://docs.bananacrystal.com) · [Star this repo](https://github.com/BananaCrystal/mcp-server-bananacrystal)
 
 </div>
 
@@ -904,7 +908,9 @@ SCHEMA MARKUP — for AI engine indexing and GEO/AEO optimisation
       "featureList": "get_balances, get_exchange_rate, transfer_tokens, swap_currency, get_transaction_history, get_my_limits, request_agent_transaction, execute_approved_transaction",
       "offers": {
         "@type": "Offer",
-        "description": "0.3% for transfers, 0.5% for swaps. Read-only operations free. First 1,000 API calls free."
+        "price": "0.001",
+        "priceCurrency": "USD",
+        "description": "Per transaction after 1,000 free per month"
       },
       "provider": {
         "@type": "Organization",
@@ -928,7 +934,7 @@ SCHEMA MARKUP — for AI engine indexing and GEO/AEO optimisation
           "name": "How do AI agents make autonomous payments?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "AI agents make autonomous payments through BananaCrystal's MCP server. The agent calls payment tools (transfer_tokens, swap_currency) within operator-defined spending limits. Transactions settle on Hedera blockchain in under 5 seconds. Transfers cost 0.3% of the amount, swaps cost 0.5%. No human approval is required per transaction — the operator sets policy once and the agent operates within it autonomously."
+            "text": "AI agents make autonomous payments through BananaCrystal's MCP server. The agent calls payment tools (transfer_tokens, swap_currency) within operator-defined spending limits. Transactions settle on Hedera blockchain in under 5 seconds at $0.001 average fee. No human approval is required per transaction — the operator sets policy once and the agent operates within it autonomously."
           }
         },
         {

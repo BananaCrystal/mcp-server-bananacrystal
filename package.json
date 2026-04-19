@@ -1,7 +1,7 @@
 {
   "name": "@bananacrystal/mcp-server",
   "version": "1.0.0",
-  "description": "Agent payment infrastructure MCP server. Give AI agents autonomous payment capability — stablecoin transfers, currency swaps, agent wallets, and fiat operations on Hedera. Works with Claude, LangChain, CrewAI, AutoGPT.",
+  "description": "MCP server for BananaCrystal - enables AI agents to interact with BananaCrystal's payment infrastructure",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
@@ -17,19 +17,14 @@
   },
   "keywords": [
     "mcp",
-    "agent-payments",
-    "autonomous-payments",
-    "ai-agents",
-    "agent-wallet",
-    "stablecoin",
-    "hedera",
-    "langchain",
-    "claude",
     "model-context-protocol",
-    "ai-native-finance",
-    "agent-economy",
-    "crewai",
-    "payment-infrastructure"
+    "bananacrystal",
+    "hedera",
+    "payments",
+    "crypto",
+    "ai",
+    "claude",
+    "agent"
   ],
   "author": "BananaCrystal",
   "license": "MIT",
