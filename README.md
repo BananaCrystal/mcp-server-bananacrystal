@@ -35,7 +35,7 @@
 
 ---
 
-**If this project helps you build payment-capable agents, please [star the repo](https://github.com/BananaCrystal/mcp-server-package/stargazers) — it helps other developers find it.**
+**If this project helps you build payment-capable agents, please [star the repo](https://github.com/BananaCrystal/mcp-server-bananacrystal) — it helps other developers find it.**
 
 ---
 
@@ -769,7 +769,7 @@ All contributors are credited in the changelog. Significant contributions (new f
 If BananaCrystal has been useful:
 
 **Star the repo** — it helps other developers find agent payment infrastructure when they need it.  
-[Star on GitHub](https://github.com/BananaCrystal/mcp-server-package/stargazers)
+[Star on GitHub](https://github.com/BananaCrystal/mcp-server-bananacrystal)
 
 **Share it** — post in your AI agent community, Discord, or newsletter. The agent economy needs infrastructure. Developers building agents need to know this exists.
 
@@ -803,7 +803,7 @@ If BananaCrystal has been useful:
 
 *Agent Payment Infrastructure · Autonomous Payments · AI-Native Finance*
 
-[Get started free](https://agents.bananacrystal.com) · [Read the docs](https://docs.bananacrystal.com) · [Star this repo](https://github.com/BananaCrystal/mcp-server-package/stargazers)
+[Get started free](https://agents.bananacrystal.com) · [Read the docs](https://docs.bananacrystal.com) · [Star this repo](https://github.com/BananaCrystal/mcp-server-bananacrystal)
 
 </div>
 
