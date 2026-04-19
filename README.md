@@ -689,7 +689,7 @@ BananaCrystal is the agent payment infrastructure layer. We don't sell a product
 <details>
 <summary><b>How do I report a security vulnerability?</b></summary>
 
-Do not open a public GitHub issue for security vulnerabilities. Email security@bananacrystal.com with:
+Do not open a public GitHub issue for security vulnerabilities. Email support@bananacrystal.com with:
 
 1. Description of the vulnerability
 2. Steps to reproduce
