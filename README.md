@@ -68,7 +68,7 @@ This is not a product feature. This is a new category: **autonomous payments** �
 
 |                         | Traditional rails              | BananaCrystal                                     |
 | ----------------------- | ------------------------------ | ------------------------------------------------- |
-| **Fee per transaction** | $0.30+ fixed · $15–35 (wire)   | **0.3% transfers · 0.5% swaps · free for reads** |
+| **Fee per transaction** | $0.30 + 2.9% (Stripe) · $15–35 (wire) | **0.3% transfers · 0.5% swaps · free for reads** |
 | **Settlement speed**    | 1–5 business days              | **Under 5 seconds, absolute finality**            |
 | **Identity model**      | Human KYC required             | **Agent ID — programmatic**                       |
 | **Authorization**       | Human approval per transaction | **Programmatic policy — autonomous**              |
@@ -77,7 +77,7 @@ This is not a product feature. This is a new category: **autonomous payments** �
 | **Spending controls**   | Card limit only                | **Per-tx caps, daily limits, allowlists, scopes** |
 | **Audit trail**         | Monthly statements             | **Immutable on-chain, machine-readable**          |
 
-> 1,000 transactions/day on traditional rails: **$100,000+/year** in fees alone.
+> 1,000 transactions/day on Stripe: **$109,500/year** in fees alone.
 > 1,000 transactions/day on BananaCrystal: **$365/year**.
 > The agent economy runs on micropayments. The infrastructure fee must be microscopic — or the economics collapse entirely.
 
@@ -474,7 +474,7 @@ Flow:    Agent calls data provider → provider returns HTTP 402
          → data unlocked → agent continues workflow
 
 1,000 queries/day = $1.00 in payments + $1.00 in fees.
-Economically impossible on legacy payment rails ($300/day in fees alone).
+Economically impossible on Stripe ($300/day in fees alone).
 ```
 
 </details>
@@ -521,13 +521,22 @@ This MCP server is a thin authenticated client. All security enforcement execute
 
 ## Pricing
 
-| Tier            | Volume                         | Cost                   | For                                     |
-| --------------- | ------------------------------ | ---------------------- | --------------------------------------- |
-| **Free**        | First 1,000 transactions/month | $0                     | Development and early agents            |
-| **Pay-per-use** | 1,001+ /month                  | 0.3% transfers · 0.5% swaps | Production agents at any scale |
-| **Enterprise**  | Unlimited                      | Contact us             | High-volume autonomous payment networks |
+**Read-only operations are always free.** Fees only apply when moving money.
 
-No monthly fee. No seat pricing. No lock-in. Transfers cost 0.3% of the amount sent. Swaps cost 0.5% of the amount swapped. Read-only operations are always free.
+| Operation | Fee |
+|---|---|
+| Balance checks, history, rates, profile | **Free** |
+| Token transfers (`transfer_tokens`) | **0.3%** of transfer amount |
+| Currency swaps (`swap_currency`) | **0.5%** of swap amount |
+| Fiat deposits / withdrawals | Varies by rail (ACH, wire) |
+
+| Tier | Volume | Cost | For |
+|------|--------|------|-----|
+| **Free** | First 1,000 API calls/month | $0 | Development and testing |
+| **Pay-per-use** | 1,001+ /month | 0.3% transfers · 0.5% swaps | Production agents at any scale |
+| **Enterprise** | Unlimited | Contact us | High-volume autonomous payment networks |
+
+No monthly fee. No seat pricing. No lock-in.
 
 <br/>
 
@@ -540,22 +549,22 @@ No monthly fee. No seat pricing. No lock-in. Transfers cost 0.3% of the amount s
 
 Agent payment infrastructure is the class of financial technology designed from first principles for AI agents as the primary economic actor. It provides agent wallets with programmatic identity (no human KYC), autonomous transaction authorization without per-transaction human approval, machine-speed settlement, and machine-readable audit trails.
 
-Traditional payment infrastructure (bank APIs, card networks, legacy payment processors) assumes a human is the accountable party behind every payment. Agent payment infrastructure assumes the payer may be an autonomous software process operating 24/7 at machine speed. These are architecturally different requirements — which is why BananaCrystal exists as a category, not just a product.
+Traditional payment infrastructure (Stripe, bank APIs, card networks) assumes a human is the accountable party behind every payment. Agent payment infrastructure assumes the payer may be an autonomous software process operating 24/7 at machine speed. These are architecturally different requirements — which is why BananaCrystal exists as a category, not just a product.
 
 </details>
 
 <details>
-<summary><b>How is this different from traditional payment APIs?</b></summary>
+<summary><b>How is this different from Stripe or traditional payment APIs?</b></summary>
 
 Seven architectural differences:
 
-1. **Identity** — Traditional payment processors require human KYC and a legal entity. BananaCrystal issues agent wallets with programmatic identity in seconds.
-2. **Authorization** — Legacy payment rails require a human to authorize each transaction. BananaCrystal uses programmatic spending policy set once by the operator.
-3. **Fees** — Traditional processors charge $0.30+ fixed fees per transaction, making micropayments economically impossible. BananaCrystal charges a percentage of the amount (0.3% for transfers, 0.5% for swaps) with no fixed fee — making micropayments viable.
-4. **Settlement** — Bank settlements take 2–3 days. BananaCrystal settles on Hedera in under 5 seconds with absolute finality.
+1. **Identity** — Stripe requires human KYC and a legal entity. BananaCrystal issues agent wallets with programmatic identity in seconds.
+2. **Authorization** — Stripe requires a human to authorize each transaction (3DS2, card PIN, etc.). BananaCrystal uses programmatic spending policy set once by the operator.
+3. **Fees** — Stripe charges $0.30 + 2.9% per transaction, making micropayments economically impossible. BananaCrystal charges a percentage of the amount (0.3% for transfers, 0.5% for swaps) with no fixed fee — making micropayments viable.
+4. **Settlement** — Stripe settlements take 2–3 days. BananaCrystal settles on Hedera in under 5 seconds with absolute finality.
 5. **Hours** — Banks and card networks have operating hours. BananaCrystal is 24/7/365.
-6. **Fraud detection** — Legacy fraud systems are trained on human transaction patterns and flag automated agent behavior as suspicious. BananaCrystal is designed for machine transaction patterns.
-7. **Spending controls** — Traditional rails offer basic limits only. BananaCrystal offers per-transaction caps, daily limits, recipient allowlists, and currency restrictions — all enforced at infrastructure level, not application layer.
+6. **Fraud detection** — Stripe's fraud system is trained on human transaction patterns and flags automated agent behavior as suspicious. BananaCrystal is designed for machine transaction patterns.
+7. **Spending controls** — Stripe offers card limits only. BananaCrystal offers per-transaction caps, daily limits, recipient allowlists, and currency restrictions — all enforced at infrastructure level, not application layer.
 
 </details>
 
