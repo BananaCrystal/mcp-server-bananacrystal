@@ -10,7 +10,7 @@ Be respectful, inclusive, and professional in all interactions.
 
 ### Reporting Bugs
 
-1. Check if the bug has already been reported in [Issues](https://github.com/bananacrystal/mcp-server/issues)
+1. Check if the bug has already been reported in [Issues](https://github.com/BananaCrystal/mcp-server-bananacrystal/issues)
 2. If not, create a new issue with:
    - Clear title and description
    - Steps to reproduce
@@ -41,8 +41,8 @@ Be respectful, inclusive, and professional in all interactions.
 
 ```bash
 # Clone your fork
-git clone https://github.com/YOUR_USERNAME/mcp-server.git
-cd mcp-server
+git clone https://github.com/YOUR_USERNAME/mcp-server-bananacrystal.git
+cd mcp-server-bananacrystal
 
 # Install dependencies
 npm install
@@ -50,8 +50,11 @@ npm install
 # Build
 npm run build
 
-# Test locally
-export BANANACRYSTAL_API_KEY=bc_test_your_key
+# Start mock server — no API key needed, all 40 tools return realistic data
+npm run mock
+
+# Or run in development mode against the real API
+export BANANACRYSTAL_API_KEY=bc_test_your_sandbox_key
 npm run dev
 ```
 

@@ -101,7 +101,6 @@ npm install -g @bananacrystal/mcp-server
 
 Sign up at **[agents.bananacrystal.com](https://agents.bananacrystal.com)** → **[Account → API Keys](https://agents.bananacrystal.com/account)** → Create MCP key.
 
-
 **Fees:** Transfers: 0.3% of amount · Swaps: 0.5% of amount · Read-only operations (balances, history, rates): free.
 
 > **Start with a Sandbox key** — fake money, zero risk, full functionality. Sandbox keys start with `bc_test_` so you can always tell them apart from live keys. Switch to a Live key (no prefix) when ready.
@@ -698,6 +697,76 @@ We will acknowledge within 24 hours and aim to resolve critical issues within 72
 
 </details>
 
+<details>
+<summary><b>Is there a sandbox environment for testing?</b></summary>
+
+Yes — and you should always start there.
+
+Create a **Sandbox key** at [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account) → API Keys → Create Sandbox Key. Sandbox keys start with `bc_test_` so you can always tell them apart from live keys (which have no prefix). The package automatically routes each key to the correct endpoint.
+
+**What sandbox gives you:**
+
+- Pre-seeded balances: 10,000 USDb · 5,000,000 NGNb · 50,000 GHSb · 1,000,000 KESb · 150,000 ZARb
+- OTP codes returned directly in the API response — no email sent, no waiting
+- KYC always approved instantly
+- Spending limits are unlimited
+- Reset balances anytime with the `reset_sandbox_balance` tool
+
+All 40 tools work identically in sandbox. When you're ready to go live, swap `bc_test_your_key` for a live key — same config, same tools, real money.
+
+There is also a **local mock server** for contributors who want to develop without any API key at all:
+
+```bash
+git clone https://github.com/BananaCrystal/mcp-server-bananacrystal.git
+cd mcp-server-bananacrystal
+npm install && npm run mock
+```
+
+The mock server runs on `http://localhost:3000` and returns realistic data for all tools.
+
+</details>
+
+<details>
+<summary><b>What CLI tools are available?</b></summary>
+
+After installing the package globally (`npm install -g @bananacrystal/mcp-server`), the `bananacrystal-mcp` binary is available on your PATH.
+
+**Primary use — run the MCP server:**
+
+```bash
+bananacrystal-mcp
+# Starts the MCP server over stdio, ready for Claude Desktop or any MCP client
+```
+
+**Check version:**
+
+```bash
+bananacrystal-mcp --version
+```
+
+**Debug mode — verbose logging to stderr:**
+
+```bash
+DEBUG=true bananacrystal-mcp
+```
+
+**Override the API endpoint (e.g. point to local mock):**
+
+```bash
+BANANACRYSTAL_API_URL=http://localhost:3001 bananacrystal-mcp
+```
+
+**Test with MCP Inspector (interactive tool explorer):**
+
+```bash
+export BANANACRYSTAL_API_KEY=bc_test_your_key_here
+npx @modelcontextprotocol/inspector node dist/index.js
+```
+
+The MCP Inspector opens a browser UI where you can call any of the 40 tools interactively — useful for exploring the API before wiring it into an agent.
+
+</details>
+
 <br/>
 
 ---
@@ -734,8 +803,8 @@ npx @modelcontextprotocol/inspector node dist/index.js
     "bananacrystal": {
       "command": "bananacrystal-mcp",
       "env": {
-        "BANANACRYSTAL_API_KEY": "test_key",
-        "BANANACRYSTAL_API_URL": "http://localhost:3000"
+        "BANANACRYSTAL_API_KEY": "bc_mock_test",
+        "BANANACRYSTAL_API_URL": "http://localhost:3001"
       }
     }
   }
@@ -867,7 +936,7 @@ Visit [github.com/BananaCrystal/mcp-server-bananacrystal](https://github.com/Ban
 |                   |                                                                                                     |
 | ----------------- | --------------------------------------------------------------------------------------------------- |
 | **Get API key**   | [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account)                        |
-| **Platform**      | [bananacrystal.com](https://www.agents.bananacrystal.com)                                                  |
+| **Platform**      | [agents.bananacrystal.com](https://agents.bananacrystal.com)                                        |
 | **Documentation** | [agents.bananacrystal.com/docs](https://agents.bananacrystal.com/docs)                              |
 | **GitHub**        | [BananaCrystal/mcp-server-bananacrystal](https://github.com/BananaCrystal/mcp-server-bananacrystal) |
 | **npm**           | [@bananacrystal/mcp-server](https://www.npmjs.com/package/@bananacrystal/mcp-server)                |

@@ -14,7 +14,10 @@ npm install -g @bananacrystal/mcp-server
 2. Sign up or log in
 3. Go to **Account** → **API Keys**
 4. Click **Create New Key**
-5. Copy your key (starts with `bc_`)
+5. **Start with a Sandbox key** — it has fake money, zero risk, and full functionality. Sandbox keys start with `bc_test_`. Live keys have no prefix.
+6. Copy your key
+
+> **Tip:** You can always tell sandbox from live by the `bc_test_` prefix. The package automatically routes each key to the correct endpoint.
 
 ### 3. Configure Claude Desktop
 
@@ -34,7 +37,7 @@ npm install -g @bananacrystal/mcp-server
 }
 ```
 
-**⚠️ Note:** This connects to production with real money. Start with small amounts to test!
+**⚠️ Note:** This connects to production with real money. Use a Sandbox key (`bc_test_...`) while testing — same config, no real money.
 
 ### 4. Restart Claude Desktop
 
@@ -55,6 +58,8 @@ Show my recent BananaCrystal transactions
 ```
 What tokens are supported on BananaCrystal?
 ```
+
+> **Sandbox tip:** If you used a `bc_test_` key, your account comes pre-seeded with 10,000 USDb, 5,000,000 NGNb, and more. OTP codes are returned directly in the response — no email needed. Reset balances anytime by asking Claude: _"Reset my BananaCrystal sandbox balance"_.
 
 ---
 
@@ -79,7 +84,9 @@ npm run mock
 You'll see:
 
 ```
-🚀 Mock API Server running on http://localhost:3000
+🍌 BananaCrystal Mock API Server
+================================
+Server running at: http://localhost:3001
 ```
 
 ### 3. Configure Claude for Mock
@@ -90,8 +97,8 @@ You'll see:
     "bananacrystal": {
       "command": "bananacrystal-mcp",
       "env": {
-        "BANANACRYSTAL_API_KEY": "test_key",
-        "BANANACRYSTAL_API_URL": "http://localhost:3000"
+        "BANANACRYSTAL_API_KEY": "bc_mock_test",
+        "BANANACRYSTAL_API_URL": "http://localhost:3001"
       }
     }
   }
@@ -110,7 +117,7 @@ Now all API calls go to your local mock server with fake responses. Perfect for 
 | ------------------- | ------------------------------------------------------------ |
 | **Sign Up / Login** | [agents.bananacrystal.com](https://agents.bananacrystal.com) |
 | **Production API**  | `https://agentic.bananacrystal.com/mcp` (default)            |
-| **Mock Server**     | `http://localhost:3000` (for developers)                     |
+| **Mock Server**     | `http://localhost:3001` (for developers)                     |
 | **Documentation**   | [GitHub README](README.md)                                   |
 
 ---
@@ -153,19 +160,19 @@ Now all API calls go to your local mock server with fake responses. Perfect for 
 
 ### Check Balance
 
-**You:** "What's my USDC balance on BananaCrystal?"  
-**Claude:** "You have 1,250.00 USDC"
+**You:** "What's my USDb balance on BananaCrystal?"  
+**Claude:** "You have 1,250.00 USDb"
 
 ### Transfer Tokens
 
-**You:** "Send 100 USDC to alice@example.com on BananaCrystal"  
+**You:** "Send 100 USDb to [email@example.com] on BananaCrystal"  
 **Claude:** "I'll request an OTP code..."  
 _(You receive email, provide code, transfer completes)_
 
 ### Swap Currency
 
-**You:** "Swap 50 USD to NGN on BananaCrystal"  
-**Claude:** "Done! You swapped 50 USD for 41,250 NGN"
+**You:** "Swap 50 USDb to NGNb on BananaCrystal"  
+**Claude:** "Done! You swapped 50 USDb for 79,000 NGNb"
 
 ### View History
 
