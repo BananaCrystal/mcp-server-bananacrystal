@@ -101,7 +101,6 @@ npm install -g @bananacrystal/mcp-server
 
 Sign up at **[agents.bananacrystal.com](https://agents.bananacrystal.com)** → **[Account → API Keys](https://agents.bananacrystal.com/account)** → Create MCP key.
 
-First 1,000 API calls free. No monthly fees. No seat pricing. No lock-in.
 
 **Fees:** Transfers: 0.3% of amount · Swaps: 0.5% of amount · Read-only operations (balances, history, rates): free.
 
