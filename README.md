@@ -868,7 +868,7 @@ Visit [github.com/BananaCrystal/mcp-server-bananacrystal](https://github.com/Ban
 |                   |                                                                                                     |
 | ----------------- | --------------------------------------------------------------------------------------------------- |
 | **Get API key**   | [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account)                        |
-| **Platform**      | [bananacrystal.com](https://www.bananacrystal.com)                                                  |
+| **Platform**      | [bananacrystal.com](https://www.agents.bananacrystal.com)                                                  |
 | **Documentation** | [agents.bananacrystal.com/docs](https://agents.bananacrystal.com/docs)                              |
 | **GitHub**        | [BananaCrystal/mcp-server-bananacrystal](https://github.com/BananaCrystal/mcp-server-bananacrystal) |
 | **npm**           | [@bananacrystal/mcp-server](https://www.npmjs.com/package/@bananacrystal/mcp-server)                |
