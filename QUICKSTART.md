@@ -20,8 +20,8 @@ bananacrystal-mcp --version
 2. Sign up or log in
 3. Navigate to **Account** → **API Keys**
 4. Click **Create New Key**
-5. Select **MCP Server** as the key type
-6. Copy the key (it starts with `bc_`)
+5. **Start with a Sandbox key** — fake money, zero risk, full functionality. Sandbox keys start with `bc_test_`. Live keys have no prefix.
+6. Copy the key
 
 ⚠️ **Important**: Save your key securely. You won't be able to see it again!
 
@@ -60,7 +60,7 @@ Paste this into the file:
 
 Replace `PASTE_YOUR_KEY_HERE` with your actual API key.
 
-**Note:** This connects to production. Start with small amounts to test!
+**Note:** This connects to production. Use a Sandbox key (`bc_test_...`) while testing — same config, no real money!
 
 ## Step 4: Restart Claude (30 seconds)
 
@@ -137,7 +137,7 @@ Swap 50 USD to NGN on BananaCrystal
 - 📖 [Full Documentation](README.md)
 - 💬 [Discord Community](https://discord.gg/bananacrystal)
 - 📧 Email: support@bananacrystal.com
-- 🐛 [Report Issues](https://github.com/bananacrystal/mcp-server/issues)
+- 🐛 [Report Issues](https://github.com/BananaCrystal/mcp-server-bananacrystal/issues)
 
 ## Next Steps
 

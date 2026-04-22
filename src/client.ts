@@ -17,14 +17,14 @@ export class BananaCrystalClient {
     const url = `${this.apiUrl}${endpoint}`;
 
     if (this.debug) {
-      console.error(`[API] ${options.method || 'GET'} ${endpoint}`);
+      console.error(`[API] ${options.method || "GET"} ${endpoint}`);
     }
 
     const response = await fetch(url, {
       ...options,
       headers: {
-        'x-api-key': this.apiKey,
-        'Content-Type': 'application/json',
+        "x-api-key": this.apiKey,
+        "Content-Type": "application/json",
         ...options.headers,
       },
     });
@@ -50,21 +50,21 @@ export class BananaCrystalClient {
 
   // Profile & Identity
   async getMyProfile() {
-    return this.request('/api/v1/mcp/profile', { method: 'GET' });
+    return this.request("/api/v1/mcp/profile", { method: "GET" });
   }
 
   // Utility & Health
   async ping() {
-    return this.request('/api/v1/mcp/ping', { method: 'GET' });
+    return this.request("/api/v1/mcp/ping", { method: "GET" });
   }
 
   async getServerInfo() {
-    return this.request('/api/v1/mcp/server-info', { method: 'GET' });
+    return this.request("/api/v1/mcp/server-info", { method: "GET" });
   }
 
   async echo(message: string) {
-    return this.request('/api/v1/mcp/echo', {
-      method: 'POST',
+    return this.request("/api/v1/mcp/echo", {
+      method: "POST",
       body: JSON.stringify({ message }),
     });
   }
@@ -72,13 +72,13 @@ export class BananaCrystalClient {
   // Balances
   async getBalances(params?: { accountId?: string; tokenId?: string }) {
     const query = new URLSearchParams();
-    if (params?.accountId) query.set('accountId', params.accountId);
-    if (params?.tokenId) query.set('tokenId', params.tokenId);
+    if (params?.accountId) query.set("accountId", params.accountId);
+    if (params?.tokenId) query.set("tokenId", params.tokenId);
 
     const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/balances${queryString ? `?${queryString}` : ''}`;
+    const endpoint = `/api/v1/mcp/balances${queryString ? `?${queryString}` : ""}`;
 
-    return this.request(endpoint, { method: 'GET' });
+    return this.request(endpoint, { method: "GET" });
   }
 
   // Transfers
@@ -88,8 +88,8 @@ export class BananaCrystalClient {
     amount: string;
     tokenSymbol?: string;
   }) {
-    return this.request('/api/v1/mcp/transfer/request-otp', {
-      method: 'POST',
+    return this.request("/api/v1/mcp/transfer/request-otp", {
+      method: "POST",
       body: JSON.stringify(params),
     });
   }
@@ -102,8 +102,8 @@ export class BananaCrystalClient {
     transactionRef: string;
     tokenSymbol?: string;
   }) {
-    return this.request('/api/v1/mcp/transfer', {
-      method: 'POST',
+    return this.request("/api/v1/mcp/transfer", {
+      method: "POST",
       body: JSON.stringify(params),
     });
   }
@@ -115,8 +115,8 @@ export class BananaCrystalClient {
     toTokenId: string;
     memo?: string;
   }) {
-    return this.request('/api/v1/mcp/swap', {
-      method: 'POST',
+    return this.request("/api/v1/mcp/swap", {
+      method: "POST",
       body: JSON.stringify(params),
     });
   }
@@ -126,8 +126,8 @@ export class BananaCrystalClient {
     toCurrency: string;
     amount: number;
   }) {
-    return this.request('/api/v1/mcp/swap/estimate-fees', {
-      method: 'POST',
+    return this.request("/api/v1/mcp/swap/estimate-fees", {
+      method: "POST",
       body: JSON.stringify(params),
     });
   }
@@ -135,17 +135,17 @@ export class BananaCrystalClient {
   // Exchange Rates
   async getExchangeRate(currency: string) {
     return this.request(`/api/v1/mcp/exchange-rate/${currency}`, {
-      method: 'GET',
+      method: "GET",
     });
   }
 
   // Tokens & Currencies
   async listSupportedCurrencies() {
-    return this.request('/api/v1/mcp/currencies', { method: 'GET' });
+    return this.request("/api/v1/mcp/currencies", { method: "GET" });
   }
 
   async listAvailableTokens() {
-    return this.request('/api/v1/mcp/tokens', { method: 'GET' });
+    return this.request("/api/v1/mcp/tokens", { method: "GET" });
   }
 
   // Transaction History
@@ -156,28 +156,29 @@ export class BananaCrystalClient {
     direction?: string;
   }) {
     const query = new URLSearchParams();
-    if (params?.limit) query.set('limit', params.limit.toString());
-    if (params?.page) query.set('page', params.page.toString());
-    if (params?.type) query.set('type', params.type);
-    if (params?.direction) query.set('direction', params.direction);
+    if (params?.limit) query.set("limit", params.limit.toString());
+    if (params?.page) query.set("page", params.page.toString());
+    if (params?.type) query.set("type", params.type);
+    if (params?.direction) query.set("direction", params.direction);
 
     const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/transactions${queryString ? `?${queryString}` : ''}`;
+    const endpoint = `/api/v1/mcp/transactions${queryString ? `?${queryString}` : ""}`;
 
-    return this.request(endpoint, { method: 'GET' });
+    return this.request(endpoint, { method: "GET" });
   }
 
   // Limits & Settings
   async getMyLimits() {
-    return this.request('/api/v1/mcp/limits', { method: 'GET' });
+    return this.request("/api/v1/mcp/limits", { method: "GET" });
   }
 
   async updateMyAgentSettings(params: {
     requireHumanApproval?: boolean;
+    requireOtp?: boolean;
     callbackUrl?: string | null;
   }) {
-    return this.request('/api/v1/mcp/agent-settings', {
-      method: 'PATCH',
+    return this.request("/api/v1/mcp/agent-settings", {
+      method: "PATCH",
       body: JSON.stringify(params),
     });
   }
@@ -192,15 +193,15 @@ export class BananaCrystalClient {
     reason?: string;
     requesterName?: string;
   }) {
-    return this.request('/api/v1/mcp/agent/request-transaction', {
-      method: 'POST',
+    return this.request("/api/v1/mcp/agent/request-transaction", {
+      method: "POST",
       body: JSON.stringify(params),
     });
   }
 
   async checkApprovalStatus(approvalRequestId: string) {
     return this.request(`/api/v1/mcp/agent/approval/${approvalRequestId}`, {
-      method: 'GET',
+      method: "GET",
     });
   }
 
@@ -208,34 +209,34 @@ export class BananaCrystalClient {
     approvalRequestId: string;
     executionToken: string;
   }) {
-    return this.request('/api/v1/mcp/agent/execute', {
-      method: 'POST',
+    return this.request("/api/v1/mcp/agent/execute", {
+      method: "POST",
       body: JSON.stringify(params),
     });
   }
 
   async getAgentConfig(targetOwnerUserExtId: string) {
     return this.request(`/api/v1/mcp/agent/config/${targetOwnerUserExtId}`, {
-      method: 'GET',
+      method: "GET",
     });
   }
 
   // KYC (if needed)
   async initiateKyc(params?: { userId?: string; ttlInSecs?: number }) {
-    return this.request('/api/v1/mcp/kyc/initiate', {
-      method: 'POST',
+    return this.request("/api/v1/mcp/kyc/initiate", {
+      method: "POST",
       body: JSON.stringify(params || {}),
     });
   }
 
   async getKycStatus(params?: { userId?: string }) {
     const query = new URLSearchParams();
-    if (params?.userId) query.set('userId', params.userId);
+    if (params?.userId) query.set("userId", params.userId);
 
     const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/kyc/status${queryString ? `?${queryString}` : ''}`;
+    const endpoint = `/api/v1/mcp/kyc/status${queryString ? `?${queryString}` : ""}`;
 
-    return this.request(endpoint, { method: 'GET' });
+    return this.request(endpoint, { method: "GET" });
   }
 
   // Fiat Operations (Brale)
@@ -246,8 +247,8 @@ export class BananaCrystalClient {
     accountId?: string;
     railType?: string;
   }) {
-    return this.request('/api/v1/mcp/brale/deposit', {
-      method: 'POST',
+    return this.request("/api/v1/mcp/brale/deposit", {
+      method: "POST",
       body: JSON.stringify(params),
     });
   }
@@ -259,30 +260,30 @@ export class BananaCrystalClient {
     destinationAccount?: string;
     railType?: string;
   }) {
-    return this.request('/api/v1/mcp/brale/withdrawal', {
-      method: 'POST',
+    return this.request("/api/v1/mcp/brale/withdrawal", {
+      method: "POST",
       body: JSON.stringify(params),
     });
   }
 
   async getDepositStatus(params: { transferId: string; userId?: string }) {
     const query = new URLSearchParams();
-    if (params.userId) query.set('userId', params.userId);
+    if (params.userId) query.set("userId", params.userId);
 
     const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/brale/deposit/${params.transferId}${queryString ? `?${queryString}` : ''}`;
+    const endpoint = `/api/v1/mcp/brale/deposit/${params.transferId}${queryString ? `?${queryString}` : ""}`;
 
-    return this.request(endpoint, { method: 'GET' });
+    return this.request(endpoint, { method: "GET" });
   }
 
   async getWithdrawalStatus(params?: { userId?: string }) {
     const query = new URLSearchParams();
-    if (params?.userId) query.set('userId', params.userId);
+    if (params?.userId) query.set("userId", params.userId);
 
     const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/brale/withdrawal/status${queryString ? `?${queryString}` : ''}`;
+    const endpoint = `/api/v1/mcp/brale/withdrawal/status${queryString ? `?${queryString}` : ""}`;
 
-    return this.request(endpoint, { method: 'GET' });
+    return this.request(endpoint, { method: "GET" });
   }
 
   // Offers & Trades (prediction market)
@@ -295,37 +296,37 @@ export class BananaCrystalClient {
     page?: number;
   }) {
     const query = new URLSearchParams();
-    if (params?.currency) query.set('currency', params.currency);
-    if (params?.offerType) query.set('offerType', params.offerType);
-    if (params?.search) query.set('search', params.search);
-    if (params?.sortBy) query.set('sortBy', params.sortBy);
-    if (params?.limit) query.set('limit', params.limit.toString());
-    if (params?.page) query.set('page', params.page.toString());
+    if (params?.currency) query.set("currency", params.currency);
+    if (params?.offerType) query.set("offerType", params.offerType);
+    if (params?.search) query.set("search", params.search);
+    if (params?.sortBy) query.set("sortBy", params.sortBy);
+    if (params?.limit) query.set("limit", params.limit.toString());
+    if (params?.page) query.set("page", params.page.toString());
 
     const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/offers${queryString ? `?${queryString}` : ''}`;
+    const endpoint = `/api/v1/mcp/offers${queryString ? `?${queryString}` : ""}`;
 
-    return this.request(endpoint, { method: 'GET' });
+    return this.request(endpoint, { method: "GET" });
   }
 
   async getOffer(offerId: string) {
-    return this.request(`/api/v1/mcp/offers/${offerId}`, { method: 'GET' });
+    return this.request(`/api/v1/mcp/offers/${offerId}`, { method: "GET" });
   }
 
   async getMyOffers(params?: { userId?: string; offerType?: string }) {
     const query = new URLSearchParams();
-    if (params?.userId) query.set('userId', params.userId);
-    if (params?.offerType) query.set('offerType', params.offerType);
+    if (params?.userId) query.set("userId", params.userId);
+    if (params?.offerType) query.set("offerType", params.offerType);
 
     const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/offers/my${queryString ? `?${queryString}` : ''}`;
+    const endpoint = `/api/v1/mcp/offers/my${queryString ? `?${queryString}` : ""}`;
 
-    return this.request(endpoint, { method: 'GET' });
+    return this.request(endpoint, { method: "GET" });
   }
 
   async createOffer(params: Record<string, unknown>) {
-    return this.request('/api/v1/mcp/offers', {
-      method: 'POST',
+    return this.request("/api/v1/mcp/offers", {
+      method: "POST",
       body: JSON.stringify(params),
     });
   }
@@ -340,38 +341,38 @@ export class BananaCrystalClient {
   }) {
     const { offerId, ...body } = params;
     return this.request(`/api/v1/mcp/offers/${offerId}`, {
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify(body),
     });
   }
 
   async delistOffer(params: { offerId: string; userId?: string }) {
     return this.request(`/api/v1/mcp/offers/${params.offerId}/delist`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ userId: params.userId }),
     });
   }
 
   async deleteOffer(params: { offerId: string; userId?: string }) {
     return this.request(`/api/v1/mcp/offers/${params.offerId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       body: JSON.stringify({ userId: params.userId }),
     });
   }
 
   async listTrades(params?: { tradeType?: string; state?: string }) {
     const query = new URLSearchParams();
-    if (params?.tradeType) query.set('tradeType', params.tradeType);
-    if (params?.state) query.set('state', params.state);
+    if (params?.tradeType) query.set("tradeType", params.tradeType);
+    if (params?.state) query.set("state", params.state);
 
     const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/trades${queryString ? `?${queryString}` : ''}`;
+    const endpoint = `/api/v1/mcp/trades${queryString ? `?${queryString}` : ""}`;
 
-    return this.request(endpoint, { method: 'GET' });
+    return this.request(endpoint, { method: "GET" });
   }
 
   async getTrade(tradeId: string) {
-    return this.request(`/api/v1/mcp/trades/${tradeId}`, { method: 'GET' });
+    return this.request(`/api/v1/mcp/trades/${tradeId}`, { method: "GET" });
   }
 
   async getMyTrades(params?: {
@@ -380,47 +381,54 @@ export class BananaCrystalClient {
     state?: string;
   }) {
     const query = new URLSearchParams();
-    if (params?.userId) query.set('userId', params.userId);
-    if (params?.tradeType) query.set('tradeType', params.tradeType);
-    if (params?.state) query.set('state', params.state);
+    if (params?.userId) query.set("userId", params.userId);
+    if (params?.tradeType) query.set("tradeType", params.tradeType);
+    if (params?.state) query.set("state", params.state);
 
     const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/trades/my${queryString ? `?${queryString}` : ''}`;
+    const endpoint = `/api/v1/mcp/trades/my${queryString ? `?${queryString}` : ""}`;
 
-    return this.request(endpoint, { method: 'GET' });
+    return this.request(endpoint, { method: "GET" });
   }
 
   async engageOffer(params: Record<string, unknown>) {
-    return this.request('/api/v1/mcp/trades', {
-      method: 'POST',
+    return this.request("/api/v1/mcp/trades", {
+      method: "POST",
       body: JSON.stringify(params),
     });
   }
 
   async cancelTrade(params: { tradeId: string; userId?: string }) {
     return this.request(`/api/v1/mcp/trades/${params.tradeId}/cancel`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ userId: params.userId }),
     });
   }
 
   async getEscrowBalances(params?: { userId?: string }) {
     const query = new URLSearchParams();
-    if (params?.userId) query.set('userId', params.userId);
+    if (params?.userId) query.set("userId", params.userId);
 
     const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/escrow/balances${queryString ? `?${queryString}` : ''}`;
+    const endpoint = `/api/v1/mcp/escrow/balances${queryString ? `?${queryString}` : ""}`;
 
-    return this.request(endpoint, { method: 'GET' });
+    return this.request(endpoint, { method: "GET" });
   }
 
   async getEscrowHistory(params?: { userId?: string }) {
     const query = new URLSearchParams();
-    if (params?.userId) query.set('userId', params.userId);
+    if (params?.userId) query.set("userId", params.userId);
 
     const queryString = query.toString();
-    const endpoint = `/api/v1/mcp/escrow/history${queryString ? `?${queryString}` : ''}`;
+    const endpoint = `/api/v1/mcp/escrow/history${queryString ? `?${queryString}` : ""}`;
 
-    return this.request(endpoint, { method: 'GET' });
+    return this.request(endpoint, { method: "GET" });
+  }
+
+  // Sandbox-only
+  async resetSandboxBalance() {
+    return this.request("/api/v1/mcp/sandbox/reset-balance", {
+      method: "POST",
+    });
   }
 }

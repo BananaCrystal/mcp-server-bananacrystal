@@ -3,7 +3,7 @@
  * These implement the actual logic by calling the API client
  */
 
-import { BananaCrystalClient } from '../client.js';
+import { BananaCrystalClient } from "../client.js";
 
 type ToolHandler = (args: any) => Promise<any>;
 
@@ -160,6 +160,11 @@ export function createToolHandlers(
 
     get_escrow_history: async (args) => {
       return await client.getEscrowHistory(args);
+    },
+
+    // Sandbox-only
+    reset_sandbox_balance: async () => {
+      return await client.resetSandboxBalance();
     },
 
     // Agent-to-Agent Transactions
