@@ -840,7 +840,7 @@ See [CONTRIBUTING.md](https://github.com/BananaCrystal/mcp-server-bananacrystal/
 
 ### Recognition
 
-All contributors are credited in the commit history. Significant contributions (new framework integrations, language SDKs, major examples) are highlighted in the project README and on [bananacrystal.com](https://bananacrystal.com).
+All contributors are credited in the commit history. Significant contributions (new framework integrations, language SDKs, major examples) are highlighted in the project README.
 
 **If you build something interesting with this MCP server, open an issue tagged `showcase` and we will feature it.**
 
