@@ -92,6 +92,7 @@ refactor: simplify error handling
 ## Questions?
 
 - Open an issue for questions
+- Join us on [Discord](https://discord.com/invite/pYP6mn7Y)
 - Email: support@bananacrystal.com
 
 Thank you for contributing! 🎉
