@@ -149,7 +149,10 @@ app.post("/api/v1/mcp/swap", (req, res) => {
 // Exchange Rate
 app.get("/api/v1/mcp/exchange-rate/:currency", (req, res) => {
   const { currency } = req.params;
-  const rate = mockData.exchangeRates[currency.toUpperCase()];
+  const rate =
+    mockData.exchangeRates[
+      currency.toUpperCase() as keyof typeof mockData.exchangeRates
+    ];
 
   if (!rate) {
     return res.status(404).json({
