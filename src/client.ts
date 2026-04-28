@@ -45,7 +45,7 @@ export class BananaCrystalClient {
       );
     }
 
-    return response.json();
+    return response.json() as Promise<T>;
   }
 
   // Profile & Identity
@@ -132,18 +132,7 @@ export class BananaCrystalClient {
     });
   }
 
-  // Exchange Rates
-  async getExchangeRate(currency: string) {
-    return this.request(`/api/v1/mcp/exchange-rate/${currency}`, {
-      method: "GET",
-    });
-  }
-
   // Tokens & Currencies
-  async listSupportedCurrencies() {
-    return this.request("/api/v1/mcp/currencies", { method: "GET" });
-  }
-
   async listAvailableTokens() {
     return this.request("/api/v1/mcp/tokens", { method: "GET" });
   }
@@ -423,6 +412,77 @@ export class BananaCrystalClient {
     const endpoint = `/api/v1/mcp/escrow/history${queryString ? `?${queryString}` : ""}`;
 
     return this.request(endpoint, { method: "GET" });
+  }
+
+  // Rate & Currency Exchange
+  async listRateCurrencies() {
+    return this.request("/api/v1/mcp/rate/currencies", { method: "GET" });
+  }
+
+  async getCurrentRate(params: { from: string; to: string }) {
+    const query = new URLSearchParams();
+    query.set("from", params.from);
+    query.set("to", params.to);
+
+    return this.request(`/api/v1/mcp/rate/current?${query.toString()}`, {
+      method: "GET",
+    });
+  }
+
+  async convertCurrency(params: {
+    from: string;
+    to: string;
+    amount: number;
+  }) {
+    const query = new URLSearchParams();
+    query.set("from", params.from);
+    query.set("to", params.to);
+    query.set("amount", params.amount.toString());
+
+    return this.request(`/api/v1/mcp/rate/convert?${query.toString()}`, {
+      method: "GET",
+    });
+  }
+
+  async batchConvertCurrencies(params: {
+    conversions: Array<{ from: string; to: string; amount: number }>;
+  }) {
+    return this.request("/api/v1/mcp/rate/batch-convert", {
+      method: "POST",
+      body: JSON.stringify(params),
+    });
+  }
+
+  async getHistoricalExchangeRates(params: {
+    from: string;
+    to: string;
+    startDate: string;
+    endDate: string;
+  }) {
+    const query = new URLSearchParams();
+    query.set("from", params.from);
+    query.set("to", params.to);
+    query.set("startDate", params.startDate);
+    query.set("endDate", params.endDate);
+
+    return this.request(`/api/v1/mcp/rate/history?${query.toString()}`, {
+      method: "GET",
+    });
+  }
+
+  async getExchangeRateStatistics(params: {
+    from: string;
+    to: string;
+    days?: number;
+  }) {
+    const query = new URLSearchParams();
+    query.set("from", params.from);
+    query.set("to", params.to);
+    if (params.days) query.set("days", params.days.toString());
+
+    return this.request(`/api/v1/mcp/rate/stats?${query.toString()}`, {
+      method: "GET",
+    });
   }
 
   // Sandbox-only

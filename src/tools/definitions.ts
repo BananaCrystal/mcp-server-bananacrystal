@@ -188,29 +188,7 @@ export function createToolDefinitions() {
       },
     },
 
-    // Exchange Rates & Info
-    {
-      name: "get_exchange_rate",
-      description: "Get current buy/sell exchange rates for a currency",
-      inputSchema: {
-        type: "object",
-        properties: {
-          currency: {
-            type: "string",
-            description: "Currency code (e.g. USD, NGN, EUR)",
-          },
-        },
-        required: ["currency"],
-      },
-    },
-    {
-      name: "list_supported_currencies",
-      description: "List all supported currencies and tokens on BananaCrystal",
-      inputSchema: {
-        type: "object",
-        properties: {},
-      },
-    },
+    // Tokens & Currencies
     {
       name: "list_available_tokens",
       description: "List all available Hedera tokens for the platform",
@@ -906,6 +884,129 @@ export function createToolDefinitions() {
           },
         },
         required: ["targetOwnerUserExtId"],
+      },
+    },
+
+    // Rate & Currency Exchange
+    {
+      name: "list_supported_currencies",
+      description: "Get list of all supported currencies for rate operations",
+      inputSchema: {
+        type: "object",
+        properties: {},
+      },
+    },
+    {
+      name: "get_exchange_rate",
+      description: "Get current exchange rate between two currencies",
+      inputSchema: {
+        type: "object",
+        properties: {
+          from: {
+            type: "string",
+            description: "Source currency code (e.g. USD, EUR, NGN)",
+          },
+          to: {
+            type: "string",
+            description: "Target currency code (e.g. NGN, GHS, KES)",
+          },
+        },
+        required: ["from", "to"],
+      },
+    },
+    {
+      name: "convert_currency",
+      description: "Convert amount from one currency to another",
+      inputSchema: {
+        type: "object",
+        properties: {
+          from: {
+            type: "string",
+            description: "Source currency code",
+          },
+          to: {
+            type: "string",
+            description: "Target currency code",
+          },
+          amount: {
+            type: "number",
+            description: "Amount to convert",
+          },
+        },
+        required: ["from", "to", "amount"],
+      },
+    },
+    {
+      name: "batch_convert_currencies",
+      description: "Convert multiple amounts in a single request",
+      inputSchema: {
+        type: "object",
+        properties: {
+          conversions: {
+            type: "array",
+            description: "Array of conversion requests",
+            items: {
+              type: "object",
+              properties: {
+                from: { type: "string" },
+                to: { type: "string" },
+                amount: { type: "number" },
+              },
+              required: ["from", "to", "amount"],
+            },
+          },
+        },
+        required: ["conversions"],
+      },
+    },
+    {
+      name: "get_historical_exchange_rates",
+      description:
+        "Get historical exchange rates between two currencies over a date range",
+      inputSchema: {
+        type: "object",
+        properties: {
+          from: {
+            type: "string",
+            description: "Source currency code",
+          },
+          to: {
+            type: "string",
+            description: "Target currency code",
+          },
+          startDate: {
+            type: "string",
+            description: "Start date (ISO 8601 format, e.g. 2026-01-01)",
+          },
+          endDate: {
+            type: "string",
+            description: "End date (ISO 8601 format, e.g. 2026-04-28)",
+          },
+        },
+        required: ["from", "to", "startDate", "endDate"],
+      },
+    },
+    {
+      name: "get_exchange_rate_statistics",
+      description:
+        "Get exchange rate statistics (high, low, average) for a currency pair over a period",
+      inputSchema: {
+        type: "object",
+        properties: {
+          from: {
+            type: "string",
+            description: "Source currency code",
+          },
+          to: {
+            type: "string",
+            description: "Target currency code",
+          },
+          days: {
+            type: "number",
+            description: "Number of days to analyze (1-365, default 30)",
+          },
+        },
+        required: ["from", "to"],
       },
     },
   ];

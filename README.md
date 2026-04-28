@@ -299,7 +299,7 @@ plugins:
 
 ---
 
-## 40 production-ready payment tools
+## 46 production-ready payment tools
 
 Every tool an agent needs for complete autonomous payment capability. All live. All guarded.
 
@@ -387,6 +387,20 @@ Every tool an agent needs for complete autonomous payment capability. All live. 
 | `request_agent_transaction`    | Request a transaction from another user's agent |
 | `execute_approved_transaction` | Execute after approval                          |
 | `update_my_agent_settings`     | Configure approval rules and webhook URL        |
+
+</details>
+
+<details>
+<summary><b>Rate & exchange tools</b> — require <code>rate</code> scope · free for reads</summary>
+
+| Tool                             | What it does                                            |
+| -------------------------------- | ------------------------------------------------------- |
+| `list_supported_currencies`      | Get all supported currencies for rate operations       |
+| `get_exchange_rate`              | Get current exchange rate between two currencies       |
+| `convert_currency`               | Convert an amount from one currency to another         |
+| `batch_convert_currencies`       | Convert multiple currency pairs in a single request    |
+| `get_historical_exchange_rates`  | Get historical rates over a date range                 |
+| `get_exchange_rate_statistics`   | Get rate statistics (high/low/average) for a period    |
 
 </details>
 
