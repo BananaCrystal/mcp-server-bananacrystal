@@ -425,6 +425,77 @@ export class BananaCrystalClient {
     return this.request(endpoint, { method: "GET" });
   }
 
+  // Rate & Currency Exchange (separate backend service)
+  async listRateCurrencies() {
+    return this.request("/api/v1/mcp/rate/currencies", { method: "GET" });
+  }
+
+  async getCurrentRate(params: { from: string; to: string }) {
+    const query = new URLSearchParams();
+    query.set("from", params.from);
+    query.set("to", params.to);
+
+    return this.request(`/api/v1/mcp/rate/current?${query.toString()}`, {
+      method: "GET",
+    });
+  }
+
+  async convertCurrency(params: {
+    from: string;
+    to: string;
+    amount: number;
+  }) {
+    const query = new URLSearchParams();
+    query.set("from", params.from);
+    query.set("to", params.to);
+    query.set("amount", params.amount.toString());
+
+    return this.request(`/api/v1/mcp/rate/convert?${query.toString()}`, {
+      method: "GET",
+    });
+  }
+
+  async batchConvertCurrencies(params: {
+    conversions: Array<{ from: string; to: string; amount: number }>;
+  }) {
+    return this.request("/api/v1/mcp/rate/batch-convert", {
+      method: "POST",
+      body: JSON.stringify(params),
+    });
+  }
+
+  async getHistoricalExchangeRates(params: {
+    from: string;
+    to: string;
+    startDate: string;
+    endDate: string;
+  }) {
+    const query = new URLSearchParams();
+    query.set("from", params.from);
+    query.set("to", params.to);
+    query.set("startDate", params.startDate);
+    query.set("endDate", params.endDate);
+
+    return this.request(`/api/v1/mcp/rate/history?${query.toString()}`, {
+      method: "GET",
+    });
+  }
+
+  async getExchangeRateStatistics(params: {
+    from: string;
+    to: string;
+    days?: number;
+  }) {
+    const query = new URLSearchParams();
+    query.set("from", params.from);
+    query.set("to", params.to);
+    if (params.days) query.set("days", params.days.toString());
+
+    return this.request(`/api/v1/mcp/rate/stats?${query.toString()}`, {
+      method: "GET",
+    });
+  }
+
   // Sandbox-only
   async resetSandboxBalance() {
     return this.request("/api/v1/mcp/sandbox/reset-balance", {

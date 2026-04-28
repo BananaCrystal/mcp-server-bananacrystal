@@ -756,7 +756,9 @@ Create a **Sandbox key** at [agents.bananacrystal.com/account](https://agents.ba
 - Spending limits are unlimited
 - Reset balances anytime with the `reset_sandbox_balance` tool
 
-All 40 tools work identically in sandbox. When you're ready to go live, swap `bc_test_your_key` for a live key — same config, same tools, real money.
+All 40 MCP tools work identically in sandbox. Additionally, **rate service endpoints** are available in sandbox at `/mcp/sandbox/rate/*` — no authentication required, perfect for testing currency exchange operations.
+
+When you're ready to go live, swap `bc_test_your_key` for a live key — same config, same tools, real money.
 
 There is also a **local mock server** for contributors who want to develop without any API key at all:
 
@@ -767,6 +769,41 @@ npm install && npm run mock
 ```
 
 The mock server runs on `http://localhost:3000` and returns realistic data for all tools.
+
+</details>
+
+<details>
+<summary><b>What is the rate service? How is it different from MCP tools?</b></summary>
+
+The **rate service** is a separate backend HTTP API (not part of the 40 MCP tools). It provides comprehensive currency exchange operations:
+
+- List all supported currencies
+- Get current exchange rates between any two currencies
+- Convert amounts instantly
+- Batch convert multiple currency pairs
+- Retrieve historical rate data over date ranges
+- Get rate statistics (high/low/average)
+
+**Key difference:** MCP tools are accessed through the MCP server interface (as described above). The rate service is accessed directly via HTTP REST endpoints.
+
+**How to use rate service:**
+
+1. Create an API key with `rate` scope at [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account)
+2. Call rate endpoints directly:
+
+```bash
+curl -H "x-api-key: bc_live_your_key_with_rate_scope" \
+     "https://api.bananacrystal.com/api/v1/mcp/rate/current?from=USD&to=NGN"
+```
+
+**Sandbox testing:** Use `/mcp/sandbox/rate/*` endpoints (no authentication required).
+
+**When to use rate service vs MCP tools:**
+- Use rate service for standalone rate lookups or integration into backend systems
+- Use MCP tools for autonomous agent workflows with full payment capabilities
+- They're complementary — use both if you need rates + payments
+
+See [Backend rate service](#backend-rate-service-separate-from-mcp-tools) section for full endpoint reference.
 
 </details>
 
