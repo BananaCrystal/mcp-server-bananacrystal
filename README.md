@@ -403,6 +403,50 @@ Every tool an agent needs for complete autonomous payment capability. All live. 
 
 ---
 
+## Backend rate service (separate from MCP tools)
+
+Beyond the 40 MCP tools above, **BananaCrystal backend provides a separate rate service** for comprehensive currency exchange operations:
+
+<details>
+<summary><b>Rate service endpoints</b> — accessed via API with <code>rate</code> scope key</summary>
+
+The rate service is a **backend HTTP API**, not an MCP tool. It's available to agents via REST endpoints (not through this MCP server's tool interface):
+
+| Endpoint | What it does |
+| --- | --- |
+| `GET /mcp/rate/currencies` | List all supported currencies |
+| `GET /mcp/rate/current?from=USD&to=NGN` | Get current exchange rate between two currencies |
+| `GET /mcp/rate/convert?from=USD&to=NGN&amount=100` | Convert amount from one currency to another |
+| `POST /mcp/rate/batch-convert` | Convert multiple currency pairs in one request |
+| `GET /mcp/rate/history?from=USD&to=NGN&startDate=...&endDate=...` | Get historical rates over a date range |
+| `GET /mcp/rate/stats?from=USD&to=NGN&days=30` | Get rate statistics (high/low/average) for a period |
+
+**How to use:** Create an API key with `rate` scope, then call these endpoints directly from your agent or backend:
+
+```bash
+# Get current rate
+curl -H "x-api-key: bc_live_your_key_with_rate_scope" \
+     "https://api.bananacrystal.com/api/v1/mcp/rate/current?from=USD&to=NGN"
+
+# Response:
+{
+  "from": "USD",
+  "to": "NGN",
+  "rate": 1250.50,
+  "timestamp": "2026-04-28T17:08:24Z"
+}
+```
+
+**Note:** These are backend HTTP endpoints, not MCP tools. If you need real-time rate data in your agent workflows, integrate these endpoints directly into your agent logic rather than using the MCP tool interface.
+
+**Sandbox testing:** Use `/mcp/sandbox/rate/*` endpoints (no authentication required) to test rate operations.
+
+</details>
+
+<br/>
+
+---
+
 ## Real-world agent economy use cases
 
 <details>
