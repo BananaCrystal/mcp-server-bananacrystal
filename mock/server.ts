@@ -26,8 +26,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// Middleware to validate API key
+// Middleware to validate API key (except for sandbox rate endpoints which are public)
 app.use((req, res, next) => {
+  // Sandbox rate endpoints don't require authentication
+  if (req.path.startsWith("/api/v1/mcp/sandbox/rate")) {
+    return next();
+  }
+  
   const apiKey = req.headers["x-api-key"];
   if (!apiKey || !apiKey.toString().startsWith("bc_mock_")) {
     return res.status(401).json({
