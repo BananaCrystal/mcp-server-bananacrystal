@@ -1,6 +1,24 @@
 /**
  * MCP tool definitions for BananaCrystal
  * These define the interface that AI agents see
+ * 
+ * NOTE: This file contains the 40 MCP payment tools.
+ * The RATE SERVICE is separate — it's not part of MCP tools.
+ * Rate service is accessed via REST API endpoints (/api/v1/mcp/rate/*)
+ * not through the MCP protocol's tool interface.
+ * 
+ * Rate service provides:
+ * - GET /api/v1/mcp/rate/currencies — list supported currencies
+ * - GET /api/v1/mcp/rate/current — get current exchange rates
+ * - GET /api/v1/mcp/rate/convert — convert amounts
+ * - POST /api/v1/mcp/rate/batch-convert — batch conversions
+ * - GET /api/v1/mcp/rate/history — historical rate data
+ * - GET /api/v1/mcp/rate/stats — rate statistics (high/low/avg)
+ * 
+ * Sandbox endpoints at /api/v1/mcp/sandbox/rate/* (no auth required)
+ * Production endpoints at /api/v1/mcp/rate/* (require "rate" scope key)
+ * 
+ * See client.ts for rate service methods and README for full documentation.
  */
 
 export function createToolDefinitions() {

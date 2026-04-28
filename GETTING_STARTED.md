@@ -142,6 +142,11 @@ Now all API calls go to your local mock server with fake responses. Perfect for 
 - Get exchange rates
 - Estimate fees before swapping
 
+### 📊 Exchange Rates & Currency Data
+
+- Get current rates between any two currencies
+- For more advanced rate operations (historical data, batch conversions, statistics), use the dedicated **rate service** — see [Rate Service Documentation](README.md#backend-rate-service-separate-from-mcp-tools)
+
 ### 📊 History & Info
 
 - View transaction history

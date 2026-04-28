@@ -61,6 +61,7 @@ This MCP server is the alternative. **One configuration line gives any AI agent:
 - **150+ currencies** — USDb, EURb, NGNb, GBPb, CADb and more
 - **On-chain settlement in under 5 seconds** on Hedera
 - An **immutable audit trail** every agent action is written to
+- **Real-time currency data** via the dedicated rate service (current rates, historical data, batch conversions, statistics)
 
 This is not a product feature. This is a new category: **autonomous payments** — the financial primitive of the agent economy, built for machines from first principles.
 
@@ -101,7 +102,7 @@ npm install -g @bananacrystal/mcp-server
 
 Sign up at **[agents.bananacrystal.com](https://agents.bananacrystal.com)** → **[Account → API Keys](https://agents.bananacrystal.com/account)** → Create MCP key.
 
-**Fees:** Transfers: 0.3% of amount · Swaps: 0.5% of amount · Read-only operations (balances, history, rates): free.
+**Fees:** Transfers: 0.3% of amount · Swaps: 0.5% of amount · Read-only operations (balances, history, rates): free. Rate service (historical data, batch conversions, statistics): free with "rate" scope key.
 
 > **Start with a Sandbox key** — fake money, zero risk, full functionality. Sandbox keys start with `bc_test_` so you can always tell them apart from live keys. Switch to a Live key (no prefix) when ready.
 
@@ -130,12 +131,14 @@ Sandbox keys start with `bc_test_` — this prefix is how you (and the package) 
 **Sandbox behaviour:**
 
 - Pre-seeded balances: 10,000 USDb · 5,000,000 NGNb · 50,000 GHSb · 1,000,000 KESb · 150,000 ZARb
+- All 40 MCP payment tools available
+- Rate service endpoints available at `/mcp/sandbox/rate/*` (no auth needed)
 - OTP codes returned directly in the API response — no email sent
 - KYC always approved
 - Spend limits unlimited
 - Reset balances anytime with the `reset_sandbox_balance` tool
 
-Switch to a live key when you're ready. Same tools, same config, real money.
+Switch to a live key when you're ready. Same tools, same config, real money and live rates.
 
 </details>
 
@@ -403,6 +406,50 @@ Every tool an agent needs for complete autonomous payment capability. All live. 
 
 ---
 
+## Backend rate service (separate from MCP tools)
+
+Beyond the 40 MCP tools above, **BananaCrystal backend provides a separate rate service** for comprehensive currency exchange operations:
+
+<details>
+<summary><b>Rate service endpoints</b> — accessed via API with <code>rate</code> scope key</summary>
+
+The rate service is a **backend HTTP API**, not an MCP tool. It's available to agents via REST endpoints (not through this MCP server's tool interface):
+
+| Endpoint | What it does |
+| --- | --- |
+| `GET /mcp/rate/currencies` | List all supported currencies |
+| `GET /mcp/rate/current?from=USD&to=NGN` | Get current exchange rate between two currencies |
+| `GET /mcp/rate/convert?from=USD&to=NGN&amount=100` | Convert amount from one currency to another |
+| `POST /mcp/rate/batch-convert` | Convert multiple currency pairs in one request |
+| `GET /mcp/rate/history?from=USD&to=NGN&startDate=...&endDate=...` | Get historical rates over a date range |
+| `GET /mcp/rate/stats?from=USD&to=NGN&days=30` | Get rate statistics (high/low/average) for a period |
+
+**How to use:** Create an API key with `rate` scope, then call these endpoints directly from your agent or backend:
+
+```bash
+# Get current rate
+curl -H "x-api-key: bc_live_your_key_with_rate_scope" \
+     "https://api.bananacrystal.com/api/v1/mcp/rate/current?from=USD&to=NGN"
+
+# Response:
+{
+  "from": "USD",
+  "to": "NGN",
+  "rate": 1250.50,
+  "timestamp": "2026-04-28T17:08:24Z"
+}
+```
+
+**Note:** These are backend HTTP endpoints, not MCP tools. If you need real-time rate data in your agent workflows, integrate these endpoints directly into your agent logic rather than using the MCP tool interface.
+
+**Sandbox testing:** Use `/mcp/sandbox/rate/*` endpoints (no authentication required) to test rate operations.
+
+</details>
+
+<br/>
+
+---
+
 ## Real-world agent economy use cases
 
 <details>
@@ -481,6 +528,28 @@ Economically impossible on Stripe ($300/day in fees alone).
 
 </details>
 
+<details>
+<summary><b>Real-time currency conversion with rate service</b></summary>
+
+```
+Task:    "Show me rates and convert amounts for USD/NGN/EUR/GHS."
+
+Flow:    Agent calls rate service (no MCP needed):
+         GET /api/v1/mcp/rate/current?from=USD&to=NGN
+         → returns {rate: 1580.50, timestamp, source}
+
+         For batch: POST /api/v1/mcp/rate/batch-convert
+         → converts [USD→NGN, EUR→GHS, GBP→NGN] in one call
+
+         For analytics: GET /api/v1/mcp/rate/history
+         → retrieves historical rates (high/low/average over days/weeks)
+
+Rate service is free query — use it alongside payment tools for complete
+currency workflows. Create a "rate" scope key for access.
+```
+
+</details>
+
 <br/>
 
 ---
@@ -514,8 +583,13 @@ This MCP server is a thin authenticated client. All security enforcement execute
 | Variable                | Required | Default                                 | Description                                                                                                                       |
 | ----------------------- | -------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | `BANANACRYSTAL_API_KEY` | **Yes**  | —                                       | Your API key from agents.bananacrystal.com/account. Sandbox keys start with `bc_test_` (no real money). Live keys have no prefix. |
-| `BANANACRYSTAL_API_URL` | No       | `https://agentic.bananacrystal.com/mcp` | Override API endpoint                                                                                                             |
+| `BANANACRYSTAL_API_URL` | No       | `https://agentic.bananacrystal.com/mcp` | Override API endpoint (for MCP tools). Rate service uses `/api/v1/mcp/rate/*` endpoints on same domain.                          |
 | `DEBUG`                 | No       | `false`                                 | Enable verbose debug logging                                                                                                      |
+
+**API Scopes:** Different API keys can have different scopes:
+- **All keys** access the 40 MCP payment tools
+- **"rate" scope** keys also access the [rate service API](#backend-rate-service-separate-from-mcp-tools) (historical rates, batch conversions, statistics)
+- Create scope-specific keys at [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account) for fine-grained access control
 
 <br/>
 
@@ -523,11 +597,15 @@ This MCP server is a thin authenticated client. All security enforcement execute
 
 ## Pricing
 
-**Read-only operations are always free.** Fees only apply when moving money.
+**All MCP payment tools (40 tools) included with any API key.** Rate service adds optional enhanced currency operations.
+
+**Read-only operations are always free.** Fees only apply when moving money or accessing advanced rate features.
 
 | Operation                               | Fee                         |
 | --------------------------------------- | --------------------------- |
 | Balance checks, history, rates, profile | **Free**                    |
+| Basic rate lookups (MCP tools)          | **Free**                    |
+| Advanced rate service (historical, batch, stats) | **Free** (with "rate" scope) |
 | Token transfers (`transfer_tokens`)     | **0.3%** of transfer amount |
 | Currency swaps (`swap_currency`)        | **0.5%** of swap amount     |
 | Fiat deposits / withdrawals             | Varies by rail (ACH, wire)  |
@@ -539,6 +617,8 @@ This MCP server is a thin authenticated client. All security enforcement execute
 | **Enterprise**  | Unlimited                   | Contact us                  | High-volume autonomous payment networks |
 
 No monthly fee. No seat pricing. No lock-in.
+
+**Note:** Rate service queries (historical data, statistics, batch conversions) are included in your API call tier. Create a "rate" scope key to use these operations — see [Rate Service](#backend-rate-service-separate-from-mcp-tools).
 
 <br/>
 
@@ -712,7 +792,9 @@ Create a **Sandbox key** at [agents.bananacrystal.com/account](https://agents.ba
 - Spending limits are unlimited
 - Reset balances anytime with the `reset_sandbox_balance` tool
 
-All 40 tools work identically in sandbox. When you're ready to go live, swap `bc_test_your_key` for a live key — same config, same tools, real money.
+All 40 MCP tools work identically in sandbox. Additionally, **rate service endpoints** are available in sandbox at `/mcp/sandbox/rate/*` — no authentication required, perfect for testing currency exchange operations.
+
+When you're ready to go live, swap `bc_test_your_key` for a live key — same config, same tools, real money.
 
 There is also a **local mock server** for contributors who want to develop without any API key at all:
 
@@ -723,6 +805,41 @@ npm install && npm run mock
 ```
 
 The mock server runs on `http://localhost:3000` and returns realistic data for all tools.
+
+</details>
+
+<details>
+<summary><b>What is the rate service? How is it different from MCP tools?</b></summary>
+
+The **rate service** is a separate backend HTTP API (not part of the 40 MCP tools). It provides comprehensive currency exchange operations:
+
+- List all supported currencies
+- Get current exchange rates between any two currencies
+- Convert amounts instantly
+- Batch convert multiple currency pairs
+- Retrieve historical rate data over date ranges
+- Get rate statistics (high/low/average)
+
+**Key difference:** MCP tools are accessed through the MCP server interface (as described above). The rate service is accessed directly via HTTP REST endpoints.
+
+**How to use rate service:**
+
+1. Create an API key with `rate` scope at [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account)
+2. Call rate endpoints directly:
+
+```bash
+curl -H "x-api-key: bc_live_your_key_with_rate_scope" \
+     "https://api.bananacrystal.com/api/v1/mcp/rate/current?from=USD&to=NGN"
+```
+
+**Sandbox testing:** Use `/mcp/sandbox/rate/*` endpoints (no authentication required).
+
+**When to use rate service vs MCP tools:**
+- Use rate service for standalone rate lookups or integration into backend systems
+- Use MCP tools for autonomous agent workflows with full payment capabilities
+- They're complementary — use both if you need rates + payments
+
+See [Backend rate service](#backend-rate-service-separate-from-mcp-tools) section for full endpoint reference.
 
 </details>
 
@@ -781,21 +898,27 @@ cd mcp-server-bananacrystal
 # Install
 npm install
 
-# Start mock server — no API key needed, all 40 tools return realistic data
+# Start mock server — no API key needed
+# All 40 MCP tools + rate service endpoints return realistic mock data
 npm run mock
 
 # Build from source
 npm run build
 
-# Run in development mode
+# Run in development mode (requires real API key with appropriate scopes)
+export BANANACRYSTAL_API_KEY=bc_test_your_sandbox_key
 npm run dev
 
-# Test with MCP Inspector
+# Test rate service endpoints on mock server (no auth needed):
+curl http://localhost:3001/api/v1/mcp/sandbox/rate/currencies
+curl http://localhost:3001/api/v1/mcp/sandbox/rate/current?from=USD&to=NGN
+
+# Test with MCP Inspector (for 40 MCP tools)
 export BANANACRYSTAL_API_KEY=bc_test_your_key_here
 npx @modelcontextprotocol/inspector node dist/index.js
 ```
 
-**Configure your agent to use the mock server:**
+**Configure your agent to use the mock server (includes rate service):**
 
 ```json
 {
@@ -823,7 +946,7 @@ npx @modelcontextprotocol/inspector node dist/index.js
 - Verify the key is copied correctly from [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account)
 - Sandbox keys start with `bc_test_` (testing only — no real money). Live keys have no prefix.
 - Verify key is active at [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account) → API Keys
-- Check the key has the required scope for the tool being called (`transfer` scope for `transfer_tokens`, `swap` scope for `swap_currency`)
+- Check the key has the required scope for the tool being called (`transfer` scope for `transfer_tokens`, `swap` scope for `swap_currency`, `rate` scope for rate service)
 - Check for whitespace or truncation in the environment variable
 
 </details>
@@ -864,6 +987,16 @@ If you are building a production agent, set limits conservatively first and incr
 - Implement exponential backoff in your agent retry logic
 - The error response includes a `retry_after` field in seconds — respect it
 - For high-volume production agents, contact support to increase rate limits
+
+</details>
+
+<details>
+<summary><b>"Rate service returning 401 Unauthorized"</b></summary>
+
+Rate service endpoints (`/api/v1/mcp/rate/*` and `/api/v1/mcp/sandbox/rate/*`) require keys with `rate` scope:
+- Create a new key at [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account)
+- When creating the key, enable `rate` scope
+- Sandbox rate endpoints (`/mcp/sandbox/rate/*`) require no authentication — use them for free testing
 
 </details>
 

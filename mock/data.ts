@@ -225,4 +225,18 @@ export const mockData = {
       createdAt: new Date(Date.now() - 7200000).toISOString(),
     },
   ],
+
+  // Rate service data
+  rateServiceCurrencies: ['USD', 'EUR', 'GBP', 'NGN', 'KES', 'UGX', 'GHS', 'ZAR', 'EGP', 'TZS', 'XOF'],
+  
+  rateServiceMockRates: {
+    'USD-NGN': { rate: 1580.50, buy: 1581.50, sell: 1579.50, source: 'BananaCrystal Rate Engine', timestamp: new Date().toISOString() },
+    'USD-EUR': { rate: 0.92, buy: 0.922, sell: 0.918, source: 'BananaCrystal Rate Engine', timestamp: new Date().toISOString() },
+    'USD-GBP': { rate: 0.79, buy: 0.792, sell: 0.788, source: 'BananaCrystal Rate Engine', timestamp: new Date().toISOString() },
+    'EUR-NGN': { rate: 1720.50, buy: 1721.50, sell: 1719.50, source: 'BananaCrystal Rate Engine', timestamp: new Date().toISOString() },
+    'GBP-NGN': { rate: 2000.25, buy: 2001.50, sell: 1999.00, source: 'BananaCrystal Rate Engine', timestamp: new Date().toISOString() },
+    'USD-KES': { rate: 129.50, buy: 130.00, sell: 129.00, source: 'BananaCrystal Rate Engine', timestamp: new Date().toISOString() },
+    'USD-GHS': { rate: 12.50, buy: 12.52, sell: 12.48, source: 'BananaCrystal Rate Engine', timestamp: new Date().toISOString() },
+    'USD-ZAR': { rate: 18.75, buy: 18.80, sell: 18.70, source: 'BananaCrystal Rate Engine', timestamp: new Date().toISOString() },
+  },
 };

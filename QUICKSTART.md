@@ -98,6 +98,8 @@ Show my recent BananaCrystal transactions
 What's the current USD to NGN exchange rate on BananaCrystal?
 ```
 
+**Note:** The MCP server provides 40 payment tools. For comprehensive rate data (historical rates, batch conversions, statistics), use the dedicated **rate service** — see [Rate Service Documentation](README.md#backend-rate-service-separate-from-mcp-tools) in the README.
+
 ### Transfer Tokens
 
 ```

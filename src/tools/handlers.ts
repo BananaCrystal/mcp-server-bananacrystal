@@ -1,6 +1,16 @@
 /**
  * MCP tool handlers for BananaCrystal
  * These implement the actual logic by calling the API client
+ * 
+ * NOTE: This file contains handlers for the 40 MCP payment tools only.
+ * 
+ * Rate service is NOT handled here. Rate service is a separate backend API:
+ * - Accessed via REST endpoints (/api/v1/mcp/rate/*)
+ * - Not part of the MCP protocol's tool interface
+ * - Methods available in client.ts (listRateCurrencies, getCurrentRate, etc.)
+ * - Requires "rate" scope on API key
+ * 
+ * See README "Backend rate service (separate from MCP tools)" for details.
  */
 
 import { BananaCrystalClient } from "../client.js";
