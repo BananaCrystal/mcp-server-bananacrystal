@@ -3,7 +3,7 @@
  * These implement the actual logic by calling the API client
  */
 
-import { BananaCrystalClient } from "../client.js";
+import { BananaCrystalClient } from '../client.js';
 
 type ToolHandler = (args: any) => Promise<any>;
 
@@ -52,15 +52,7 @@ export function createToolHandlers(
       return await client.estimateSwapFees(args);
     },
 
-    // Exchange Rates & Info
-    get_exchange_rate: async (args) => {
-      return await client.getExchangeRate(args.currency);
-    },
-
-    list_supported_currencies: async () => {
-      return await client.listSupportedCurrencies();
-    },
-
+    // Tokens & Currencies
     list_available_tokens: async () => {
       return await client.listAvailableTokens();
     },
@@ -162,11 +154,6 @@ export function createToolHandlers(
       return await client.getEscrowHistory(args);
     },
 
-    // Sandbox-only
-    reset_sandbox_balance: async () => {
-      return await client.resetSandboxBalance();
-    },
-
     // Agent-to-Agent Transactions
     request_agent_transaction: async (args) => {
       return await client.requestAgentTransaction(args);
@@ -182,6 +169,49 @@ export function createToolHandlers(
 
     get_agent_config: async (args) => {
       return await client.getAgentConfig(args.targetOwnerUserExtId);
+    },
+
+    // Rate & Currency Exchange
+    list_supported_currencies: async () => {
+      return await client.listRateCurrencies();
+    },
+
+    get_exchange_rate: async (args) => {
+      return await client.getCurrentRate({
+        from: args.from,
+        to: args.to,
+      });
+    },
+
+    convert_currency: async (args) => {
+      return await client.convertCurrency({
+        from: args.from,
+        to: args.to,
+        amount: args.amount,
+      });
+    },
+
+    batch_convert_currencies: async (args) => {
+      return await client.batchConvertCurrencies({
+        conversions: args.conversions,
+      });
+    },
+
+    get_historical_exchange_rates: async (args) => {
+      return await client.getHistoricalExchangeRates({
+        from: args.from,
+        to: args.to,
+        startDate: args.startDate,
+        endDate: args.endDate,
+      });
+    },
+
+    get_exchange_rate_statistics: async (args) => {
+      return await client.getExchangeRateStatistics({
+        from: args.from,
+        to: args.to,
+        days: args.days,
+      });
     },
   };
 }
