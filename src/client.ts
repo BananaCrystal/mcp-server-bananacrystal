@@ -1,6 +1,23 @@
 /**
  * HTTP client for BananaCrystal API
  * Makes requests to the hosted BananaCrystal backend
+ * 
+ * Contains two categories of methods:
+ * 
+ * 1. MCP TOOLS (40 payment tools)
+ *    - Transfer, swap, balance, history, etc.
+ *    - Called via MCP protocol from tools/handlers.ts
+ *    - Available with any API key
+ * 
+ * 2. RATE SERVICE (separate backend API)
+ *    - List currencies, get rates, convert, batch convert, history, stats
+ *    - Called via direct HTTP REST endpoints (/api/v1/mcp/rate/*)
+ *    - Requires "rate" scope on API key
+ *    - NOT part of MCP tools — accessed separately by client code
+ *    - Sandbox endpoints: /api/v1/mcp/sandbox/rate/* (no auth)
+ *    - Production endpoints: /api/v1/mcp/rate/* (requires rate scope key)
+ * 
+ * See README for rate service documentation and when to use each.
  */
 
 export class BananaCrystalClient {
@@ -45,7 +62,7 @@ export class BananaCrystalClient {
       );
     }
 
-    return response.json();
+    return response.json() as Promise<T>;
   }
 
   // Profile & Identity

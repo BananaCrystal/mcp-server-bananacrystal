@@ -333,6 +333,184 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok", message: "Mock BananaCrystal API is running" });
 });
 
+// Rate Service - Sandbox endpoints (no auth required)
+app.get("/api/v1/mcp/sandbox/rate/currencies", (req, res) => {
+  res.json({ 
+    currencies: mockData.rateServiceCurrencies,
+    message: "Supported currencies for rate service"
+  });
+});
+
+app.get("/api/v1/mcp/sandbox/rate/current", (req, res) => {
+  const { from, to } = req.query;
+  
+  if (!from || !to) {
+    return res.status(400).json({
+      error: "missing_parameters",
+      message: "from and to currency codes are required"
+    });
+  }
+  
+  const pairKey = `${from.toString().toUpperCase()}-${to.toString().toUpperCase()}`;
+  const rateData = mockData.rateServiceMockRates[pairKey as keyof typeof mockData.rateServiceMockRates];
+  
+  if (!rateData) {
+    return res.status(404).json({
+      error: "currency_pair_not_found",
+      message: `Rate data for ${pairKey} not available in sandbox`
+    });
+  }
+  
+  res.json(rateData);
+});
+
+app.get("/api/v1/mcp/sandbox/rate/convert", (req, res) => {
+  const { from, to, amount } = req.query;
+  
+  if (!from || !to || !amount) {
+    return res.status(400).json({
+      error: "missing_parameters",
+      message: "from, to, and amount are required"
+    });
+  }
+  
+  const pairKey = `${from.toString().toUpperCase()}-${to.toString().toUpperCase()}`;
+  const rateData = mockData.rateServiceMockRates[pairKey as keyof typeof mockData.rateServiceMockRates];
+  
+  if (!rateData) {
+    return res.status(404).json({
+      error: "currency_pair_not_found",
+      message: `Cannot convert ${pairKey}`
+    });
+  }
+  
+  const fromAmount = parseFloat(amount.toString());
+  const toAmount = (fromAmount * rateData.rate).toFixed(2);
+  
+  res.json({
+    from: from.toString().toUpperCase(),
+    to: to.toString().toUpperCase(),
+    fromAmount: fromAmount.toFixed(2),
+    toAmount: toAmount,
+    rate: rateData.rate,
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.post("/api/v1/mcp/sandbox/rate/batch-convert", (req, res) => {
+  const { conversions } = req.body;
+  
+  if (!conversions || !Array.isArray(conversions)) {
+    return res.status(400).json({
+      error: "invalid_input",
+      message: "conversions must be an array of {from, to, amount} objects"
+    });
+  }
+  
+  const results = conversions.map((conv: any) => {
+    const pairKey = `${conv.from.toUpperCase()}-${conv.to.toUpperCase()}`;
+    const rateData = mockData.rateServiceMockRates[pairKey as keyof typeof mockData.rateServiceMockRates];
+    
+    if (!rateData) {
+      return {
+        from: conv.from,
+        to: conv.to,
+        error: "currency_pair_not_found"
+      };
+    }
+    
+    const toAmount = (conv.amount * rateData.rate).toFixed(2);
+    return {
+      from: conv.from,
+      to: conv.to,
+      fromAmount: conv.amount.toFixed(2),
+      toAmount: toAmount,
+      rate: rateData.rate
+    };
+  });
+  
+  res.json({ conversions: results, timestamp: new Date().toISOString() });
+});
+
+app.get("/api/v1/mcp/sandbox/rate/history", (req, res) => {
+  const { from, to, startDate, endDate } = req.query;
+  
+  if (!from || !to) {
+    return res.status(400).json({
+      error: "missing_parameters",
+      message: "from and to are required"
+    });
+  }
+  
+  const pairKey = `${from.toString().toUpperCase()}-${to.toString().toUpperCase()}`;
+  const rateData = mockData.rateServiceMockRates[pairKey as keyof typeof mockData.rateServiceMockRates];
+  
+  if (!rateData) {
+    return res.status(404).json({
+      error: "currency_pair_not_found",
+      message: `No historical data for ${pairKey}`
+    });
+  }
+  
+  // Generate mock historical data (30 days)
+  const history = [];
+  for (let i = 30; i >= 0; i--) {
+    const date = new Date();
+    date.setDate(date.getDate() - i);
+    const dailyVariation = (Math.random() - 0.5) * 0.04; // ±2% variation
+    const dailyRate = rateData.rate * (1 + dailyVariation);
+    
+    history.push({
+      date: date.toISOString().split('T')[0],
+      open: (dailyRate * 0.99).toFixed(4),
+      high: (dailyRate * 1.015).toFixed(4),
+      low: (dailyRate * 0.985).toFixed(4),
+      close: dailyRate.toFixed(4)
+    });
+  }
+  
+  res.json({
+    from: from.toString().toUpperCase(),
+    to: to.toString().toUpperCase(),
+    history: history
+  });
+});
+
+app.get("/api/v1/mcp/sandbox/rate/stats", (req, res) => {
+  const { from, to, days } = req.query;
+  
+  if (!from || !to) {
+    return res.status(400).json({
+      error: "missing_parameters",
+      message: "from and to are required"
+    });
+  }
+  
+  const pairKey = `${from.toString().toUpperCase()}-${to.toString().toUpperCase()}`;
+  const rateData = mockData.rateServiceMockRates[pairKey as keyof typeof mockData.rateServiceMockRates];
+  
+  if (!rateData) {
+    return res.status(404).json({
+      error: "currency_pair_not_found",
+      message: `No stats available for ${pairKey}`
+    });
+  }
+  
+  const daysPeriod = parseInt(days?.toString() || "30");
+  const variance = rateData.rate * (daysPeriod / 100);
+  
+  res.json({
+    from: from.toString().toUpperCase(),
+    to: to.toString().toUpperCase(),
+    period_days: daysPeriod,
+    high: (rateData.rate + variance).toFixed(4),
+    low: (rateData.rate - variance).toFixed(4),
+    average: rateData.rate.toFixed(4),
+    current: rateData.rate.toFixed(4),
+    volatility: "2.3%"
+  });
+});
+
 // Sandbox - Reset Balance
 app.post("/api/v1/mcp/sandbox/reset-balance", (req, res) => {
   res.json({

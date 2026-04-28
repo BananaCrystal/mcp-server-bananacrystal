@@ -1,4 +1,13 @@
 #!/usr/bin/env node
+/**
+ * BananaCrystal MCP Server
+ * 
+ * Registers 40 MCP payment tools for Claude and other MCP clients.
+ * 
+ * NOTE: This serves MCP tools only. The RATE SERVICE is separate.
+ * Rate service is accessed via REST API endpoints, not through MCP.
+ * See README for rate service documentation and client.ts for methods.
+ */
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { BananaCrystalClient } from "./client.js";
