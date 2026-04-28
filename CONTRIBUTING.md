@@ -50,13 +50,20 @@ npm install
 # Build
 npm run build
 
-# Start mock server — no API key needed, all 40 tools return realistic data
+# Start mock server — no API key needed
+# Returns realistic data for all 40 MCP payment tools and rate service endpoints
 npm run mock
 
 # Or run in development mode against the real API
 export BANANACRYSTAL_API_KEY=bc_test_your_sandbox_key
 npm run dev
+
+# Test rate service endpoints (requires "rate" scope key):
+# curl http://localhost:3001/api/v1/mcp/sandbox/rate/currencies
+# curl http://localhost:3001/api/v1/mcp/sandbox/rate/current?from=USD&to=NGN
 ```
+
+**Note:** The mock server includes both MCP tools and rate service endpoints. See [Rate Service](#backend-rate-service-separate-from-mcp-tools) section in README for full endpoint reference.
 
 ## Code Style
 
