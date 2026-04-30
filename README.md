@@ -429,7 +429,7 @@ The rate service is a **backend HTTP API**, not an MCP tool. It's available to a
 ```bash
 # Get current rate
 curl -H "x-api-key: bc_live_your_key_with_rate_scope" \
-     "https://api.bananacrystal.com/api/v1/mcp/rate/current?from=USD&to=NGN"
+     "https://agentic.bananacrystal.com/api/v1/mcp/rate/current?from=USD&to=NGN"
 
 # Response:
 {
@@ -829,7 +829,7 @@ The **rate service** is a separate backend HTTP API (not part of the 40 MCP tool
 
 ```bash
 curl -H "x-api-key: bc_live_your_key_with_rate_scope" \
-     "https://api.bananacrystal.com/api/v1/mcp/rate/current?from=USD&to=NGN"
+     "https://agentic.bananacrystal.com/api/v1/mcp/rate/current?from=USD&to=NGN"
 ```
 
 **Sandbox testing:** Use `/mcp/sandbox/rate/*` endpoints (no authentication required).
