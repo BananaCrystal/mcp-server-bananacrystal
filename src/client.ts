@@ -13,7 +13,7 @@
  *    - List currencies, get rates, convert, batch convert, history, stats
  *    - Called via direct HTTP REST endpoints (/api/v1/mcp/rate/*)
  *    - Requires "rate" scope on API key
- *    - NOT part of MCP tools — accessed separately by client code
+ *    - NOT part of MCP tools; it is accessed separately by client code
  *    - Sandbox endpoints: /api/v1/mcp/sandbox/rate/* (no auth)
  *    - Production endpoints: /api/v1/mcp/rate/* (requires rate scope key)
  * 

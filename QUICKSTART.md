@@ -20,7 +20,7 @@ bananacrystal-mcp --version
 2. Sign up or log in
 3. Navigate to **Account** → **API Keys**
 4. Click **Create New Key**
-5. **Start with a Sandbox key** — fake money, zero risk, full functionality. Sandbox keys start with `bc_test_`. Live keys have no prefix.
+5. **Start with a Sandbox key** for fake money, zero risk, and full functionality. Sandbox keys start with `bc_test_`. Live keys have no prefix.
 6. Copy the key
 
 ⚠️ **Important**: Save your key securely. You won't be able to see it again!
@@ -60,7 +60,7 @@ Paste this into the file:
 
 Replace `PASTE_YOUR_KEY_HERE` with your actual API key.
 
-**Note:** This connects to production. Use a Sandbox key (`bc_test_...`) while testing — same config, no real money!
+**Note:** This connects to production. Use a Sandbox key (`bc_test_...`) while testing because it uses the same configuration without real money!
 
 ## Step 4: Restart Claude (30 seconds)
 
@@ -98,7 +98,7 @@ Show my recent BananaCrystal transactions
 What's the current USD to NGN exchange rate on BananaCrystal?
 ```
 
-**Note:** The MCP server provides 40 payment tools. For comprehensive rate data (historical rates, batch conversions, statistics), use the dedicated **rate service** — see [Rate Service Documentation](README.md#backend-rate-service-separate-from-mcp-tools) in the README.
+**Note:** The MCP server provides 40 payment tools. For comprehensive rate data including historical rates, batch conversions, and statistics, please use the dedicated **rate service**. See the [Rate Service Documentation](README.md#backend-rate-service-separate-from-mcp-tools) in the README for details.
 
 ### Transfer Tokens
 

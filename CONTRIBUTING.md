@@ -50,7 +50,7 @@ npm install
 # Build
 npm run build
 
-# Start mock server — no API key needed
+# Start mock server - no API key needed
 # Returns realistic data for all 40 MCP payment tools and rate service endpoints
 npm run mock
 

@@ -14,7 +14,7 @@ npm install -g @bananacrystal/mcp-server
 2. Sign up or log in
 3. Go to **Account** → **API Keys**
 4. Click **Create New Key**
-5. **Start with a Sandbox key** — it has fake money, zero risk, and full functionality. Sandbox keys start with `bc_test_`. Live keys have no prefix.
+5. **Start with a Sandbox key** because it provides fake money, zero risk, and full functionality. Sandbox keys start with `bc_test_`. Live keys have no prefix.
 6. Copy your key
 
 > **Tip:** You can always tell sandbox from live by the `bc_test_` prefix. The package automatically routes each key to the correct endpoint.
@@ -37,7 +37,7 @@ npm install -g @bananacrystal/mcp-server
 }
 ```
 
-**⚠️ Note:** This connects to production with real money. Use a Sandbox key (`bc_test_...`) while testing — same config, no real money.
+**⚠️ Note:** This connects to production with real money. We recommend using a Sandbox key (`bc_test_...`) for testing as it uses the same configuration without using real money.
 
 ### 4. Restart Claude Desktop
 
@@ -59,7 +59,7 @@ Show my recent BananaCrystal transactions
 What tokens are supported on BananaCrystal?
 ```
 
-> **Sandbox tip:** If you used a `bc_test_` key, your account comes pre-seeded with 10,000 USDb, 5,000,000 NGNb, and more. OTP codes are returned directly in the response — no email needed. Reset balances anytime by asking Claude: _"Reset my BananaCrystal sandbox balance"_.
+> **Sandbox tip:** If you used a `bc_test_` key, your account comes pre-seeded with 10,000 USDb, 5,000,000 NGNb, and more. OTP codes are returned directly in the response, so no email is needed. Reset balances anytime by asking Claude: _"Reset my BananaCrystal sandbox balance"_.
 
 ---
 
@@ -145,7 +145,7 @@ Now all API calls go to your local mock server with fake responses. Perfect for 
 ### 📊 Exchange Rates & Currency Data
 
 - Get current rates between any two currencies
-- For more advanced rate operations (historical data, batch conversions, statistics), use the dedicated **rate service** — see [Rate Service Documentation](README.md#backend-rate-service-separate-from-mcp-tools)
+- For more advanced rate operations like historical data, batch conversions, and statistics, please use the dedicated **rate service**. See the [Rate Service Documentation](README.md#backend-rate-service-separate-from-mcp-tools) for more details.
 
 ### 📊 History & Info
 

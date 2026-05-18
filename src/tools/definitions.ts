@@ -3,17 +3,17 @@
  * These define the interface that AI agents see
  * 
  * NOTE: This file contains the 40 MCP payment tools.
- * The RATE SERVICE is separate — it's not part of MCP tools.
+ * The RATE SERVICE is separate and is not part of the MCP tools.
  * Rate service is accessed via REST API endpoints (/api/v1/mcp/rate/*)
- * not through the MCP protocol's tool interface.
+ * rather than the MCP protocol's tool interface.
  * 
  * Rate service provides:
- * - GET /api/v1/mcp/rate/currencies — list supported currencies
- * - GET /api/v1/mcp/rate/current — get current exchange rates
- * - GET /api/v1/mcp/rate/convert — convert amounts
- * - POST /api/v1/mcp/rate/batch-convert — batch conversions
- * - GET /api/v1/mcp/rate/history — historical rate data
- * - GET /api/v1/mcp/rate/stats — rate statistics (high/low/avg)
+ * - GET /api/v1/mcp/rate/currencies: Lists supported currencies
+ * - GET /api/v1/mcp/rate/current: Gets current exchange rates
+ * - GET /api/v1/mcp/rate/convert: Converts amounts
+ * - POST /api/v1/mcp/rate/batch-convert: Batch conversions
+ * - GET /api/v1/mcp/rate/history: Historical rate data
+ * - GET /api/v1/mcp/rate/stats: Rate statistics including high, low, and average
  * 
  * Sandbox endpoints at /api/v1/mcp/sandbox/rate/* (no auth required)
  * Production endpoints at /api/v1/mcp/rate/* (require "rate" scope key)
@@ -26,7 +26,7 @@ export function createToolDefinitions() {
     // Utility & Health
     {
       name: "ping",
-      description: "Health check tool — returns pong",
+      description: "Health check tool that returns pong",
       inputSchema: {
         type: "object",
         properties: {},
@@ -698,7 +698,7 @@ export function createToolDefinitions() {
     {
       name: "get_my_trades",
       description:
-        "Get all trades for a user — both trades they created and trades on offers they own",
+        "Get all trades for a user, including trades they created and trades on offers they own",
       inputSchema: {
         type: "object",
         properties: {
@@ -797,7 +797,7 @@ export function createToolDefinitions() {
     {
       name: "get_escrow_balances",
       description:
-        "Get a user's escrow balance breakdown: total, available, and locked amounts",
+        "Get a user's escrow balance breakdown, including total, available, and locked amounts",
       inputSchema: {
         type: "object",
         properties: {
@@ -811,7 +811,7 @@ export function createToolDefinitions() {
     {
       name: "get_escrow_history",
       description:
-        "Get a user's full escrow transaction history — locks, releases, wins, losses, fees",
+        "Get a user's full escrow transaction history, covering locks, releases, wins, losses, and fees",
       inputSchema: {
         type: "object",
         properties: {
