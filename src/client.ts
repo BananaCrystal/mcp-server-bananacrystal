@@ -115,8 +115,8 @@ export class BananaCrystalClient {
     tokenId: string;
     recipientAccountId: string;
     amount: string;
-    otpCode: string;
-    transactionRef: string;
+    otpCode?: string;
+    transactionRef?: string;
     tokenSymbol?: string;
   }) {
     return this.request("/api/v1/mcp/transfer", {
@@ -131,6 +131,8 @@ export class BananaCrystalClient {
     fromAmount: string;
     toTokenId: string;
     memo?: string;
+    otpCode?: string;
+    transactionRef?: string;
   }) {
     return this.request("/api/v1/mcp/swap", {
       method: "POST",
@@ -225,6 +227,8 @@ export class BananaCrystalClient {
   async executeApprovedTransaction(params: {
     approvalRequestId: string;
     executionToken: string;
+    otpCode?: string;
+    transactionRef?: string;
   }) {
     return this.request("/api/v1/mcp/agent/execute", {
       method: "POST",
@@ -276,6 +280,8 @@ export class BananaCrystalClient {
     currency: string;
     destinationAccount?: string;
     railType?: string;
+    otpCode?: string;
+    transactionRef?: string;
   }) {
     return this.request("/api/v1/mcp/brale/withdrawal", {
       method: "POST",
