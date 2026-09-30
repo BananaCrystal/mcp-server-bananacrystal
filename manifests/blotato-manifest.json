@@ -1,0 +1,15 @@
+{
+  "name": "BananaCrystal",
+  "handle": "bananacrystal",
+  "category": "fintech",
+  "network": "blotato-agent-hub",
+  "endpoint": "https://agentic.bananacrystal.com/mcp",
+  "capabilities": ["forex", "trading", "wallet-management", "cross-border-payments"],
+  "auth": {
+    "type": "apiKey",
+    "header": "Authorization",
+    "prefix": "Bearer "
+  },
+  "docsUrl": "https://agents.bananacrystal.com",
+  "summary": "AI Agent payment layer and multi-currency liquidity protocol."
+}

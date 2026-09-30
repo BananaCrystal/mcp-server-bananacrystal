@@ -1,0 +1,30 @@
+{
+  "name": "BananaCrystal Financial Engine",
+  "id": "bananacrystal-financial-mcp",
+  "vendor": "BananaCrystal Ltd.",
+  "website": "https://bananacrystal.com",
+  "portal": "https://agents.bananacrystal.com",
+  "description": "Connect AI agents to real-time multi-currency FOREX rates, liquidity pools, cross-border payment rails, and instant swaps.",
+  "transport": "http-stream",
+  "protocol": "mcp-v1",
+  "endpoints": {
+    "production": "https://agentic.bananacrystal.com/mcp",
+    "staging": "https://staging.agentic.bananacrystal.com/mcp"
+  },
+  "auth": {
+    "type": "bearer",
+    "headerName": "Authorization",
+    "prefix": "Bearer ",
+    "tokenUrl": "https://agents.bananacrystal.com/account/api-keys",
+    "description": "Obtain an API key starting with bc_live_ from your BananaCrystal Agent portal."
+  },
+  "tags": [
+    "fintech",
+    "payments",
+    "forex",
+    "crypto",
+    "swaps",
+    "finance",
+    "agent-economy"
+  ]
+}
