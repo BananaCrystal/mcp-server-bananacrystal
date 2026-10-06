@@ -8,8 +8,8 @@ startCommand:
   env:
     BANANACRYSTAL_API_KEY: "${BANANACRYSTAL_API_KEY}"
 
-displayName: "BananaCrystal Payment Infrastructure"
-description: "Agent payment infrastructure MCP server for autonomous payments, currency swaps, and real-time Hedera rates."
+displayName: "BananaCrystal Agent Payment Infrastructure"
+description: "Agent payment infrastructure MCP server for autonomous payments, multi-currency FOREX swaps, real-time rates, and Hedera wallet operations."
 homepage: "https://agents.bananacrystal.com"
 repository: "https://github.com/BananaCrystal/mcp-server-bananacrystal"
 iconUrl: "https://www.bananacrystal.com/wp-content/uploads/2024/08/cropped-favicon-32x32.png"
@@ -17,12 +17,16 @@ iconUrl: "https://www.bananacrystal.com/wp-content/uploads/2024/08/cropped-favic
 environment:
   BANANACRYSTAL_API_KEY:
     type: string
-    description: "Your BananaCrystal API Key (generated at https://agents.bananacrystal.com under Account -> API Keys)"
+    description: "Your BananaCrystal API Key (e.g. bc_live_... or bc_test_... from https://agents.bananacrystal.com under Account -> API Keys)"
     required: true
     secret: true
 
 examples:
-  - prompt: "What is the exchange rate for USD to EUR?"
-    call: "get_exchange_rate({ from: 'USD', to: 'EUR' })"
-  - prompt: "Check my available wallet balances"
-    call: "get_wallet_balances({})"
+  - prompt: "What is the exchange rate for EUR vs USD?"
+    call: "get_exchange_rate({ currency: 'EUR' })"
+  - prompt: "Check my available wallet balances and agent identity"
+    call: "get_my_profile({})"
+  - prompt: "Estimate fee to swap 100 USDb to EURb"
+    call: "estimate_swap_fees({ fromCurrency: 'USDb', toCurrency: 'EURb', amount: 100 })"
+  - prompt: "List all supported stablecoins and platform tokens"
+    call: "list_available_tokens({})"

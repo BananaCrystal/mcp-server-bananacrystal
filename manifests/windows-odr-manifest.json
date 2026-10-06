@@ -11,6 +11,7 @@
     "protocol": "mcp-jsonrpc-2.0",
     "url": "https://agentic.bananacrystal.com/mcp",
     "headers": {
+      "x-api-key": "{BANANACRYSTAL_API_KEY}",
       "Authorization": "Bearer {BANANACRYSTAL_API_KEY}"
     }
   },

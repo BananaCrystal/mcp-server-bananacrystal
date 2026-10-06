@@ -9,14 +9,13 @@
   "protocol": "mcp-v1",
   "endpoints": {
     "production": "https://agentic.bananacrystal.com/mcp",
-    "staging": "https://staging.agentic.bananacrystal.com/mcp"
+    "sandbox": "https://agentic.bananacrystal.com/mcp/sandbox"
   },
   "auth": {
-    "type": "bearer",
-    "headerName": "Authorization",
-    "prefix": "Bearer ",
+    "type": "apiKey",
+    "supportedHeaders": ["x-api-key", "Authorization"],
     "tokenUrl": "https://agents.bananacrystal.com/account/api-keys",
-    "description": "Obtain an API key starting with bc_live_ from your BananaCrystal Agent portal."
+    "description": "Obtain an API key starting with bc_live_ or bc_test_ from your BananaCrystal Agent portal."
   },
   "tags": [
     "fintech",

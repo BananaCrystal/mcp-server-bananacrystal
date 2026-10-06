@@ -13,7 +13,27 @@
     {
       "type": "streamable-http",
       "url": "https://agentic.bananacrystal.com/mcp",
+      "description": "Production Live MCP Endpoint",
       "headers": [
+        {
+          "name": "x-api-key",
+          "value": "{BANANACRYSTAL_API_KEY}"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {BANANACRYSTAL_API_KEY}"
+        }
+      ]
+    },
+    {
+      "type": "streamable-http",
+      "url": "https://agentic.bananacrystal.com/mcp/sandbox",
+      "description": "Sandbox / Staging MCP Endpoint for safe simulated testing",
+      "headers": [
+        {
+          "name": "x-api-key",
+          "value": "{BANANACRYSTAL_API_KEY}"
+        },
         {
           "name": "Authorization",
           "value": "Bearer {BANANACRYSTAL_API_KEY}"
