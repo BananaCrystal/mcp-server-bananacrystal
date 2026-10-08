@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.microsoft.com/windows/ai/odr/v1/agent-manifest.json",
+  "id": "com.bananacrystal.mcp.financial",
+  "name": "BananaCrystal MCP Agent Connector",
+  "publisher": "BananaCrystal",
+  "version": "1.0.1",
+  "description": "Windows On-device Agent Registry (ODR) integration exposing BananaCrystal multi-currency FOREX queries and transaction execution to local and cloud Windows AI models and GitHub Copilot agent modes.",
+  "category": "Finance & Productivity",
+  "connection": {
+    "type": "remote",
+    "protocol": "mcp-jsonrpc-2.0",
+    "url": "https://agentic.bananacrystal.com/mcp",
+    "headers": {
+      "x-api-key": "{BANANACRYSTAL_API_KEY}",
+      "Authorization": "Bearer {BANANACRYSTAL_API_KEY}"
+    }
+  },
+  "environmentVariables": [
+    {
+      "name": "BANANACRYSTAL_API_KEY",
+      "description": "API key generated from https://agents.bananacrystal.com (Account -> API Keys)",
+      "required": true,
+      "secure": true
+    }
+  ],
+  "copilotIntegration": {
+    "supportedModes": ["chat", "agent", "task-execution"],
+    "toolPrefix": "bc_"
+  }
+}

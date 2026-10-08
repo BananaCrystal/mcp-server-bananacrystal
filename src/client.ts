@@ -86,6 +86,13 @@ export class BananaCrystalClient {
     });
   }
 
+  async claimGenesisWallet(params: { confirm: boolean }) {
+    return this.request("/api/v1/mcp/genesis/claim", {
+      method: "POST",
+      body: JSON.stringify(params),
+    });
+  }
+
   // Balances
   async getBalances(params?: { accountId?: string; tokenId?: string }) {
     const query = new URLSearchParams();
@@ -106,6 +113,20 @@ export class BananaCrystalClient {
     tokenSymbol?: string;
   }) {
     return this.request("/api/v1/mcp/transfer/request-otp", {
+      method: "POST",
+      body: JSON.stringify(params),
+    });
+  }
+
+  async requestMcpOtp(params: {
+    operation: string;
+    amount: string;
+    user_id?: string;
+    wallet_id?: string;
+    recipient?: string;
+    token?: string;
+  }) {
+    return this.request("/api/v1/mcp/otp/request", {
       method: "POST",
       body: JSON.stringify(params),
     });

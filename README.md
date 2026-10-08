@@ -131,7 +131,7 @@ Sandbox keys start with `bc_test_`. This prefix is how you and the package know 
 **Sandbox behaviour:**
 
 - Pre-seeded balances: 10,000 USDb · 5,000,000 NGNb · 50,000 GHSb · 1,000,000 KESb · 150,000 ZARb
-- All 40 MCP payment tools available
+- All 42 MCP payment tools available
 - Rate service endpoints available at `/mcp/sandbox/rate/*` (no auth needed)
 - OTP codes are returned directly in the API response, so no email is sent
 - KYC always approved
@@ -302,7 +302,43 @@ plugins:
 
 ---
 
-## 40 production-ready payment tools
+## Global MCP Registry Directories and Direct Remote Integration
+
+BananaCrystal's Model Context Protocol services are indexed across global developer registries and remote agent directories. You can connect your agents via local `stdio` (npx) or direct cloud `streamable-http`.
+
+| Registry / Directory | Platform Type | Manifest / Target | Connection URL / Endpoint |
+| :--- | :--- | :--- | :--- |
+| **Official MCP Registry** | Centralized Metadata Registry | [`server.json`](./server.json) | `https://registry.modelcontextprotocol.io` |
+| **Remote MCP / AI Connectors** | Remote Directory | [`manifests/remote-mcp.json`](./manifests/remote-mcp.json) | `https://remote-mcp.com` |
+| **Windows On-Device Registry (ODR)** | Windows Copilot & OS Agents | [`manifests/windows-odr-manifest.json`](./manifests/windows-odr-manifest.json) | `npx -y @bananacrystal/mcp-server` / `https://agentic.bananacrystal.com/mcp` |
+| **JFrog MCP Registry** | Enterprise Governance Hub | [`manifests/jfrog-mcp-descriptor.yaml`](./manifests/jfrog-mcp-descriptor.yaml) | Package `@bananacrystal/mcp-server` |
+| **Smithery.ai** | Agent Tool Marketplace | [`smithery.yaml`](./smithery.yaml) | `https://smithery.ai/server/@bananacrystal/mcp-server` |
+| **Blotato Registry** | Multi-Agent Social & Publishing | [`manifests/blotato-manifest.json`](./manifests/blotato-manifest.json) | `https://blotato.com` |
+| **Glama.ai MCP Directory** | Security and Inspection Hub | [`manifests/glama-manifest.json`](./manifests/glama-manifest.json) | `https://glama.ai/mcp` |
+| **PulseMCP** | Analytics Directory | [`manifests/pulsemcp.json`](./manifests/pulsemcp.json) | `https://pulsemcp.com` |
+| **MCP.so** | Community Catalog | [`manifests/mcp-so.json`](./manifests/mcp-so.json) | `https://mcp.so` |
+| **Awesome MCP Servers** | Global Community Index | [`manifests/awesome-mcp.json`](./manifests/awesome-mcp.json) | `https://mcpservers.org` |
+| **AgenticSkills Registry** | Verified Agent Toolset | [`manifests/agenticskills-manifest.json`](./manifests/agenticskills-manifest.json) | `https://agenticskills.io` |
+| **Composio Gateway** | Multi-Agent Orchestration | [`manifests/composio-manifest.json`](./manifests/composio-manifest.json) | `https://composio.dev` |
+| **Meta Muse Connector** | Cloud Agent HTTP Streamable | [`manifests/meta-muse-connection.json`](./manifests/meta-muse-connection.json) | `https://agentic.bananacrystal.com/mcp` |
+
+### Meta Muse Cloud Agent Integration
+
+Meta Muse runs in the cloud without a local plugin host. Connect Meta Muse directly to BananaCrystal using streamable HTTP:
+
+1. **Add Custom Remote Server in Muse Settings:**
+   * **Endpoint URL:** `https://agentic.bananacrystal.com/mcp`
+   * **Headers:** Configure `{"x-api-key": "YOUR_SECURE_API_KEY"}` in server settings.
+2. **Interact with Connected Tools:**
+   Prompt Meta Muse in chat:
+   ```text
+   Use my connected BananaCrystal MCP tools to query current FOREX exchange rates and estimate swap fees between USDb and EURb.
+   ```
+   Muse binds the streamable HTTP client and executes payment operations within configured policy limits.
+
+---
+
+## 42 production-ready payment tools
 
 Every tool an agent needs for complete autonomous payment capability. All live. All guarded.
 
@@ -408,7 +444,7 @@ Every tool an agent needs for complete autonomous payment capability. All live. 
 
 ## Backend rate service (separate from MCP tools)
 
-Beyond the 40 MCP tools above, **BananaCrystal backend provides a separate rate service** for comprehensive currency exchange operations:
+Beyond the 42 MCP tools above, **BananaCrystal backend provides a separate rate service** for comprehensive currency exchange operations:
 
 <details>
 <summary><b>Rate service endpoints</b>: Accessed via API with a <code>rate</code> scope key</summary>
@@ -587,7 +623,7 @@ This MCP server is a thin authenticated client. All security enforcement execute
 | `DEBUG`                 | No       | `false`                                 | Enable verbose debug logging                                                                                                      |
 
 **API Scopes:** Different API keys can have different scopes:
-- **All keys** access the 40 MCP payment tools
+- **All keys** access the 42 MCP payment tools
 - **"rate" scope** keys also access the [rate service API](#backend-rate-service-separate-from-mcp-tools) (historical rates, batch conversions, statistics)
 - Create scope-specific keys at [agents.bananacrystal.com/account](https://agents.bananacrystal.com/account) for fine-grained access control
 
@@ -597,7 +633,7 @@ This MCP server is a thin authenticated client. All security enforcement execute
 
 ## Pricing
 
-**All MCP payment tools (40 tools) included with any API key.** Rate service adds optional enhanced currency operations.
+**All MCP payment tools (42 tools) included with any API key.** Rate service adds optional enhanced currency operations.
 
 **Read-only operations are always free.** Fees only apply when moving money or accessing advanced rate features.
 
@@ -749,7 +785,7 @@ cd mcp-server-bananacrystal
 npm install && npm run mock
 ```
 
-The mock server returns realistic data so you can build integrations, write tests, and explore all 40 tools without touching production.
+The mock server returns realistic data so you can build integrations, write tests, and explore all 42 tools without touching production.
 
 </details>
 
@@ -792,7 +828,7 @@ Create a **Sandbox key** at [agents.bananacrystal.com/account](https://agents.ba
 - Spending limits are unlimited
 - Reset balances anytime with the `reset_sandbox_balance` tool
 
-All 40 MCP tools work identically in sandbox. Additionally, **rate service endpoints** are available in sandbox at `/mcp/sandbox/rate/*` without requiring authentication, which is perfect for testing currency exchange operations.
+All 42 MCP tools work identically in sandbox. Additionally, **rate service endpoints** are available in sandbox at `/mcp/sandbox/rate/*` without requiring authentication, which is perfect for testing currency exchange operations.
 
 When you're ready to go live, swap `bc_test_your_key` for a live key. It uses the same configuration and tools but with real money.
 
@@ -811,7 +847,7 @@ The mock server runs on `http://localhost:3000` and returns realistic data for a
 <details>
 <summary><b>What is the rate service? How is it different from MCP tools?</b></summary>
 
-The **rate service** is a separate backend HTTP API (not part of the 40 MCP tools). It provides comprehensive currency exchange operations:
+The **rate service** is a separate backend HTTP API (not part of the 42 MCP tools). It provides comprehensive currency exchange operations:
 
 - List all supported currencies
 - Get current exchange rates between any two currencies
@@ -880,7 +916,7 @@ export BANANACRYSTAL_API_KEY=bc_test_your_key_here
 npx @modelcontextprotocol/inspector node dist/index.js
 ```
 
-The MCP Inspector opens a browser UI where you can call any of the 40 tools interactively. This is useful for exploring the API before wiring it into an agent.
+The MCP Inspector opens a browser UI where you can call any of the 42 tools interactively. This is useful for exploring the API before wiring it into an agent.
 
 </details>
 
@@ -899,7 +935,7 @@ cd mcp-server-bananacrystal
 npm install
 
 # Start mock server: No API key needed
-# All 40 MCP tools + rate service endpoints return realistic mock data
+# All 42 MCP tools + rate service endpoints return realistic mock data
 npm run mock
 
 # Build from source
@@ -913,7 +949,7 @@ npm run dev
 curl http://localhost:3001/api/v1/mcp/sandbox/rate/currencies
 curl http://localhost:3001/api/v1/mcp/sandbox/rate/current?from=USD&to=NGN
 
-# Test with MCP Inspector (for 40 MCP tools)
+# Test with MCP Inspector (for 42 MCP tools)
 export BANANACRYSTAL_API_KEY=bc_test_your_key_here
 npx @modelcontextprotocol/inspector node dist/index.js
 ```

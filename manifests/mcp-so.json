@@ -1,0 +1,11 @@
+{
+  "name": "BananaCrystal Payments & FOREX MCP",
+  "slug": "bananacrystal-mcp",
+  "tagline": "The financial operating system for autonomous AI agents.",
+  "description": "BananaCrystal connects LLM agents directly to real-time multi-currency exchange rates, automated liquidity pools, cross-border remittance corridors, and programmable Hedera stablecoin wallets.",
+  "website": "https://agents.bananacrystal.com",
+  "github": "https://github.com/BananaCrystal/mcp-server-bananacrystal",
+  "remoteUrl": "https://agentic.bananacrystal.com/mcp",
+  "tags": ["finance", "forex", "payments", "hedera", "usdc", "agent-wallet"],
+  "clients": ["Claude Desktop", "Cursor", "Windsurf", "Meta Muse", "Dify", "Custom Agent Frameworks"]
+}

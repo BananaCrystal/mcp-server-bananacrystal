@@ -1,0 +1,58 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.BananaCrystal/mcp-server-bananacrystal",
+  "title": "BananaCrystal MCP Server",
+  "description": "Agent payment infrastructure MCP server for autonomous payments, currency swaps, and exchange rates.",
+  "version": "1.0.1",
+  "websiteUrl": "https://agents.bananacrystal.com",
+  "repository": {
+    "url": "https://github.com/BananaCrystal/mcp-server-bananacrystal",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://agentic.bananacrystal.com/mcp",
+      "description": "Production Live MCP Endpoint",
+      "headers": [
+        {
+          "name": "x-api-key",
+          "description": "Your BananaCrystal API key",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    },
+    {
+      "type": "streamable-http",
+      "url": "https://agentic.bananacrystal.com/mcp/sandbox",
+      "description": "Sandbox / Staging MCP Endpoint for safe simulated testing",
+      "headers": [
+        {
+          "name": "x-api-key",
+          "description": "Your BananaCrystal Sandbox API key",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    }
+  ],
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@bananacrystal/mcp-server",
+      "version": "1.0.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "BANANACRYSTAL_API_KEY",
+          "description": "Your BananaCrystal API key from https://agents.bananacrystal.com",
+          "required": true,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: McpServerDescriptor
+metadata:
+  name: bananacrystal-mcp-server
+  organization: BananaCrystal
+  version: 1.0.1
+  description: Enterprise governance control plane metadata for BananaCrystal financial MCP server.
+spec:
+  runtime: nodejs
+  distribution:
+    npmPackage: "@bananacrystal/mcp-server"
+    registry: "https://registry.npmjs.org/"
+  deployment:
+    type: streamable-http
+    endpoint: "https://agentic.bananacrystal.com/mcp"
+  governance:
+    compliance:
+      kycEnforced: true
+      rateLimiting: true
+      spendControls: true
+    auditLog: enabled
+  security:
+    authScheme: Bearer
+    tokenPrefix: "bc_live_"

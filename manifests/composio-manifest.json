@@ -1,0 +1,31 @@
+{
+  "appName": "BananaCrystal",
+  "appId": "bananacrystal",
+  "category": "finance",
+  "logo": "https://www.bananacrystal.com/wp-content/uploads/2024/08/cropped-favicon-32x32.png",
+  "description": "Agentic payment infrastructure enabling LLMs to execute multi-currency FOREX swaps, check exchange rates, and trigger secure on-chain payments.",
+  "auth": {
+    "type": "API_KEY",
+    "headerName": "x-api-key"
+  },
+  "documentationUrl": "https://agents.bananacrystal.com/docs",
+  "mcpEndpoint": "https://agentic.bananacrystal.com/mcp",
+  "actions": [
+    {
+      "name": "get_exchange_rate",
+      "description": "Get real-time exchange rate between two supported currencies"
+    },
+    {
+      "name": "swap_currency",
+      "description": "Execute instant currency swap between stablecoins or tokens"
+    },
+    {
+      "name": "transfer_tokens",
+      "description": "Send tokens to another wallet address with OTP verification"
+    },
+    {
+      "name": "get_my_profile",
+      "description": "Fetch wallet address, active balances, and spend limit status"
+    }
+  ]
+}

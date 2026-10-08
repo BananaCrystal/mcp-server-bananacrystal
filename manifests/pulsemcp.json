@@ -1,0 +1,13 @@
+{
+  "name": "bananacrystal-mcp",
+  "displayName": "BananaCrystal Multi-Currency & Agent Payments",
+  "summary": "Real-time FOREX conversion, automated token swaps, and programmable agent wallets.",
+  "repository": "https://github.com/BananaCrystal/mcp-server-bananacrystal",
+  "homepage": "https://agents.bananacrystal.com",
+  "npmPackage": "@bananacrystal/mcp-server",
+  "liveEndpoint": "https://agentic.bananacrystal.com/mcp",
+  "category": "Finance & Web3",
+  "pricing": "Free tier available / usage-based",
+  "authMethods": ["apiKey", "bearer"],
+  "supportedTransports": ["streamable-http", "stdio"]
+}

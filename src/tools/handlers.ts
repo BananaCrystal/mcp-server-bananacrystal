@@ -34,6 +34,10 @@ export function createToolHandlers(
       return await client.echo(args.message);
     },
 
+    bc_genesis_claim: async (args) => {
+      return await client.claimGenesisWallet(args);
+    },
+
     // Profile & Identity
     get_my_profile: async () => {
       return await client.getMyProfile();
@@ -47,6 +51,10 @@ export function createToolHandlers(
     // Transfers
     request_transfer_otp: async (args) => {
       return await client.requestTransferOtp(args);
+    },
+
+    request_mcp_otp: async (args) => {
+      return await client.requestMcpOtp(args);
     },
 
     transfer_tokens: async (args) => {
