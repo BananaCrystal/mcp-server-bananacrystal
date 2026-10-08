@@ -15,13 +15,11 @@
       "url": "https://agentic.bananacrystal.com/mcp",
       "description": "Production Live MCP Endpoint",
       "headers": [
-        {
+{
           "name": "x-api-key",
-          "value": "{BANANACRYSTAL_API_KEY}"
-        },
-        {
-          "name": "Authorization",
-          "value": "Bearer {BANANACRYSTAL_API_KEY}"
+          "description": "Your BananaCrystal API key",
+          "isRequired": true,
+          "isSecret": true
         }
       ]
     },
