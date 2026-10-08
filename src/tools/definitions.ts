@@ -63,8 +63,10 @@ export function createToolDefinitions() {
         properties: {
           confirm: {
             type: "boolean",
+            const: true,
             description:
               "Explicit confirmation to proceed with claiming the Genesis wallet. Must be true.",
+          }
           },
         },
         required: ["confirm"],
