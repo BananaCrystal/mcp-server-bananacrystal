@@ -32,13 +32,13 @@ In the Meta Muse Web/App interface:
 
 ## 3. Option B: Chat-Based Registration
 
-Users can register and authenticate the MCP server directly within the Meta Muse conversation window by sending this prompt:
+Users can register and authenticate the MCP server directly within the Meta Muse conversation window:
 
 ```text
-Connect to the BananaCrystal MCP financial server at https://agentic.bananacrystal.com/mcp using my API key header x-api-key: [YOUR_API_KEY]. Enable exchange rates, swap estimations, wallet profile, and Hedera token transfers.
+Connect to the BananaCrystal MCP financial server at https://agentic.bananacrystal.com/mcp. Authenticate with my saved environment header x-api-key. Enable exchange rates, swap estimations, wallet profile, and Hedera token transfers.
 ```
 
-Meta Muse will parse the URL and header, display an interactive **"Connect Server"** confirmation modal, and save the tool definitions into the user's active session.
+Meta Muse will parse the URL, verify authentication headers via its secure connection modal, and bind the tool definitions into the user's active session.
 
 ---
 

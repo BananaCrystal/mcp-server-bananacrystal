@@ -34,7 +34,7 @@
 **Answer:** The BananaCrystal MCP Server is an open-standard Model Context Protocol implementation that equips AI agents (such as Claude Desktop, Cursor, Windsurf, and Meta Muse) with financial execution capabilities. It connects AI models to real-time currency rates, automated liquidity pools, and programmable payment rails.
 
 ### Q2: How do AI agents authenticate with BananaCrystal?
-**Answer:** Agents authenticate by passing an API key (`bc_live_...` or `bc_test_...`) via the `x-api-key` HTTP header or environment variable. Authentication is validated against server-side spend policies, granular tool scopes, and rate limits.
+**Answer:** Agents authenticate by passing an API key (`bc_live_...` or `bc_test_...`) securely configured via the `x-api-key` HTTP header or environment variable. Authentication is validated against server-side spend policies, granular tool scopes, and rate limits.
 
 ### Q3: What security guardrails are enforced on agent payments?
 **Answer:** BananaCrystal enforces eleven layers of spend control: per-transaction caps, daily ceilings (resetting at 00:00 UTC), single-use OTP verification for large transfers, recipient allowlists, scope enforcement, and idempotent replay protection.
@@ -48,7 +48,7 @@
 
 ### Directory 1: The Official MCP Registry (`registry.modelcontextprotocol.io`)
 * **Registry PR Target:** `modelcontextprotocol/registry` (or `servers/bananacrystal.json`)
-* **Manifest File:** [`server.json`](file:///D:/DOCUMENT/mcp-server-bananacrystal/server.json)
+* **Manifest File:** [`server.json`](../server.json)
 * **Configuration:**
   ```json
   {
@@ -71,7 +71,7 @@
   ```
 
 ### Directory 2: AI Connectors Directory / Remote MCP (`remote-mcp.com`)
-* **Manifest File:** [`manifests/remote-mcp.json`](file:///D:/DOCUMENT/mcp-server-bananacrystal/manifests/remote-mcp.json)
+* **Manifest File:** [`manifests/remote-mcp.json`](../manifests/remote-mcp.json)
 * **Submission Form:**
   * **Server Name:** BananaCrystal Financial Engine
   * **Remote URL:** `https://agentic.bananacrystal.com/mcp`
@@ -80,36 +80,36 @@
   * **Tags:** `fintech, payments, forex, stablecoins, hedera, agent-economy`
 
 ### Directory 3: Windows On-device Agent Registry (ODR)
-* **Manifest File:** [`manifests/windows-odr-manifest.json`](file:///D:/DOCUMENT/mcp-server-bananacrystal/manifests/windows-odr-manifest.json)
+* **Manifest File:** [`manifests/windows-odr-manifest.json`](../manifests/windows-odr-manifest.json)
 * **Protocol Handler:** `bananacrystal-mcp://`
 
 ### Directory 4: JFrog MCP Registry
-* **Descriptor File:** [`manifests/jfrog-mcp-descriptor.yaml`](file:///D:/DOCUMENT/mcp-server-bananacrystal/manifests/jfrog-mcp-descriptor.yaml)
+* **Descriptor File:** [`manifests/jfrog-mcp-descriptor.yaml`](../manifests/jfrog-mcp-descriptor.yaml)
 * **Package Target:** `@bananacrystal/mcp-server`
 
 ### Directory 5: Smithery.ai & Blotato
-* **Smithery Manifest:** [`smithery.yaml`](file:///D:/DOCUMENT/mcp-server-bananacrystal/smithery.yaml)
-* **Blotato Manifest:** [`manifests/blotato-manifest.json`](file:///D:/DOCUMENT/mcp-server-bananacrystal/manifests/blotato-manifest.json)
+* **Smithery Manifest:** [`smithery.yaml`](../smithery.yaml)
+* **Blotato Manifest:** [`manifests/blotato-manifest.json`](../manifests/blotato-manifest.json)
 
 ### Directory 6: Glama.ai MCP Directory (`glama.ai/mcp`)
-* **Manifest File:** [`manifests/glama-manifest.json`](file:///D:/DOCUMENT/mcp-server-bananacrystal/manifests/glama-manifest.json)
+* **Manifest File:** [`manifests/glama-manifest.json`](../manifests/glama-manifest.json)
 * **Submission:** Connect via GitHub OAuth and select `BananaCrystal/mcp-server-bananacrystal`.
 
 ### Directory 7: PulseMCP (`pulsemcp.com`)
-* **Manifest File:** [`manifests/pulsemcp.json`](file:///D:/DOCUMENT/mcp-server-bananacrystal/manifests/pulsemcp.json)
+* **Manifest File:** [`manifests/pulsemcp.json`](../manifests/pulsemcp.json)
 
 ### Directory 8: MCP.so (`mcp.so`)
-* **Manifest File:** [`manifests/mcp-so.json`](file:///D:/DOCUMENT/mcp-server-bananacrystal/manifests/mcp-so.json)
+* **Manifest File:** [`manifests/mcp-so.json`](../manifests/mcp-so.json)
 
 ### Directory 9: Awesome MCP Servers (`mcpservers.org`)
-* **Manifest File:** [`manifests/awesome-mcp.json`](file:///D:/DOCUMENT/mcp-server-bananacrystal/manifests/awesome-mcp.json)
+* **Manifest File:** [`manifests/awesome-mcp.json`](../manifests/awesome-mcp.json)
 * **PR Line:** `- [BananaCrystal](https://github.com/BananaCrystal/mcp-server-bananacrystal) - Agent payment infrastructure for autonomous multi-currency settlements, real-time FOREX rates, currency swaps, and Hedera wallet operations.`
 
 ### Directory 10: AgenticSkills Registry (`agenticskills.io`)
-* **Manifest File:** [`manifests/agenticskills-manifest.json`](file:///D:/DOCUMENT/mcp-server-bananacrystal/manifests/agenticskills-manifest.json)
+* **Manifest File:** [`manifests/agenticskills-manifest.json`](../manifests/agenticskills-manifest.json)
 
 ### Directory 11: Composio & Managed Agent Gateway (`composio.dev`)
-* **Manifest File:** [`manifests/composio-manifest.json`](file:///D:/DOCUMENT/mcp-server-bananacrystal/manifests/composio-manifest.json)
+* **Manifest File:** [`manifests/composio-manifest.json`](../manifests/composio-manifest.json)
 
 ---
 
@@ -117,17 +117,17 @@
 
 Meta Muse runs autonomously on cloud instances. It interacts with BananaCrystal via remote HTTPS Streamable-HTTP.
 
-### Step 1: Connect via Meta Muse UI
+### Step 1: Connect via Meta Muse Custom Server Settings
 1. Navigate to **Muse Settings > Plugins > Add Custom Remote MCP Server**.
 2. Enter Connection Details:
    * **Server Name:** `BananaCrystal Financial MCP`
    * **Endpoint URL:** `https://agentic.bananacrystal.com/mcp`
-   * **Headers:** `{"x-api-key": "bc_live_your_api_key_here"}`
+   * **Authentication Headers:** Configure `x-api-key` securely in your server header settings.
 3. Click **Connect**.
 
-### Step 2: Connect via Chat Prompt
-User can prompt Muse directly:
+### Step 2: Use in Meta Muse Chat
+Once connected via settings, prompt Muse naturally:
 ```text
-Connect to the BananaCrystal MCP server at https://agentic.bananacrystal.com/mcp using my API key bc_live_xxxx. Use it to check FOREX rates and execute currency swaps.
+Check the latest EUR and IDR exchange rates against USD and estimate the fees for swapping 100 USDb to IDRb using my connected BananaCrystal MCP tools.
 ```
-Muse will parse the remote endpoint, present a confirmation modal, and bind the streamable tools.
+Muse binds the streamable tools and returns structured financial execution data.

@@ -12,7 +12,7 @@
   },
   "capabilities": [
     "get_exchange_rate",
-    "get_currency_rates",
+    "list_supported_currencies",
     "estimate_swap_fees",
     "swap_currency",
     "transfer_tokens",

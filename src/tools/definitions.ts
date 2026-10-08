@@ -239,6 +239,14 @@ export function createToolDefinitions() {
             type: "string",
             description: "Optional memo for the transaction",
           },
+          otpCode: {
+            type: "string",
+            description: "Optional 6-digit OTP code if step-up verification is required",
+          },
+          transactionRef: {
+            type: "string",
+            description: "Optional transaction reference from request_transfer_otp",
+          },
         },
         required: ["fromTokenId", "fromAmount", "toTokenId"],
       },

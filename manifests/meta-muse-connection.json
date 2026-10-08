@@ -32,7 +32,7 @@
       "x-api-key": "{BANANACRYSTAL_API_KEY}",
       "Content-Type": "application/json"
     },
-    "chatRegistrationPrompt": "Connect to BananaCrystal MCP financial server at https://agentic.bananacrystal.com/mcp using my API key header x-api-key: [YOUR_API_KEY]. Enable multi-currency exchange rate queries, swap estimations, wallet profile, and Hedera token transfers."
+    "chatRegistrationPrompt": "Connect to BananaCrystal MCP financial server at https://agentic.bananacrystal.com/mcp using my environment header x-api-key. Enable multi-currency exchange rate queries, swap estimations, wallet profile, and Hedera token transfers."
   },
   "capabilities": {
     "exchangeRates": {

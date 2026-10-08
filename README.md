@@ -324,15 +324,15 @@ BananaCrystal's Model Context Protocol services are indexed across global develo
 
 Meta Muse runs in the cloud without a local plugin host. Connect Meta Muse directly to BananaCrystal using streamable HTTP:
 
-1. **Add Custom Remote Server in Muse:**
+1. **Add Custom Remote Server in Muse Settings:**
    * **Endpoint URL:** `https://agentic.bananacrystal.com/mcp`
-   * **Headers:** `{"x-api-key": "bc_live_your_api_key_here"}`
-2. **Chat-Based Connection Prompt:**
-   Paste directly into Meta Muse chat:
+   * **Headers:** Configure `{"x-api-key": "YOUR_SECURE_API_KEY"}` in server settings.
+2. **Interact with Connected Tools:**
+   Prompt Meta Muse in chat:
    ```text
-   Connect to the BananaCrystal MCP server at https://agentic.bananacrystal.com/mcp using my API key bc_live_xxxx to query FOREX rates and execute currency swaps.
+   Use my connected BananaCrystal MCP tools to query current FOREX exchange rates and estimate swap fees between USDb and EURb.
    ```
-   Muse automatically constructs its streamable HTTP client and binds BananaCrystal payment tools.
+   Muse binds the streamable HTTP client and executes payment operations within configured policy limits.
 
 ---
 
