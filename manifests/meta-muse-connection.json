@@ -47,7 +47,7 @@
       "tools": ["get_my_profile", "get_balances", "list_available_tokens", "bc_genesis_claim"]
     },
     "settlementAndPayments": {
-      "tools": ["swap_currency", "transfer_tokens", "request_transfer_otp"]
+      "tools": ["swap_currency", "transfer_tokens", "request_transfer_otp", "request_mcp_otp"]
     }
   }
 }
