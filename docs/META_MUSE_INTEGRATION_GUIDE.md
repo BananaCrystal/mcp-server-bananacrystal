@@ -81,5 +81,5 @@ When a user asks Meta Muse *"Estimate the fee to swap $100 to IDR"*:
 ```
 
 ### C. Security & Guardrails
-- **Read-Only Auto Execution**: Rate queries (`get_exchange_rate`) and profile lookups (`get_my_profile`) carry `readOnlyHint: true` and execute instantaneously without extra prompts.
-- **Destructive Action Confirmation**: Fund movements (`transfer_tokens`, `swap_currency`) carry `destructiveHint: true`. Meta Muse requires explicit user confirmation and prompts for an OTP (`request_transfer_otp`) before dispatching transaction tools.
+- **Read-Only Operations**: Rate queries (`get_exchange_rate`) and profile lookups (`get_my_profile`) do not move funds.
+- **OTP Requests**: Use `request_mcp_otp` for `swap_currency`, `request_withdrawal`, `engage_offer`, and `execute_approved_transaction`; token transfers use `request_transfer_otp`.
