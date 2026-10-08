@@ -1,0 +1,31 @@
+{
+  "$schema": "https://glama.ai/schemas/mcp-server.json",
+  "name": "bananacrystal",
+  "title": "BananaCrystal MCP Server",
+  "description": "Enterprise agent payment infrastructure for autonomous multi-currency settlements, real-time FOREX rates, currency swaps, and Hedera wallet operations.",
+  "vendor": {
+    "name": "BananaCrystal",
+    "url": "https://bananacrystal.com"
+  },
+  "repository": "https://github.com/BananaCrystal/mcp-server-bananacrystal",
+  "website": "https://agents.bananacrystal.com",
+  "transports": [
+    {
+      "type": "streamable-http",
+      "url": "https://agentic.bananacrystal.com/mcp",
+      "headers": {
+        "x-api-key": "{API_KEY}"
+      }
+    },
+    {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@bananacrystal/mcp-server"],
+      "env": {
+        "BANANACRYSTAL_API_KEY": "{API_KEY}"
+      }
+    }
+  ],
+  "categories": ["finance", "crypto", "payments", "forex", "developer-tools"],
+  "tags": ["fintech", "stablecoins", "usdc", "hedera", "currency-swap", "agent-wallet", "mcp"]
+}

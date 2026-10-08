@@ -1,0 +1,8 @@
+{
+  "title": "BananaCrystal",
+  "category": "Finance",
+  "entryMarkdown": "- [BananaCrystal](https://github.com/BananaCrystal/mcp-server-bananacrystal) - Agent payment infrastructure for autonomous multi-currency settlements, real-time FOREX rates, currency swaps, and Hedera wallet operations.",
+  "repository": "https://github.com/BananaCrystal/mcp-server-bananacrystal",
+  "npm": "@bananacrystal/mcp-server",
+  "remoteEndpoint": "https://agentic.bananacrystal.com/mcp"
+}

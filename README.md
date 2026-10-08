@@ -302,6 +302,40 @@ plugins:
 
 ---
 
+## Global MCP Registry Directories and Direct Remote Integration
+
+BananaCrystal's Model Context Protocol services are indexed across global developer registries and remote agent directories. You can connect your agents via local `stdio` (npx) or direct cloud `streamable-http`.
+
+| Registry / Directory | Platform Type | Manifest / Target | Connection URL |
+| :--- | :--- | :--- | :--- |
+| **Official MCP Registry** | Centralized Metadata Registry | [`server.json`](./server.json) | `https://registry.modelcontextprotocol.io` |
+| **Remote MCP / AI Connectors** | Remote Directory | [`manifests/remote-mcp.json`](./manifests/remote-mcp.json) | `https://remote-mcp.com` |
+| **Windows On-Device Registry (ODR)** | Windows Copilot & OS Agents | [`manifests/windows-odr-manifest.json`](./manifests/windows-odr-manifest.json) | `bananacrystal-mcp://` |
+| **JFrog MCP Registry** | Enterprise Governance Hub | [`manifests/jfrog-mcp-descriptor.yaml`](./manifests/jfrog-mcp-descriptor.yaml) | Package `@bananacrystal/mcp-server` |
+| **Smithery.ai & Blotato** | Agent Tool Marketplace | [`smithery.yaml`](./smithery.yaml) | `https://smithery.ai/server/@bananacrystal/mcp-server` |
+| **Glama.ai MCP Directory** | Security and Inspection Hub | [`manifests/glama-manifest.json`](./manifests/glama-manifest.json) | `https://glama.ai/mcp` |
+| **PulseMCP** | Analytics Directory | [`manifests/pulsemcp.json`](./manifests/pulsemcp.json) | `https://pulsemcp.com` |
+| **MCP.so** | Community Catalog | [`manifests/mcp-so.json`](./manifests/mcp-so.json) | `https://mcp.so` |
+| **Awesome MCP Servers** | Global Community Index | [`manifests/awesome-mcp.json`](./manifests/awesome-mcp.json) | `https://mcpservers.org` |
+| **AgenticSkills Registry** | Verified Agent Toolset | [`manifests/agenticskills-manifest.json`](./manifests/agenticskills-manifest.json) | `https://agenticskills.io` |
+| **Composio Gateway** | Multi-Agent Orchestration | [`manifests/composio-manifest.json`](./manifests/composio-manifest.json) | `https://composio.dev` |
+
+### Meta Muse Cloud Agent Integration
+
+Meta Muse runs in the cloud without a local plugin host. Connect Meta Muse directly to BananaCrystal using streamable HTTP:
+
+1. **Add Custom Remote Server in Muse:**
+   * **Endpoint URL:** `https://agentic.bananacrystal.com/mcp`
+   * **Headers:** `{"x-api-key": "bc_live_your_api_key_here"}`
+2. **Chat-Based Connection Prompt:**
+   Paste directly into Meta Muse chat:
+   ```text
+   Connect to the BananaCrystal MCP server at https://agentic.bananacrystal.com/mcp using my API key bc_live_xxxx to query FOREX rates and execute currency swaps.
+   ```
+   Muse automatically constructs its streamable HTTP client and binds BananaCrystal payment tools.
+
+---
+
 ## 40 production-ready payment tools
 
 Every tool an agent needs for complete autonomous payment capability. All live. All guarded.
