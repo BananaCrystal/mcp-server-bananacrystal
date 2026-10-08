@@ -243,10 +243,9 @@ export function createToolDefinitions() {
             type: "string",
             description: "Optional 6-digit OTP code if step-up verification is required",
           },
-transactionRef: {
+          transactionRef: {
             type: "string",
             description: "Optional transaction reference from request_mcp_otp",
-          }
           },
         },
         required: ["fromTokenId", "fromAmount", "toTokenId"],
