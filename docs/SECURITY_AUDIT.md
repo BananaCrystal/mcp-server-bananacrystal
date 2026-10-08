@@ -29,6 +29,6 @@ npx tsc --noEmit
 ```
 
 ### Protocol Compliance
-* All 42 MCP tools implement strict JSON Schema input definitions (`type: "object"`, explicit `properties`, and `required` arrays).
+* All 42 MCP tools publish JSON Schema input definitions (`type: "object"` and explicit `properties`), with `required` arrays where fields are mandatory.
 * Standard MCP error codes and error envelopes returned on boundary breaches.
 * Header authentication follows MCP streamable HTTP specifications with `x-api-key` header encapsulation.
