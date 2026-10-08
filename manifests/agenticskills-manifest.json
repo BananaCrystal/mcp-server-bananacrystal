@@ -15,6 +15,7 @@
     "list_supported_currencies",
     "estimate_swap_fees",
     "swap_currency",
+    "request_mcp_otp",
     "transfer_tokens",
     "request_transfer_otp",
     "get_my_profile"
