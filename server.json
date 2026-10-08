@@ -49,7 +49,7 @@
         {
           "name": "BANANACRYSTAL_API_KEY",
           "description": "Your BananaCrystal API key from https://agents.bananacrystal.com",
-          "required": true,
+          "isRequired": true,
           "isSecret": true
         }
       ]
