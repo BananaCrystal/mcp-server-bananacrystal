@@ -54,6 +54,12 @@ interface MockOtpRecord {
   otp: string;
   used: boolean;
   amount?: string;
+  tokenId?: string;
+  recipientAccountId?: string;
+  token?: string;
+  recipient?: string;
+  wallet_id?: string;
+  user_id?: string;
   createdAt: number;
 }
 const issuedOtps = new Map<string, MockOtpRecord>();
@@ -72,6 +78,13 @@ function validateAndConsumeOtp(
   transactionRef?: string,
   otpCode?: string,
   expectedOperation?: string,
+  expectedPayload?: {
+    amount?: string | number;
+    tokenId?: string;
+    fromTokenId?: string;
+    toTokenId?: string;
+    recipientAccountId?: string;
+  },
 ): { valid: boolean; error?: string; message?: string } {
   cleanupExpiredOtps();
 
@@ -121,6 +134,39 @@ function validateAndConsumeOtp(
         message: `Transaction reference was issued for '${record.operation}', not '${expectedOperation}'`,
       };
     }
+
+    // Security check: verify transaction details are strictly bound to the issued OTP
+    if (expectedPayload) {
+      if (record.amount !== undefined && expectedPayload.amount !== undefined && String(record.amount) !== String(expectedPayload.amount)) {
+        return {
+          valid: false,
+          error: "amount_mismatch",
+          message: `Transaction amount (${expectedPayload.amount}) does not match authorized OTP amount (${record.amount})`,
+        };
+      }
+      if (record.tokenId && expectedPayload.tokenId && record.tokenId !== expectedPayload.tokenId) {
+        return {
+          valid: false,
+          error: "token_mismatch",
+          message: `Token ID (${expectedPayload.tokenId}) does not match authorized OTP token (${record.tokenId})`,
+        };
+      }
+      if (record.recipientAccountId && expectedPayload.recipientAccountId && record.recipientAccountId !== expectedPayload.recipientAccountId) {
+        return {
+          valid: false,
+          error: "recipient_mismatch",
+          message: `Recipient account (${expectedPayload.recipientAccountId}) does not match authorized OTP recipient (${record.recipientAccountId})`,
+        };
+      }
+      if (record.token && expectedPayload.fromTokenId && record.token !== expectedPayload.fromTokenId) {
+        return {
+          valid: false,
+          error: "token_mismatch",
+          message: `Source token (${expectedPayload.fromTokenId}) does not match authorized OTP token (${record.token})`,
+        };
+      }
+    }
+
     record.used = true;
     issuedOtps.delete(transactionRef);
   }
@@ -149,7 +195,7 @@ app.post("/api/v1/mcp/genesis/claim", (req, res) => {
 
 // MCP General OTP Request
 app.post("/api/v1/mcp/otp/request", (req, res) => {
-  const { operation, amount } = req.body;
+  const { operation, amount, token, recipient, wallet_id, user_id } = req.body;
   if (!operation) {
     return res.status(400).json({
       error: "missing_parameters",
@@ -161,7 +207,11 @@ app.post("/api/v1/mcp/otp/request", (req, res) => {
     operation: operation || "general",
     otp: "123456",
     used: false,
-    amount,
+    amount: amount ? String(amount) : undefined,
+    token,
+    recipient,
+    wallet_id,
+    user_id,
     createdAt: Date.now(),
   });
   res.json({
@@ -220,7 +270,9 @@ app.post("/api/v1/mcp/transfer/request-otp", (req, res) => {
     operation: "transfer_tokens",
     otp: "123456",
     used: false,
-    amount,
+    amount: String(amount),
+    tokenId,
+    recipientAccountId,
     createdAt: Date.now(),
   });
 
@@ -234,7 +286,7 @@ app.post("/api/v1/mcp/transfer/request-otp", (req, res) => {
 
 // Transfer - Execute
 app.post("/api/v1/mcp/transfer", (req, res) => {
-  const { otpCode, transactionRef } = req.body;
+  const { tokenId, recipientAccountId, amount, otpCode, transactionRef } = req.body;
 
   if (!transactionRef) {
     return res.status(400).json({
@@ -243,7 +295,11 @@ app.post("/api/v1/mcp/transfer", (req, res) => {
     });
   }
 
-  const validation = validateAndConsumeOtp(transactionRef, otpCode, "transfer_tokens");
+  const validation = validateAndConsumeOtp(transactionRef, otpCode, "transfer_tokens", {
+    tokenId,
+    recipientAccountId,
+    amount,
+  });
   if (!validation.valid) {
     return res.status(400).json({
       error: validation.error,
@@ -271,7 +327,11 @@ app.post("/api/v1/mcp/swap", (req, res) => {
   }
 
   // Validate and consume OTP if provided or required
-  const validation = validateAndConsumeOtp(transactionRef, otpCode, "swap_currency");
+  const validation = validateAndConsumeOtp(transactionRef, otpCode, "swap_currency", {
+    fromTokenId,
+    amount: fromAmount,
+    toTokenId,
+  });
   if (!validation.valid) {
     return res.status(400).json({
       error: validation.error,
