@@ -57,12 +57,24 @@ interface MockOtpRecord {
   createdAt: number;
 }
 const issuedOtps = new Map<string, MockOtpRecord>();
+const OTP_TTL_MS = 10 * 60 * 1000; // 10 minutes TTL
+
+function cleanupExpiredOtps(): void {
+  const now = Date.now();
+  for (const [key, record] of issuedOtps.entries()) {
+    if (now - record.createdAt > OTP_TTL_MS || record.used) {
+      issuedOtps.delete(key);
+    }
+  }
+}
 
 function validateAndConsumeOtp(
   transactionRef?: string,
   otpCode?: string,
   expectedOperation?: string,
 ): { valid: boolean; error?: string; message?: string } {
+  cleanupExpiredOtps();
+
   if (otpCode && otpCode !== "123456") {
     return {
       valid: false,
@@ -80,23 +92,37 @@ function validateAndConsumeOtp(
       };
     }
     const record = issuedOtps.get(transactionRef);
-    if (record) {
-      if (record.used) {
-        return {
-          valid: false,
-          error: "otp_already_used",
-          message: "Transaction reference has already been consumed",
-        };
-      }
-      if (expectedOperation && record.operation !== expectedOperation && record.operation !== "any") {
-        return {
-          valid: false,
-          error: "operation_mismatch",
-          message: `Transaction reference was issued for '${record.operation}', not '${expectedOperation}'`,
-        };
-      }
-      record.used = true;
+    if (!record) {
+      return {
+        valid: false,
+        error: "transaction_ref_not_found",
+        message: "Transaction reference not found or expired",
+      };
     }
+    if (Date.now() - record.createdAt > OTP_TTL_MS) {
+      issuedOtps.delete(transactionRef);
+      return {
+        valid: false,
+        error: "otp_expired",
+        message: "Transaction reference has expired (TTL: 10 minutes)",
+      };
+    }
+    if (record.used) {
+      return {
+        valid: false,
+        error: "otp_already_used",
+        message: "Transaction reference has already been consumed",
+      };
+    }
+    if (expectedOperation && record.operation !== expectedOperation && record.operation !== "any") {
+      return {
+        valid: false,
+        error: "operation_mismatch",
+        message: `Transaction reference was issued for '${record.operation}', not '${expectedOperation}'`,
+      };
+    }
+    record.used = true;
+    issuedOtps.delete(transactionRef);
   }
 
   return { valid: true };
@@ -105,10 +131,10 @@ function validateAndConsumeOtp(
 // Genesis Wallet Claim
 app.post("/api/v1/mcp/genesis/claim", (req, res) => {
   const { confirm } = req.body;
-  if (!confirm) {
+  if (confirm !== true) {
     return res.status(400).json({
       error: "confirmation_required",
-      message: "Explicit confirmation is required to claim Genesis wallet",
+      message: 'Explicit boolean confirmation "true" is required to claim Genesis wallet',
     });
   }
   res.json({
