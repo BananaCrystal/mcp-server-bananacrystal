@@ -48,6 +48,60 @@ app.get("/api/v1/mcp/profile", (req, res) => {
   res.json(mockData.profile);
 });
 
+// In-memory store for issued OTP transaction references
+interface MockOtpRecord {
+  operation: string;
+  otp: string;
+  used: boolean;
+  amount?: string;
+  createdAt: number;
+}
+const issuedOtps = new Map<string, MockOtpRecord>();
+
+function validateAndConsumeOtp(
+  transactionRef?: string,
+  otpCode?: string,
+  expectedOperation?: string,
+): { valid: boolean; error?: string; message?: string } {
+  if (otpCode && otpCode !== "123456") {
+    return {
+      valid: false,
+      error: "invalid_otp",
+      message: 'Invalid OTP code. For testing, use: "123456"',
+    };
+  }
+
+  if (transactionRef) {
+    if (!transactionRef.startsWith("mock-ref-") && !transactionRef.startsWith("mock-mcp-ref-")) {
+      return {
+        valid: false,
+        error: "invalid_transaction_ref",
+        message: "Invalid transaction reference",
+      };
+    }
+    const record = issuedOtps.get(transactionRef);
+    if (record) {
+      if (record.used) {
+        return {
+          valid: false,
+          error: "otp_already_used",
+          message: "Transaction reference has already been consumed",
+        };
+      }
+      if (expectedOperation && record.operation !== expectedOperation && record.operation !== "any") {
+        return {
+          valid: false,
+          error: "operation_mismatch",
+          message: `Transaction reference was issued for '${record.operation}', not '${expectedOperation}'`,
+        };
+      }
+      record.used = true;
+    }
+  }
+
+  return { valid: true };
+}
+
 // Genesis Wallet Claim
 app.post("/api/v1/mcp/genesis/claim", (req, res) => {
   const { confirm } = req.body;
@@ -69,17 +123,25 @@ app.post("/api/v1/mcp/genesis/claim", (req, res) => {
 
 // MCP General OTP Request
 app.post("/api/v1/mcp/otp/request", (req, res) => {
-  const { operation } = req.body;
+  const { operation, amount } = req.body;
   if (!operation) {
     return res.status(400).json({
       error: "missing_parameters",
       message: "operation parameter is required",
     });
   }
+  const transactionRef = `mock-mcp-ref-${Date.now()}`;
+  issuedOtps.set(transactionRef, {
+    operation: operation || "general",
+    otp: "123456",
+    used: false,
+    amount,
+    createdAt: Date.now(),
+  });
   res.json({
     success: true,
     operation,
-    transactionRef: `mock-mcp-ref-${Date.now()}`,
+    transactionRef,
     message: `OTP generated for ${operation} (mock: use "123456")`,
     otpHint: "For testing, use OTP: 123456",
   });
@@ -127,9 +189,18 @@ app.post("/api/v1/mcp/transfer/request-otp", (req, res) => {
     });
   }
 
+  const transactionRef = `mock-ref-${Date.now()}`;
+  issuedOtps.set(transactionRef, {
+    operation: "transfer_tokens",
+    otp: "123456",
+    used: false,
+    amount,
+    createdAt: Date.now(),
+  });
+
   res.json({
     success: true,
-    transactionRef: `mock-ref-${Date.now()}`,
+    transactionRef,
     message: 'OTP sent to your email (mock: use "123456")',
     otpHint: "For testing, use OTP: 123456",
   });
@@ -139,17 +210,18 @@ app.post("/api/v1/mcp/transfer/request-otp", (req, res) => {
 app.post("/api/v1/mcp/transfer", (req, res) => {
   const { otpCode, transactionRef } = req.body;
 
-  if (otpCode !== "123456") {
+  if (!transactionRef) {
     return res.status(400).json({
-      error: "invalid_otp",
-      message: "Invalid OTP code. For testing, use: 123456",
+      error: "missing_transaction_ref",
+      message: "transactionRef is required for transfer execution",
     });
   }
 
-  if (!transactionRef || !transactionRef.startsWith("mock-ref-")) {
+  const validation = validateAndConsumeOtp(transactionRef, otpCode, "transfer_tokens");
+  if (!validation.valid) {
     return res.status(400).json({
-      error: "invalid_transaction_ref",
-      message: "Invalid transaction reference",
+      error: validation.error,
+      message: validation.message,
     });
   }
 
@@ -163,12 +235,21 @@ app.post("/api/v1/mcp/transfer", (req, res) => {
 
 // Swap
 app.post("/api/v1/mcp/swap", (req, res) => {
-  const { fromTokenId, fromAmount, toTokenId } = req.body;
+  const { fromTokenId, fromAmount, toTokenId, otpCode, transactionRef } = req.body;
 
   if (!fromTokenId || !fromAmount || !toTokenId) {
     return res.status(400).json({
       error: "missing_parameters",
       message: "fromTokenId, fromAmount, and toTokenId are required",
+    });
+  }
+
+  // Validate and consume OTP if provided or required
+  const validation = validateAndConsumeOtp(transactionRef, otpCode, "swap_currency");
+  if (!validation.valid) {
+    return res.status(400).json({
+      error: validation.error,
+      message: validation.message,
     });
   }
 
