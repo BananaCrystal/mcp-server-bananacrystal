@@ -2,7 +2,7 @@
   "skillName": "bananacrystal-financial-actions",
   "displayName": "BananaCrystal Autonomous Payments",
   "version": "1.0.1",
-  "securityAudited": true,
+  "securityAudited": false,
   "auditReport": "docs/SECURITY_AUDIT.md",
   "repository": "https://github.com/BananaCrystal/mcp-server-bananacrystal",
   "description": "Verified MCP toolset for AI agents to query multi-currency foreign exchange rates, estimate dynamic fees, and execute on-chain payments within spend limits.",

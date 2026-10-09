@@ -17,7 +17,7 @@ iconUrl: "https://www.bananacrystal.com/wp-content/uploads/2024/08/cropped-favic
 environment:
   BANANACRYSTAL_API_KEY:
     type: string
-    description: "Your BananaCrystal API Key (e.g. bc_live_... or bc_test_... from https://agents.bananacrystal.com under Account -> API Keys)"
+    description: "Your BananaCrystal API Key (or bc_test_... for sandbox from https://agents.bananacrystal.com under Account -> API Keys)"
     required: true
     secret: true
 

@@ -24,7 +24,7 @@ In the Meta Muse Web/App interface:
    - **Transport Type**: `Streamable HTTP / SSE`
    - **Server URL**: `https://agentic.bananacrystal.com/mcp` (or `/mcp/sandbox` for testing)
    - **Headers**:
-     - `x-api-key`: `bc_live_...` (or your `bc_test_...` key)
+     - `x-api-key`: `your_api_key` (or your `bc_test_...` key for sandbox)
      - `Content-Type`: `application/json`
 3. Click **Test & Connect**. Meta Muse will perform an MCP handshake (`initialize` and `tools/list`) to index available tools.
 

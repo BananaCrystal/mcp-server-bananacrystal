@@ -21,4 +21,3 @@ spec:
     auditLog: enabled
   security:
     authScheme: Bearer
-    tokenPrefix: "bc_live_"

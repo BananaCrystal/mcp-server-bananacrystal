@@ -48,6 +48,43 @@ app.get("/api/v1/mcp/profile", (req, res) => {
   res.json(mockData.profile);
 });
 
+// Genesis Wallet Claim
+app.post("/api/v1/mcp/genesis/claim", (req, res) => {
+  const { confirm } = req.body;
+  if (!confirm) {
+    return res.status(400).json({
+      error: "confirmation_required",
+      message: "Explicit confirmation is required to claim Genesis wallet",
+    });
+  }
+  res.json({
+    success: true,
+    claimed: true,
+    accountId: "0.0.10036692",
+    vanityAddress: "0.0.GENESIS_BC_CLAIMED",
+    bountyDiscoveredUsdc: 25.0,
+    message: "Genesis Vanity Wallet successfully claimed",
+  });
+});
+
+// MCP General OTP Request
+app.post("/api/v1/mcp/otp/request", (req, res) => {
+  const { operation } = req.body;
+  if (!operation) {
+    return res.status(400).json({
+      error: "missing_parameters",
+      message: "operation parameter is required",
+    });
+  }
+  res.json({
+    success: true,
+    operation,
+    transactionRef: `mock-mcp-ref-${Date.now()}`,
+    message: `OTP generated for ${operation} (mock: use "123456")`,
+    otpHint: "For testing, use OTP: 123456",
+  });
+});
+
 // Balances
 app.get("/api/v1/mcp/balances", (req, res) => {
   const { tokenId } = req.query;

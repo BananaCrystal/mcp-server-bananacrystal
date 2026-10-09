@@ -15,7 +15,7 @@
     "type": "apiKey",
     "supportedHeaders": ["x-api-key", "Authorization"],
     "tokenUrl": "https://agents.bananacrystal.com/account/api-keys",
-    "description": "Obtain an API key starting with bc_live_ or bc_test_ from your BananaCrystal Agent portal."
+    "description": "Obtain an API key (or bc_test_... for sandbox) from your BananaCrystal Agent portal."
   },
   "tags": [
     "fintech",
