@@ -206,18 +206,18 @@ app.post("/api/v1/mcp/genesis/claim", (req, res) => {
 // MCP General OTP Request
 app.post("/api/v1/mcp/otp/request", (req, res) => {
   const { operation, amount, token, recipient, wallet_id, user_id } = req.body;
-  if (!operation) {
+  if (!operation || typeof amount !== "string" || amount.length === 0) {
     return res.status(400).json({
       error: "missing_parameters",
-      message: "operation parameter is required",
+      message: "operation and amount parameters are required",
     });
   }
   const transactionRef = generateRef("mock-mcp-ref");
   issuedOtps.set(transactionRef, {
-    operation: operation || "general",
+    operation,
     otp: "123456",
     used: false,
-    amount: amount ? String(amount) : undefined,
+    amount,
     token,
     recipient,
     wallet_id,
