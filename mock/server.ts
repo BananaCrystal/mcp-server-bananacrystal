@@ -139,7 +139,7 @@ function validateAndConsumeOtp(
       message: "Transaction reference has already been consumed",
     };
   }
-  if (expectedOperation && record.operation !== expectedOperation && record.operation !== "any") {
+  if (expectedOperation && record.operation !== expectedOperation) {
     return {
       valid: false,
       error: "operation_mismatch",
