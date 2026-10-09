@@ -177,6 +177,13 @@ function validateAndConsumeOtp(
         message: `Source token (${expectedPayload.fromTokenId}) does not match authorized OTP token (${record.token})`,
       };
     }
+    if (record.recipient && expectedPayload.toTokenId && record.recipient !== expectedPayload.toTokenId) {
+      return {
+        valid: false,
+        error: "token_mismatch",
+        message: `Destination token (${expectedPayload.toTokenId}) does not match authorized OTP recipient token (${record.recipient})`,
+      };
+    }
   }
 
   record.used = true;
@@ -212,6 +219,38 @@ app.post("/api/v1/mcp/otp/request", (req, res) => {
       message: "operation and amount parameters are required",
     });
   }
+
+  // Enforce operation-specific required payload fields
+  if (operation === "swap_currency") {
+    if (!token || !recipient || !amount) {
+      return res.status(400).json({
+        error: "missing_parameters",
+        message: "token (from_token_id), recipient (to_token_id), and amount are required for swap_currency OTP request",
+      });
+    }
+  } else if (operation === "request_withdrawal") {
+    if (!token || !recipient || !amount) {
+      return res.status(400).json({
+        error: "missing_parameters",
+        message: "token (currency), recipient (destination_account), and amount are required for request_withdrawal OTP request",
+      });
+    }
+  } else if (operation === "engage_offer") {
+    if (!token || !recipient || !amount) {
+      return res.status(400).json({
+        error: "missing_parameters",
+        message: "token (currency), recipient (offer_id), and amount are required for engage_offer OTP request",
+      });
+    }
+  } else if (operation === "execute_approved_transaction") {
+    if (!recipient) {
+      return res.status(400).json({
+        error: "missing_parameters",
+        message: "recipient (approval_request_id) is required for execute_approved_transaction OTP request",
+      });
+    }
+  }
+
   const transactionRef = generateRef("mock-mcp-ref");
   issuedOtps.set(transactionRef, {
     operation,

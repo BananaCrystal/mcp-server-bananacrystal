@@ -174,7 +174,7 @@ export function createToolDefinitions() {
               "swap: from_token_id. withdrawal: currency. engage_offer: currency.",
           },
         },
-        required: ["operation", "amount"],
+        required: ["operation", "amount", "token", "recipient"],
       },
     },
     {
