@@ -12,6 +12,7 @@
 
 import express from "express";
 import cors from "cors";
+import crypto from "crypto";
 import { mockData } from "./data.js";
 
 const app = express();
@@ -74,6 +75,10 @@ function cleanupExpiredOtps(): void {
   }
 }
 
+function generateRef(prefix: string): string {
+  return `${prefix}-${Date.now()}-${crypto.randomBytes(4).toString("hex")}`;
+}
+
 function validateAndConsumeOtp(
   transactionRef?: string,
   otpCode?: string,
@@ -88,89 +93,94 @@ function validateAndConsumeOtp(
 ): { valid: boolean; error?: string; message?: string } {
   cleanupExpiredOtps();
 
-  if (otpCode && otpCode !== "123456") {
+  if (!otpCode || otpCode !== "123456") {
     return {
       valid: false,
       error: "invalid_otp",
-      message: 'Invalid OTP code. For testing, use: "123456"',
+      message: 'Invalid or missing OTP code. For testing, use: "123456"',
     };
   }
 
-  if (transactionRef) {
-    if (!transactionRef.startsWith("mock-ref-") && !transactionRef.startsWith("mock-mcp-ref-")) {
-      return {
-        valid: false,
-        error: "invalid_transaction_ref",
-        message: "Invalid transaction reference",
-      };
-    }
-    const record = issuedOtps.get(transactionRef);
-    if (!record) {
-      return {
-        valid: false,
-        error: "transaction_ref_not_found",
-        message: "Transaction reference not found or expired",
-      };
-    }
-    if (Date.now() - record.createdAt > OTP_TTL_MS) {
-      issuedOtps.delete(transactionRef);
-      return {
-        valid: false,
-        error: "otp_expired",
-        message: "Transaction reference has expired (TTL: 10 minutes)",
-      };
-    }
-    if (record.used) {
-      return {
-        valid: false,
-        error: "otp_already_used",
-        message: "Transaction reference has already been consumed",
-      };
-    }
-    if (expectedOperation && record.operation !== expectedOperation && record.operation !== "any") {
-      return {
-        valid: false,
-        error: "operation_mismatch",
-        message: `Transaction reference was issued for '${record.operation}', not '${expectedOperation}'`,
-      };
-    }
-
-    // Security check: verify transaction details are strictly bound to the issued OTP
-    if (expectedPayload) {
-      if (record.amount !== undefined && expectedPayload.amount !== undefined && String(record.amount) !== String(expectedPayload.amount)) {
-        return {
-          valid: false,
-          error: "amount_mismatch",
-          message: `Transaction amount (${expectedPayload.amount}) does not match authorized OTP amount (${record.amount})`,
-        };
-      }
-      if (record.tokenId && expectedPayload.tokenId && record.tokenId !== expectedPayload.tokenId) {
-        return {
-          valid: false,
-          error: "token_mismatch",
-          message: `Token ID (${expectedPayload.tokenId}) does not match authorized OTP token (${record.tokenId})`,
-        };
-      }
-      if (record.recipientAccountId && expectedPayload.recipientAccountId && record.recipientAccountId !== expectedPayload.recipientAccountId) {
-        return {
-          valid: false,
-          error: "recipient_mismatch",
-          message: `Recipient account (${expectedPayload.recipientAccountId}) does not match authorized OTP recipient (${record.recipientAccountId})`,
-        };
-      }
-      if (record.token && expectedPayload.fromTokenId && record.token !== expectedPayload.fromTokenId) {
-        return {
-          valid: false,
-          error: "token_mismatch",
-          message: `Source token (${expectedPayload.fromTokenId}) does not match authorized OTP token (${record.token})`,
-        };
-      }
-    }
-
-    record.used = true;
-    issuedOtps.delete(transactionRef);
+  if (!transactionRef) {
+    return {
+      valid: false,
+      error: "missing_transaction_ref",
+      message: "Transaction reference is required",
+    };
   }
 
+  if (!transactionRef.startsWith("mock-ref-") && !transactionRef.startsWith("mock-mcp-ref-")) {
+    return {
+      valid: false,
+      error: "invalid_transaction_ref",
+      message: "Invalid transaction reference",
+    };
+  }
+  const record = issuedOtps.get(transactionRef);
+  if (!record) {
+    return {
+      valid: false,
+      error: "transaction_ref_not_found",
+      message: "Transaction reference not found or expired",
+    };
+  }
+  if (Date.now() - record.createdAt > OTP_TTL_MS) {
+    issuedOtps.delete(transactionRef);
+    return {
+      valid: false,
+      error: "otp_expired",
+      message: "Transaction reference has expired (TTL: 10 minutes)",
+    };
+  }
+  if (record.used) {
+    return {
+      valid: false,
+      error: "otp_already_used",
+      message: "Transaction reference has already been consumed",
+    };
+  }
+  if (expectedOperation && record.operation !== expectedOperation && record.operation !== "any") {
+    return {
+      valid: false,
+      error: "operation_mismatch",
+      message: `Transaction reference was issued for '${record.operation}', not '${expectedOperation}'`,
+    };
+  }
+
+  // Security check: verify transaction details are strictly bound to the issued OTP
+  if (expectedPayload) {
+    if (record.amount !== undefined && expectedPayload.amount !== undefined && String(record.amount) !== String(expectedPayload.amount)) {
+      return {
+        valid: false,
+        error: "amount_mismatch",
+        message: `Transaction amount (${expectedPayload.amount}) does not match authorized OTP amount (${record.amount})`,
+      };
+    }
+    if (record.tokenId && expectedPayload.tokenId && record.tokenId !== expectedPayload.tokenId) {
+      return {
+        valid: false,
+        error: "token_mismatch",
+        message: `Token ID (${expectedPayload.tokenId}) does not match authorized OTP token (${record.tokenId})`,
+      };
+    }
+    if (record.recipientAccountId && expectedPayload.recipientAccountId && record.recipientAccountId !== expectedPayload.recipientAccountId) {
+      return {
+        valid: false,
+        error: "recipient_mismatch",
+        message: `Recipient account (${expectedPayload.recipientAccountId}) does not match authorized OTP recipient (${record.recipientAccountId})`,
+      };
+    }
+    if (record.token && expectedPayload.fromTokenId && record.token !== expectedPayload.fromTokenId) {
+      return {
+        valid: false,
+        error: "token_mismatch",
+        message: `Source token (${expectedPayload.fromTokenId}) does not match authorized OTP token (${record.token})`,
+      };
+    }
+  }
+
+  record.used = true;
+  issuedOtps.delete(transactionRef);
   return { valid: true };
 }
 
@@ -202,7 +212,7 @@ app.post("/api/v1/mcp/otp/request", (req, res) => {
       message: "operation parameter is required",
     });
   }
-  const transactionRef = `mock-mcp-ref-${Date.now()}`;
+  const transactionRef = generateRef("mock-mcp-ref");
   issuedOtps.set(transactionRef, {
     operation: operation || "general",
     otp: "123456",
@@ -265,7 +275,7 @@ app.post("/api/v1/mcp/transfer/request-otp", (req, res) => {
     });
   }
 
-  const transactionRef = `mock-ref-${Date.now()}`;
+  const transactionRef = generateRef("mock-ref");
   issuedOtps.set(transactionRef, {
     operation: "transfer_tokens",
     otp: "123456",
@@ -427,7 +437,7 @@ app.post("/api/v1/mcp/agent/request-transaction", (req, res) => {
     });
   }
 
-  const approvalRequestId = `mock-approval-${Date.now()}`;
+  const approvalRequestId = generateRef("mock-approval");
 
   res.json({
     approvalRequestId,
@@ -455,7 +465,7 @@ app.get("/api/v1/mcp/agent/approval/:id", (req, res) => {
   res.json({
     status: isApproved ? "approved" : "pending",
     expiresAt: new Date(createdAt + 24 * 60 * 60 * 1000).toISOString(),
-    executionToken: isApproved ? `mock-exec-${Date.now()}` : undefined,
+    executionToken: isApproved ? generateRef("mock-exec") : undefined,
   });
 });
 
@@ -530,7 +540,7 @@ app.get("/api/v1/mcp/offers/:id", (req, res) => {
 
 app.post("/api/v1/mcp/offers", (req, res) => {
   res.json({
-    id: `mock-offer-${Date.now()}`,
+    id: generateRef("mock-offer"),
     ...req.body,
     status: "active",
     createdAt: new Date().toISOString(),
