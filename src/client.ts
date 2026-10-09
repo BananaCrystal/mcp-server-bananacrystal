@@ -152,6 +152,8 @@ export class BananaCrystalClient {
     fromAmount: string;
     toTokenId: string;
     memo?: string;
+    otpCode?: string;
+    transactionRef?: string;
   }) {
     return this.request("/api/v1/mcp/swap", {
       method: "POST",

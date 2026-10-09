@@ -5,7 +5,7 @@
   "securityAudited": true,
   "auditReport": "docs/SECURITY_AUDIT.md",
   "repository": "https://github.com/BananaCrystal/mcp-server-bananacrystal",
-  "description": "Cryptographically audited MCP toolset for AI agents to query multi-currency foreign exchange rates, estimate dynamic fees, and execute on-chain payments within spend limits.",
+  "description": "Verified MCP toolset for AI agents to query multi-currency foreign exchange rates, estimate dynamic fees, and execute on-chain payments within spend limits.",
   "endpoint": "https://agentic.bananacrystal.com/mcp",
   "authentication": {
     "type": "apiKey",

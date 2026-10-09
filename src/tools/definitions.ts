@@ -66,7 +66,6 @@ export function createToolDefinitions() {
             const: true,
             description:
               "Explicit confirmation to proceed with claiming the Genesis wallet. Must be true.",
-          }
           },
         },
         required: ["confirm"],
