@@ -175,6 +175,18 @@ export function createToolDefinitions() {
           },
         },
         required: ["operation", "amount", "recipient"],
+        allOf: [
+          {
+            if: {
+              properties: {
+                operation: {
+                  enum: ["swap_currency", "request_withdrawal", "engage_offer"],
+                },
+              },
+            },
+            then: { required: ["token"] },
+          },
+        ],
       },
     },
     {
