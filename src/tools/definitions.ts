@@ -54,6 +54,23 @@ export function createToolDefinitions() {
         required: ["message"],
       },
     },
+    {
+      name: "bc_genesis_claim",
+      description:
+        "Claim a pre-created Genesis Vanity Wallet and discover if it contains a USDC bounty. Requires explicit confirmation.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          confirm: {
+            type: "boolean",
+            const: true,
+            description:
+              "Explicit confirmation to proceed with claiming the Genesis wallet. Must be true.",
+          },
+        },
+        required: ["confirm"],
+      },
+    },
 
     // Profile & Identity
     {
@@ -114,6 +131,63 @@ export function createToolDefinitions() {
           },
         },
         required: ["tokenId", "recipientAccountId", "amount"],
+      },
+    },
+    {
+      name: "request_mcp_otp",
+      description:
+        "Request an email OTP to authorize a destructive action (swap_currency, request_withdrawal, engage_offer, or execute_approved_transaction). Returns transactionRef.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          operation: {
+            type: "string",
+            enum: [
+              "swap_currency",
+              "request_withdrawal",
+              "engage_offer",
+              "execute_approved_transaction",
+            ],
+            description: "The action you are about to perform.",
+          },
+          amount: {
+            type: "string",
+            pattern: "^(0|[1-9]\\d*)(\\.\\d+)?$",
+            description:
+              "The amount for the operation (pass '0' only for execute_approved_transaction; must be a positive decimal greater than 0 for all other operations).",
+          },
+          user_id: {
+            type: "string",
+            description: "External user ID. Defaults to your own.",
+          },
+          wallet_id: {
+            type: "string",
+            description: "swap only: wallet_id.",
+          },
+          recipient: {
+            type: "string",
+            description:
+              "swap: to_token_id. withdrawal: destination_account. engage_offer: offer_id. execute_approved_transaction: approval_request_id.",
+          },
+          token: {
+            type: "string",
+            description:
+              "swap: from_token_id. withdrawal: currency. engage_offer: currency.",
+          },
+        },
+        required: ["operation", "amount", "recipient"],
+        allOf: [
+          {
+            if: {
+              properties: {
+                operation: {
+                  enum: ["swap_currency", "request_withdrawal", "engage_offer"],
+                },
+              },
+            },
+            then: { required: ["token"] },
+          },
+        ],
       },
     },
     {
@@ -178,6 +252,14 @@ export function createToolDefinitions() {
           memo: {
             type: "string",
             description: "Optional memo for the transaction",
+          },
+          otpCode: {
+            type: "string",
+            description: "Optional 6-digit OTP code if step-up verification is required",
+          },
+          transactionRef: {
+            type: "string",
+            description: "Optional transaction reference from request_mcp_otp",
           },
         },
         required: ["fromTokenId", "fromAmount", "toTokenId"],

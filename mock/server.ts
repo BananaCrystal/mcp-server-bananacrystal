@@ -12,6 +12,7 @@
 
 import express from "express";
 import cors from "cors";
+import crypto from "crypto";
 import { mockData } from "./data.js";
 
 const app = express();
@@ -48,6 +49,262 @@ app.get("/api/v1/mcp/profile", (req, res) => {
   res.json(mockData.profile);
 });
 
+// In-memory store for issued OTP transaction references
+interface MockOtpRecord {
+  operation: string;
+  otp: string;
+  used: boolean;
+  amount?: string;
+  tokenId?: string;
+  recipientAccountId?: string;
+  token?: string;
+  recipient?: string;
+  wallet_id?: string;
+  user_id?: string;
+  createdAt: number;
+}
+const issuedOtps = new Map<string, MockOtpRecord>();
+const OTP_TTL_MS = 10 * 60 * 1000; // 10 minutes TTL
+
+function cleanupExpiredOtps(): void {
+  const now = Date.now();
+  for (const [key, record] of issuedOtps.entries()) {
+    if (now - record.createdAt > OTP_TTL_MS || record.used) {
+      issuedOtps.delete(key);
+    }
+  }
+}
+
+function generateRef(prefix: string): string {
+  return `${prefix}-${Date.now()}-${crypto.randomBytes(4).toString("hex")}`;
+}
+
+function isValidOperationAmount(operation: string, amount: unknown): { valid: boolean; error?: string; message?: string } {
+  if (typeof amount !== "string" && typeof amount !== "number") {
+    return { valid: false, error: "invalid_amount", message: "Amount must be provided as a string" };
+  }
+  const str = String(amount).trim();
+  if (operation === "execute_approved_transaction") {
+    if (str === "0" || str === "0.0") return { valid: true };
+    return { valid: false, error: "invalid_amount", message: "Amount for execute_approved_transaction must be '0'" };
+  }
+  if (!/^(0|[1-9]\d*)(\.\d+)?$/.test(str)) {
+    return { valid: false, error: "invalid_amount", message: "Amount must be a valid positive decimal string (no negative numbers, NaN, or scientific notation)" };
+  }
+  const num = parseFloat(str);
+  if (isNaN(num) || num <= 0) {
+    return { valid: false, error: "invalid_amount", message: "Amount must be greater than 0" };
+  }
+  return { valid: true };
+}
+
+function validateAndConsumeOtp(
+  transactionRef?: string,
+  otpCode?: string,
+  expectedOperation?: string,
+  expectedPayload?: {
+    amount?: string | number;
+    tokenId?: string;
+    fromTokenId?: string;
+    toTokenId?: string;
+    recipientAccountId?: string;
+  },
+): { valid: boolean; error?: string; message?: string } {
+  cleanupExpiredOtps();
+
+  if (!otpCode || otpCode !== "123456") {
+    return {
+      valid: false,
+      error: "invalid_otp",
+      message: 'Invalid or missing OTP code. For testing, use: "123456"',
+    };
+  }
+
+  if (!transactionRef) {
+    return {
+      valid: false,
+      error: "missing_transaction_ref",
+      message: "Transaction reference is required",
+    };
+  }
+
+  if (!transactionRef.startsWith("mock-ref-") && !transactionRef.startsWith("mock-mcp-ref-")) {
+    return {
+      valid: false,
+      error: "invalid_transaction_ref",
+      message: "Invalid transaction reference",
+    };
+  }
+  const record = issuedOtps.get(transactionRef);
+  if (!record) {
+    return {
+      valid: false,
+      error: "transaction_ref_not_found",
+      message: "Transaction reference not found or expired",
+    };
+  }
+  if (Date.now() - record.createdAt > OTP_TTL_MS) {
+    issuedOtps.delete(transactionRef);
+    return {
+      valid: false,
+      error: "otp_expired",
+      message: "Transaction reference has expired (TTL: 10 minutes)",
+    };
+  }
+  if (record.used) {
+    return {
+      valid: false,
+      error: "otp_already_used",
+      message: "Transaction reference has already been consumed",
+    };
+  }
+  if (expectedOperation && record.operation !== expectedOperation) {
+    return {
+      valid: false,
+      error: "operation_mismatch",
+      message: `Transaction reference was issued for '${record.operation}', not '${expectedOperation}'`,
+    };
+  }
+
+  // Security check: verify transaction details are strictly bound to the issued OTP
+  if (expectedPayload) {
+    if (record.amount !== undefined && expectedPayload.amount !== undefined && String(record.amount) !== String(expectedPayload.amount)) {
+      return {
+        valid: false,
+        error: "amount_mismatch",
+        message: `Transaction amount (${expectedPayload.amount}) does not match authorized OTP amount (${record.amount})`,
+      };
+    }
+    if (record.tokenId && expectedPayload.tokenId && record.tokenId !== expectedPayload.tokenId) {
+      return {
+        valid: false,
+        error: "token_mismatch",
+        message: `Token ID (${expectedPayload.tokenId}) does not match authorized OTP token (${record.tokenId})`,
+      };
+    }
+    if (record.recipientAccountId && expectedPayload.recipientAccountId && record.recipientAccountId !== expectedPayload.recipientAccountId) {
+      return {
+        valid: false,
+        error: "recipient_mismatch",
+        message: `Recipient account (${expectedPayload.recipientAccountId}) does not match authorized OTP recipient (${record.recipientAccountId})`,
+      };
+    }
+    if (record.token && expectedPayload.fromTokenId && record.token !== expectedPayload.fromTokenId) {
+      return {
+        valid: false,
+        error: "token_mismatch",
+        message: `Source token (${expectedPayload.fromTokenId}) does not match authorized OTP token (${record.token})`,
+      };
+    }
+    if (record.recipient && expectedPayload.toTokenId && record.recipient !== expectedPayload.toTokenId) {
+      return {
+        valid: false,
+        error: "token_mismatch",
+        message: `Destination token (${expectedPayload.toTokenId}) does not match authorized OTP recipient token (${record.recipient})`,
+      };
+    }
+  }
+
+  record.used = true;
+  issuedOtps.delete(transactionRef);
+  return { valid: true };
+}
+
+// Genesis Wallet Claim
+app.post("/api/v1/mcp/genesis/claim", (req, res) => {
+  const { confirm } = req.body;
+  if (confirm !== true) {
+    return res.status(400).json({
+      error: "confirmation_required",
+      message: 'Explicit boolean confirmation "true" is required to claim Genesis wallet',
+    });
+  }
+  res.json({
+    success: true,
+    claimed: true,
+    accountId: "0.0.10036692",
+    vanityAddress: "0.0.GENESIS_BC_CLAIMED",
+    bountyDiscoveredUsdc: 25.0,
+    message: "Genesis Vanity Wallet successfully claimed",
+  });
+});
+
+// MCP General OTP Request
+app.post("/api/v1/mcp/otp/request", (req, res) => {
+  const { operation, amount, token, recipient, wallet_id, user_id } = req.body;
+  const allowedOperations = new Set([
+    "swap_currency",
+    "request_withdrawal",
+    "engage_offer",
+    "execute_approved_transaction",
+  ]);
+  if (!allowedOperations.has(operation) || typeof amount !== "string" || amount.length === 0) {
+    return res.status(400).json({
+      error: "missing_parameters",
+      message: "A supported operation and amount are required",
+    });
+  }
+
+  const amountValidation = isValidOperationAmount(operation, amount);
+  if (!amountValidation.valid) {
+    return res.status(400).json({
+      error: amountValidation.error,
+      message: amountValidation.message,
+    });
+  }
+
+  // Enforce operation-specific required payload fields
+  if (operation === "swap_currency") {
+    if (!token || !recipient || !amount) {
+      return res.status(400).json({
+        error: "missing_parameters",
+        message: "token (from_token_id), recipient (to_token_id), and amount are required for swap_currency OTP request",
+      });
+    }
+  } else if (operation === "request_withdrawal") {
+    if (!token || !recipient || !amount) {
+      return res.status(400).json({
+        error: "missing_parameters",
+        message: "token (currency), recipient (destination_account), and amount are required for request_withdrawal OTP request",
+      });
+    }
+  } else if (operation === "engage_offer") {
+    if (!token || !recipient || !amount) {
+      return res.status(400).json({
+        error: "missing_parameters",
+        message: "token (currency), recipient (offer_id), and amount are required for engage_offer OTP request",
+      });
+    }
+  } else if (operation === "execute_approved_transaction") {
+    if (!recipient) {
+      return res.status(400).json({
+        error: "missing_parameters",
+        message: "recipient (approval_request_id) is required for execute_approved_transaction OTP request",
+      });
+    }
+  }
+
+  const transactionRef = generateRef("mock-mcp-ref");
+  issuedOtps.set(transactionRef, {
+    operation,
+    otp: "123456",
+    used: false,
+    amount,
+    token,
+    recipient,
+    wallet_id,
+    user_id,
+    createdAt: Date.now(),
+  });
+  res.json({
+    success: true,
+    operation,
+    transactionRef,
+    message: `OTP generated for ${operation} (mock: use "123456")`,
+    otpHint: "For testing, use OTP: 123456",
+  });
+});
+
 // Balances
 app.get("/api/v1/mcp/balances", (req, res) => {
   const { tokenId } = req.query;
@@ -78,6 +335,14 @@ app.post("/api/v1/mcp/transfer/request-otp", (req, res) => {
     });
   }
 
+  const amountValidation = isValidOperationAmount("transfer_tokens", amount);
+  if (!amountValidation.valid) {
+    return res.status(400).json({
+      error: amountValidation.error,
+      message: amountValidation.message,
+    });
+  }
+
   // Simulate insufficient balance
   if (parseFloat(amount) > 10000) {
     return res.status(400).json({
@@ -90,9 +355,20 @@ app.post("/api/v1/mcp/transfer/request-otp", (req, res) => {
     });
   }
 
+  const transactionRef = generateRef("mock-ref");
+  issuedOtps.set(transactionRef, {
+    operation: "transfer_tokens",
+    otp: "123456",
+    used: false,
+    amount: String(amount),
+    tokenId,
+    recipientAccountId,
+    createdAt: Date.now(),
+  });
+
   res.json({
     success: true,
-    transactionRef: `mock-ref-${Date.now()}`,
+    transactionRef,
     message: 'OTP sent to your email (mock: use "123456")',
     otpHint: "For testing, use OTP: 123456",
   });
@@ -100,19 +376,24 @@ app.post("/api/v1/mcp/transfer/request-otp", (req, res) => {
 
 // Transfer - Execute
 app.post("/api/v1/mcp/transfer", (req, res) => {
-  const { otpCode, transactionRef } = req.body;
+  const { tokenId, recipientAccountId, amount, otpCode, transactionRef } = req.body;
 
-  if (otpCode !== "123456") {
+  if (!transactionRef) {
     return res.status(400).json({
-      error: "invalid_otp",
-      message: "Invalid OTP code. For testing, use: 123456",
+      error: "missing_transaction_ref",
+      message: "transactionRef is required for transfer execution",
     });
   }
 
-  if (!transactionRef || !transactionRef.startsWith("mock-ref-")) {
+  const validation = validateAndConsumeOtp(transactionRef, otpCode, "transfer_tokens", {
+    tokenId,
+    recipientAccountId,
+    amount,
+  });
+  if (!validation.valid) {
     return res.status(400).json({
-      error: "invalid_transaction_ref",
-      message: "Invalid transaction reference",
+      error: validation.error,
+      message: validation.message,
     });
   }
 
@@ -126,12 +407,33 @@ app.post("/api/v1/mcp/transfer", (req, res) => {
 
 // Swap
 app.post("/api/v1/mcp/swap", (req, res) => {
-  const { fromTokenId, fromAmount, toTokenId } = req.body;
+  const { fromTokenId, fromAmount, toTokenId, otpCode, transactionRef } = req.body;
 
   if (!fromTokenId || !fromAmount || !toTokenId) {
     return res.status(400).json({
       error: "missing_parameters",
       message: "fromTokenId, fromAmount, and toTokenId are required",
+    });
+  }
+
+  const amountValidation = isValidOperationAmount("swap_currency", fromAmount);
+  if (!amountValidation.valid) {
+    return res.status(400).json({
+      error: amountValidation.error,
+      message: amountValidation.message,
+    });
+  }
+
+  // Validate and consume OTP if provided or required
+  const validation = validateAndConsumeOtp(transactionRef, otpCode, "swap_currency", {
+    fromTokenId,
+    amount: fromAmount,
+    toTokenId,
+  });
+  if (!validation.valid) {
+    return res.status(400).json({
+      error: validation.error,
+      message: validation.message,
     });
   }
 
@@ -223,7 +525,7 @@ app.post("/api/v1/mcp/agent/request-transaction", (req, res) => {
     });
   }
 
-  const approvalRequestId = `mock-approval-${Date.now()}`;
+  const approvalRequestId = generateRef("mock-approval");
 
   res.json({
     approvalRequestId,
@@ -251,7 +553,7 @@ app.get("/api/v1/mcp/agent/approval/:id", (req, res) => {
   res.json({
     status: isApproved ? "approved" : "pending",
     expiresAt: new Date(createdAt + 24 * 60 * 60 * 1000).toISOString(),
-    executionToken: isApproved ? `mock-exec-${Date.now()}` : undefined,
+    executionToken: isApproved ? generateRef("mock-exec") : undefined,
   });
 });
 
@@ -326,7 +628,7 @@ app.get("/api/v1/mcp/offers/:id", (req, res) => {
 
 app.post("/api/v1/mcp/offers", (req, res) => {
   res.json({
-    id: `mock-offer-${Date.now()}`,
+    id: generateRef("mock-offer"),
     ...req.body,
     status: "active",
     createdAt: new Date().toISOString(),

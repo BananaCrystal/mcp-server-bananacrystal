@@ -1,0 +1,47 @@
+{
+  "title": "BananaCrystal Meta Muse MCP Connector Specification",
+  "version": "1.0.0",
+  "integration": {
+    "provider": "BananaCrystal Ltd.",
+    "protocol": "Model Context Protocol (MCP) Streamable HTTP",
+    "transport": "HTTP / SSE",
+    "hostType": "Public HTTPS Cloud Endpoint"
+  },
+  "endpoints": {
+    "production": {
+      "url": "https://agentic.bananacrystal.com/mcp",
+      "description": "Live production MCP endpoint with real Hedera mainnet settlements",
+      "authHeader": "x-api-key"
+    },
+    "sandbox": {
+      "url": "https://agentic.bananacrystal.com/mcp/sandbox",
+      "description": "Simulated sandbox MCP environment for testing and development",
+      "authHeader": "x-api-key"
+    }
+  },
+  "museConnection": {
+    "serverName": "BananaCrystal Finance",
+    "pluginType": "Custom Remote MCP Server",
+    "requiredHeaders": {
+      "x-api-key": "{BANANACRYSTAL_API_KEY}",
+      "Content-Type": "application/json"
+    },
+    "chatRegistrationPrompt": "Connect to BananaCrystal MCP financial server at https://agentic.bananacrystal.com/mcp using my environment header x-api-key. Enable multi-currency exchange rate queries, swap estimations, wallet profile, and Hedera token transfers."
+  },
+  "capabilities": {
+    "exchangeRates": {
+      "tool": "get_exchange_rate",
+      "supportedCurrencies": ["EUR", "IDR", "NGN", "GBP", "GHS", "KES", "ZAR", "CAD", "JPY", "AUD", "SGD"]
+    },
+    "feeEstimations": {
+      "tool": "estimate_swap_fees",
+      "tokens": ["USDb", "EURb", "IDRb", "NGNb", "GHSb", "KESb"]
+    },
+    "accountManagement": {
+      "tools": ["get_my_profile", "get_balances", "list_available_tokens", "bc_genesis_claim"]
+    },
+    "settlementAndPayments": {
+      "tools": ["swap_currency", "transfer_tokens", "request_transfer_otp", "request_mcp_otp"]
+    }
+  }
+}
