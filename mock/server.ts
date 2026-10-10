@@ -213,10 +213,16 @@ app.post("/api/v1/mcp/genesis/claim", (req, res) => {
 // MCP General OTP Request
 app.post("/api/v1/mcp/otp/request", (req, res) => {
   const { operation, amount, token, recipient, wallet_id, user_id } = req.body;
-  if (!operation || typeof amount !== "string" || amount.length === 0) {
+  const allowedOperations = new Set([
+    "swap_currency",
+    "request_withdrawal",
+    "engage_offer",
+    "execute_approved_transaction",
+  ]);
+  if (!allowedOperations.has(operation) || typeof amount !== "string" || amount.length === 0) {
     return res.status(400).json({
       error: "missing_parameters",
-      message: "operation and amount parameters are required",
+      message: "A supported operation and amount are required",
     });
   }
 
