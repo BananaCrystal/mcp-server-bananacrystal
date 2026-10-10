@@ -79,6 +79,25 @@ function generateRef(prefix: string): string {
   return `${prefix}-${Date.now()}-${crypto.randomBytes(4).toString("hex")}`;
 }
 
+function isValidOperationAmount(operation: string, amount: unknown): { valid: boolean; error?: string; message?: string } {
+  if (typeof amount !== "string" && typeof amount !== "number") {
+    return { valid: false, error: "invalid_amount", message: "Amount must be provided as a string" };
+  }
+  const str = String(amount).trim();
+  if (operation === "execute_approved_transaction") {
+    if (str === "0" || str === "0.0") return { valid: true };
+    return { valid: false, error: "invalid_amount", message: "Amount for execute_approved_transaction must be '0'" };
+  }
+  if (!/^(0|[1-9]\d*)(\.\d+)?$/.test(str)) {
+    return { valid: false, error: "invalid_amount", message: "Amount must be a valid positive decimal string (no negative numbers, NaN, or scientific notation)" };
+  }
+  const num = parseFloat(str);
+  if (isNaN(num) || num <= 0) {
+    return { valid: false, error: "invalid_amount", message: "Amount must be greater than 0" };
+  }
+  return { valid: true };
+}
+
 function validateAndConsumeOtp(
   transactionRef?: string,
   otpCode?: string,
@@ -226,6 +245,14 @@ app.post("/api/v1/mcp/otp/request", (req, res) => {
     });
   }
 
+  const amountValidation = isValidOperationAmount(operation, amount);
+  if (!amountValidation.valid) {
+    return res.status(400).json({
+      error: amountValidation.error,
+      message: amountValidation.message,
+    });
+  }
+
   // Enforce operation-specific required payload fields
   if (operation === "swap_currency") {
     if (!token || !recipient || !amount) {
@@ -308,6 +335,14 @@ app.post("/api/v1/mcp/transfer/request-otp", (req, res) => {
     });
   }
 
+  const amountValidation = isValidOperationAmount("transfer_tokens", amount);
+  if (!amountValidation.valid) {
+    return res.status(400).json({
+      error: amountValidation.error,
+      message: amountValidation.message,
+    });
+  }
+
   // Simulate insufficient balance
   if (parseFloat(amount) > 10000) {
     return res.status(400).json({
@@ -378,6 +413,14 @@ app.post("/api/v1/mcp/swap", (req, res) => {
     return res.status(400).json({
       error: "missing_parameters",
       message: "fromTokenId, fromAmount, and toTokenId are required",
+    });
+  }
+
+  const amountValidation = isValidOperationAmount("swap_currency", fromAmount);
+  if (!amountValidation.valid) {
+    return res.status(400).json({
+      error: amountValidation.error,
+      message: amountValidation.message,
     });
   }
 

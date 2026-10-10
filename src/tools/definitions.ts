@@ -152,8 +152,9 @@ export function createToolDefinitions() {
           },
           amount: {
             type: "string",
+            pattern: "^(0|[1-9]\\d*)(\\.\\d+)?$",
             description:
-              "The amount for the operation (pass '0' for execute_approved_transaction).",
+              "The amount for the operation (pass '0' only for execute_approved_transaction; must be a positive decimal greater than 0 for all other operations).",
           },
           user_id: {
             type: "string",
