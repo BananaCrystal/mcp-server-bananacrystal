@@ -1,0 +1,26 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.bananacrystal/mcp",
+  "title": "BananaCrystal",
+  "description": "FX rates, currency swaps, stablecoin transfers, agent wallets, fiat on/off-ramp and P2P escrow.",
+  "version": "1.1.0",
+  "websiteUrl": "https://agents.bananacrystal.com/docs/mcp",
+  "repository": {
+    "url": "https://github.com/BananaCrystal/mcp-server-bananacrystal",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://agentic.bananacrystal.com/mcp",
+      "headers": [
+        {
+          "name": "x-api-key",
+          "description": "API key from agents.bananacrystal.com/account. Leave empty to sign in with OAuth instead.",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}

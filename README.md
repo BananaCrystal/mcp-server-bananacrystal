@@ -1,6 +1,7 @@
 <!--
   SEO/GEO/AEO METADATA
-  Primary:  agent payment infrastructure · autonomous payments · AI-native finance
+  Primary:  MCP FX rates · MCP currency exchange rates · MCP payments · MCP crypto payments · MCP on-ramp / off-ramp
+  Also:     agent payment infrastructure · autonomous payments · AI-native finance
   Secondary: agent wallet · agent economy · MCP payments · LangChain payments
   Tertiary:  stablecoin payments · Hedera MCP · autonomous payment network · AI agent wallet
 -->
@@ -81,7 +82,7 @@ This MCP server is the alternative. **One configuration line gives any AI agent:
 
 - An **agent wallet** with a real stablecoin balance
 - **Autonomous payment authority** within operator-defined spending limits
-- **150+ currencies**, including USDb, EURb, NGNb, GBPb, CADb, and more
+- **140+ currencies**, including USDb, EURb, NGNb, GBPb, CADb, and more
 - **On-chain settlement in under 5 seconds** on Hedera
 - An **immutable audit trail** where every agent action is recorded
 - **Real-time currency data** via the dedicated rate service for current rates, historical data, batch conversions, and statistics
@@ -745,11 +746,11 @@ OpenAI adopted MCP in March 2025, and Microsoft added it to Copilot Studio in Ma
 <details>
 <summary><b>What currencies are supported?</b></summary>
 
-150+ stablecoin currency pairs. The core flow:
+140+ stablecoin currency pairs. The core flow:
 
 1. Deposit USDC (external stablecoin) into your BananaCrystal account
 2. Convert to USDb (BananaCrystal's native 1:1 USD stablecoin)
-3. Swap USDb to any of 150+ local currency stablecoins
+3. Swap USDb to any of 140+ local currency stablecoins
 4. Withdraw back to USDC or your local bank anytime
 
 Every swap settles on Hedera in under 5 seconds. No banks. No SWIFT. No weekends.
@@ -769,7 +770,7 @@ A sample of supported currencies:
 | Australian Dollar | AUDb  |     | Moroccan Dirham    | MADb  |
 | Japanese Yen      | JPYb  |     | Ugandan Shilling   | UGXb  |
 
-**[View all 150+ supported currencies →](./CURRENCIES.md)**
+For the full list of 140+ currencies, call the `list_supported_currencies` tool.
 
 Use `list_available_tokens` to get the live list with Hedera token IDs and current exchange rates.
 
