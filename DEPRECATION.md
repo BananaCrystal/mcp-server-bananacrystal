@@ -20,7 +20,6 @@ at the URL.
 | Environment | URL                                             |
 | ----------- | ----------------------------------------------- |
 | Production  | `https://agentic.bananacrystal.com/mcp`         |
-| Staging     | `https://agentic.stg.bananacrystal.com/mcp`     |
 | Sandbox     | `https://agentic.bananacrystal.com/mcp/sandbox` |
 
 Auth header: `x-api-key: <API_KEY>` (OAuth `Authorization: Bearer <token>` is also supported).

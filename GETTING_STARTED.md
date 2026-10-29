@@ -9,7 +9,6 @@
 | Environment | URL                                             |
 | ----------- | ----------------------------------------------- |
 | Production  | `https://agentic.bananacrystal.com/mcp`         |
-| Staging     | `https://agentic.stg.bananacrystal.com/mcp`     |
 | Sandbox     | `https://agentic.bananacrystal.com/mcp/sandbox` |
 
 > **Use the `agentic.` host, not `agents.`** — `agents.bananacrystal.com` is the web app and returns HTML, not MCP.
