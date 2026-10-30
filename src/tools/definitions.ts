@@ -92,7 +92,7 @@ export function createToolDefinitions() {
     {
       name: "request_transfer_otp",
       description:
-        "Step 1: Request an OTP code to authorize a token transfer. An email will be sent with the code.",
+        "Step 1 of the transfer flow. Request an OTP code to authorize a token transfer; an email with the code is sent to the sender's registered address. Must be called before transfer_tokens. A 0.3% platform fee is applied automatically, so pass the net amount you want the recipient to receive.",
       inputSchema: {
         type: "object",
         properties: {
@@ -106,7 +106,8 @@ export function createToolDefinitions() {
           },
           amount: {
             type: "string",
-            description: "Amount to transfer (as string to preserve precision)",
+            description:
+              "Amount to transfer (as string to preserve precision) - the net amount to send. The 0.3% platform fee is charged separately.",
           },
           tokenSymbol: {
             type: "string",
@@ -119,7 +120,7 @@ export function createToolDefinitions() {
     {
       name: "transfer_tokens",
       description:
-        "Step 2: Execute the token transfer. If OTP is enabled on your key (default), provide otpCode and transactionRef from request_transfer_otp. If OTP is disabled, these fields are not required.",
+        "Step 2 of the transfer flow. Execute the token transfer. When OTP is enabled on your key (the default), first call request_transfer_otp, then pass the returned transactionRef plus the 6-digit otpCode from the email here. If OTP is disabled on your key, both fields may be omitted.",
       inputSchema: {
         type: "object",
         properties: {
@@ -137,12 +138,13 @@ export function createToolDefinitions() {
           },
           otpCode: {
             type: "string",
-            description: "6-digit OTP code from email",
+            description:
+              "6-digit OTP code from the email sent by request_transfer_otp. Required when OTP is enabled on your key (the default).",
           },
           transactionRef: {
             type: "string",
             description:
-              "Transaction reference from request_transfer_otp response",
+              "transactionRef returned by request_transfer_otp. Required when OTP is enabled on your key (the default).",
           },
           tokenSymbol: {
             type: "string",
@@ -157,7 +159,7 @@ export function createToolDefinitions() {
     {
       name: "swap_currency",
       description:
-        "Swap between two Hedera tokens. Exchange rate calculated automatically.",
+        "Swap between two Hedera tokens. Exchange rate and fees are calculated automatically - no need to pass a target amount. Accepts token IDs (e.g. 0.0.123) or symbols (e.g. USDb, NGNb). When OTP is enabled on your key (the default), first call request_mcp_otp with operation \"swap_currency\", amount set to fromAmount, token set to fromTokenId and recipient set to toTokenId, then pass the returned transactionRef plus the emailed otpCode here.",
       inputSchema: {
         type: "object",
         properties: {
@@ -179,6 +181,16 @@ export function createToolDefinitions() {
             type: "string",
             description: "Optional memo for the transaction",
           },
+          otpCode: {
+            type: "string",
+            description:
+              "6-digit code from the request_mcp_otp email. Required when OTP is enabled on your key (the default).",
+          },
+          transactionRef: {
+            type: "string",
+            description:
+              "transactionRef returned by request_mcp_otp. Required when OTP is enabled on your key (the default).",
+          },
         },
         required: ["fromTokenId", "fromAmount", "toTokenId"],
       },
@@ -191,15 +203,18 @@ export function createToolDefinitions() {
         properties: {
           fromCurrency: {
             type: "string",
-            description: "Source currency code (e.g. USD)",
+            minLength: 1,
+            description: "Source currency code (e.g. USD). Must not be blank.",
           },
           toCurrency: {
             type: "string",
-            description: "Target currency code (e.g. NGN)",
+            minLength: 1,
+            description: "Target currency code (e.g. NGN). Must not be blank.",
           },
           amount: {
             type: "number",
-            description: "Amount to swap",
+            exclusiveMinimum: 0,
+            description: "Amount to swap in the source currency (must be > 0)",
           },
         },
         required: ["fromCurrency", "toCurrency", "amount"],
@@ -322,7 +337,8 @@ export function createToolDefinitions() {
     },
     {
       name: "get_kyc_status",
-      description: "Get KYC verification status for a user",
+      description:
+        "Get KYC verification status for a user. If no KYC applicant exists yet, returns a structured { status: \"not_started\" } result rather than an error.",
       inputSchema: {
         type: "object",
         properties: {
@@ -369,7 +385,7 @@ export function createToolDefinitions() {
     {
       name: "request_withdrawal",
       description:
-        "Request a fiat withdrawal via Brale. Requires verified KYC.",
+        "Request a fiat withdrawal via Brale. All fiat operations require verified KYC. When OTP is enabled on your key (the default), first call request_mcp_otp with operation \"request_withdrawal\", the same amount, token set to the currency and recipient set to destinationAccount, then pass the returned transactionRef plus the emailed otpCode here.",
       inputSchema: {
         type: "object",
         properties: {
@@ -392,6 +408,16 @@ export function createToolDefinitions() {
           railType: {
             type: "string",
             description: "Payment rail (e.g. ach, wire)",
+          },
+          otpCode: {
+            type: "string",
+            description:
+              "6-digit code from the request_mcp_otp email. Required when OTP is enabled on your key (the default).",
+          },
+          transactionRef: {
+            type: "string",
+            description:
+              "transactionRef returned by request_mcp_otp. Required when OTP is enabled on your key (the default).",
           },
         },
         required: ["amount", "currency"],
@@ -721,7 +747,7 @@ export function createToolDefinitions() {
     {
       name: "engage_offer",
       description:
-        "Engage (trade against) an open offer. The trader locks the same totalAmount in escrow.",
+        "Engage (trade against) an open offer. The trader locks the same totalAmount as the offer creator in escrow. Choose \"long\" if you predict the price will go up, \"short\" if you predict it will go down; the offer creator has already taken the opposite position. When OTP is enabled on your key (the default), first call request_mcp_otp with operation \"engage_offer\", the same amount, token set to the currency and recipient set to offerId, then pass the returned transactionRef plus the emailed otpCode here.",
       inputSchema: {
         type: "object",
         properties: {
@@ -762,6 +788,16 @@ export function createToolDefinitions() {
           currency: {
             type: "string",
             description: 'Currency code matching the offer (e.g. "NGN")',
+          },
+          otpCode: {
+            type: "string",
+            description:
+              "6-digit code from the request_mcp_otp email. Required when OTP is enabled on your key (the default).",
+          },
+          transactionRef: {
+            type: "string",
+            description:
+              "transactionRef returned by request_mcp_otp. Required when OTP is enabled on your key (the default).",
           },
         },
         required: [
@@ -896,7 +932,8 @@ export function createToolDefinitions() {
     },
     {
       name: "execute_approved_transaction",
-      description: "Execute a transaction after it has been approved",
+      description:
+        "Execute a previously approved agent transaction using the execution token received after approval. When OTP is enabled on your key (the default), first call request_mcp_otp with operation \"execute_approved_transaction\", amount \"0\" and recipient set to approvalRequestId, then pass the returned transactionRef plus the emailed otpCode here.",
       inputSchema: {
         type: "object",
         properties: {
@@ -906,7 +943,18 @@ export function createToolDefinitions() {
           },
           executionToken: {
             type: "string",
-            description: "Execution token received after approval",
+            description:
+              "Execution token received after approval (via webhook or check_approval_status)",
+          },
+          otpCode: {
+            type: "string",
+            description:
+              "6-digit code from the request_mcp_otp email. Required when OTP is enabled on your key (the default).",
+          },
+          transactionRef: {
+            type: "string",
+            description:
+              "transactionRef returned by request_mcp_otp. Required when OTP is enabled on your key (the default).",
           },
         },
         required: ["approvalRequestId", "executionToken"],

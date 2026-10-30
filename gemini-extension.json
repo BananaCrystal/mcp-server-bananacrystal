@@ -1,0 +1,9 @@
+{
+  "name": "bananacrystal",
+  "version": "1.1.0",
+  "mcpServers": {
+    "bananacrystal": {
+      "httpUrl": "https://agentic.bananacrystal.com/mcp"
+    }
+  }
+}

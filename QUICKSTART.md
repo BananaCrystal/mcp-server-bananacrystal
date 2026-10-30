@@ -2,30 +2,29 @@
 
 Get up and running with BananaCrystal MCP Server in 5 minutes.
 
-## Step 1: Install (1 minute)
+> ## ⚠️ The `@bananacrystal/mcp-server` npm package is deprecated
+>
+> **Do not install it.** BananaCrystal is a hosted MCP server — connect your client directly to the URL below and authenticate with the header `x-api-key: <YOUR_API_KEY>`. Your client fetches the tool list live from the server, so it is always current.
 
-```bash
-npm install -g @bananacrystal/mcp-server
-```
+| Environment | URL                                             |
+| ----------- | ----------------------------------------------- |
+| Production  | `https://agentic.bananacrystal.com/mcp`         |
+| Sandbox     | `https://agentic.bananacrystal.com/mcp/sandbox` |
 
-Verify installation:
+> **Use the `agentic.` host, not `agents.`** — `agents.bananacrystal.com` is the web app and returns HTML, not MCP.
 
-```bash
-bananacrystal-mcp --version
-```
+## Step 1: Create an account and get an API key (2 minutes)
 
-## Step 2: Get API Key (2 minutes)
-
-1. Go to [agents.bananacrystal.com](https://agents.bananacrystal.com)
+1. Go to [agents.bananacrystal.com](https://agents.bananacrystal.com) — the web app, where accounts and keys live
 2. Sign up or log in
-3. Navigate to **Account** → **API Keys**
+3. Open the **AI Agent Access** page
 4. Click **Create New Key**
 5. **Start with a Sandbox key** for fake money, zero risk, and full functionality. Sandbox keys start with `bc_test_`. Live keys have no prefix.
 6. Copy the key
 
 ⚠️ **Important**: Save your key securely. You won't be able to see it again!
 
-## Step 3: Configure Claude Desktop (1 minute)
+## Step 2: Configure Claude Desktop (1 minute)
 
 ### macOS
 
@@ -49,26 +48,28 @@ Paste this into the file:
 {
   "mcpServers": {
     "bananacrystal": {
-      "command": "bananacrystal-mcp",
-      "env": {
-        "BANANACRYSTAL_API_KEY": "PASTE_YOUR_KEY_HERE"
+      "url": "https://agentic.bananacrystal.com/mcp",
+      "headers": {
+        "x-api-key": "PASTE_YOUR_KEY_HERE"
       }
     }
   }
 }
 ```
 
+Using a `bc_test_` sandbox key? Point at `https://agentic.bananacrystal.com/mcp/sandbox` instead.
+
 Replace `PASTE_YOUR_KEY_HERE` with your actual API key.
 
 **Note:** This connects to production. Use a Sandbox key (`bc_test_...`) while testing because it uses the same configuration without real money!
 
-## Step 4: Restart Claude (30 seconds)
+## Step 3: Restart Claude (30 seconds)
 
 1. Quit Claude Desktop completely
 2. Reopen Claude Desktop
 3. Wait for it to fully load
 
-## Step 5: Test It! (30 seconds)
+## Step 4: Test It! (30 seconds)
 
 Open a new conversation in Claude and try:
 
