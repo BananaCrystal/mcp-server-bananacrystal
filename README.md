@@ -120,7 +120,7 @@ Everything that limits spending lives on the server, not in the agent's prompt.
 
 - **Scoped API keys.** Each key gets only the scopes it needs: `read`, `transfer`, `swap`, `fiat`. A read-only key cannot move money, whatever the prompt says.
 - **Per-transaction maximum and rolling 24-hour cap**, set per key in your account and enforced server-side. A runaway loop stops at the number you chose.
-- **Email one-time code on every transfer, swap and withdrawal.** The agent can request the code; only you can supply it.
+- **Email one-time code on transfers, swaps and withdrawals, on by default.** The agent can request the code; only you can supply it.
 - **Idempotent requests.** Retrying a call never pays twice.
 - **Sandbox is a separate environment.** `bc_test_` keys never touch real balances.
 
@@ -132,7 +132,7 @@ Reads are free. Transfers cost 0.3% and swaps 0.5%, charged in the currency you 
 
 | | Sandbox | Production |
 |---|---|---|
-| Key prefix | `bc_test_` | `bc_live_` |
+| Key format | `bc_test_` prefix | 64 hex characters, no prefix |
 | Balances | Test funds, reset on request | Real |
 | KYC | Not required | Required before fiat tools |
 | Rate limit | Returned by `get_my_limits` | Returned by `get_my_limits` |

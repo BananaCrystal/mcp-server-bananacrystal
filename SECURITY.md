@@ -44,7 +44,7 @@ We will not take legal action against researchers who follow these rules and rep
 
 - **API keys are scoped.** A key carries only the scopes it was created with (`read`, `transfer`, `swap`, `fiat`). The server rejects any tool call outside the key's scope.
 - **Spending limits are enforced server-side.** Per-transaction maximum and a rolling 24-hour cap are set per key and checked on every call. Nothing in the agent's prompt can raise them.
-- **Transfers, swaps and withdrawals require a one-time code** sent to the account holder's email. The agent can request a code but never receives it.
+- **Transfers, swaps and withdrawals require a one-time code by default**, sent to the account holder's email. The agent can request a code but never receives it.
 - **Requests are idempotent.** A retried call with the same idempotency key is not executed twice.
 - **Keys are shown once.** We store a hash. If you lose a key, revoke it and create a new one at agents.bananacrystal.com/account.
 - **Sandbox and production are separate environments.** Test keys cannot reach real balances.
@@ -54,7 +54,7 @@ We will not take legal action against researchers who follow these rules and rep
 - Keep keys in environment variables or your client's secret store, never in a committed config file.
 - Create one key per agent or per workload, with the smallest scope that works.
 - Revoke keys you no longer use. Rotation takes effect immediately.
-- Production keys start with `bc_live_`. If you see one in a log, a chat transcript or a repository, revoke it first and investigate second.
+- Sandbox keys start with `bc_test_`. Production keys are 64 hex characters with no prefix. If you see a production key in a log, a chat transcript or a repository, revoke it first and investigate second.
 
 ## Supported versions
 

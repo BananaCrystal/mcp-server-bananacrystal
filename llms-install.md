@@ -20,4 +20,4 @@ BananaCrystal is a hosted MCP server. There is nothing to download.
 
 If the client cannot connect to a `url` entry directly, use `npx -y mcp-remote https://agentic.bananacrystal.com/mcp --header "x-api-key:bc_test_your_key"` as the command instead.
 
-Production keys start with `bc_live_` and require KYC for fiat tools. Store keys in environment variables, never in committed files.
+Production keys have no prefix and require KYC for fiat tools. Store keys in environment variables, never in committed files.
