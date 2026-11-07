@@ -1,7 +1,7 @@
 {
   "name": "bananacrystal-mcp",
   "version": "1.1.0",
-  "description": "Live FX rates, currency swaps and stablecoin payments in 140+ local currencies for AI agents. Hosted MCP server, free sandbox.",
+  "description": "Give your AI agent a wallet: live FX rates, swaps and payments in 140+ local currencies. Hosted server, free sandbox keys.",
   "author": "BananaCrystal <sales@bananacrystal.com>",
   "homepage": "https://agents.bananacrystal.com/docs/mcp",
   "repository": "https://github.com/BananaCrystal/mcp-server-bananacrystal",

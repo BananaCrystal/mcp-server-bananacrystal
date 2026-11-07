@@ -1,7 +1,7 @@
 {
   "name": "bananacrystal",
   "version": "1.1.0",
-  "description": "Live FX rates, currency swaps and stablecoin payments in 140+ local currencies for AI agents.",
+  "description": "Give your AI agent a wallet: live FX rates, swaps and payments in 140+ local currencies.",
   "mcpServers": {
     "bananacrystal": {
       "httpUrl": "https://agentic.bananacrystal.com/mcp",
