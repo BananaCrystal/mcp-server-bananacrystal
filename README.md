@@ -72,6 +72,12 @@ gemini extensions install https://github.com/BananaCrystal/mcp-server-bananacrys
 export BANANACRYSTAL_API_KEY=bc_test_your_key
 ```
 
+### Kiro
+
+[![Add to Kiro](https://kiro.dev/images/add-to-kiro.svg)](https://kiro.dev/launch/mcp/add?name=bananacrystal&config=%7B%22url%22%3A%22https%3A%2F%2Fagentic.bananacrystal.com%2Fmcp%22%2C%22headers%22%3A%7B%22x-api-key%22%3A%22bc_test_your_key%22%7D%2C%22disabled%22%3Afalse%2C%22autoApprove%22%3A%5B%5D%7D)
+
+Click the badge to add the server to Kiro, then replace `bc_test_your_key` with your own key.
+
 ### ChatGPT, Claude.ai connectors, and OAuth clients
 
 Add `https://agentic.bananacrystal.com/mcp` as a custom connector or remote MCP server. Leave the API key empty and the client will walk you through OAuth 2.0 sign-in. The server advertises its authorization server at `/.well-known/oauth-protected-resource`.
