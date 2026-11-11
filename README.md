@@ -10,6 +10,8 @@ https://agentic.bananacrystal.com/mcp
 
 [Docs](https://agents.bananacrystal.com/docs/mcp) · [Get a free sandbox key](https://agents.bananacrystal.com/account) · [API reference](https://agents.bananacrystal.com/docs/api) · [Security policy](SECURITY.md)
 
+[![MCP Badge](https://lobehub.com/badge/mcp/bananacrystal-mcp-server)](https://lobehub.com/mcp/bananacrystal-mcp-server)
+
 ---
 
 ## What this is
