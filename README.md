@@ -2,7 +2,7 @@
 
 **Give your AI agent a wallet: live FX rates, swaps and payments in 140+ local currencies.**
 
-One hosted MCP endpoint. 40 tools. Free sandbox. Settles on Hedera in under 5 seconds.
+One hosted MCP endpoint. 39 tools. Free sandbox. Settles on Hedera in under 5 seconds.
 
 ```
 https://agentic.bananacrystal.com/mcp
